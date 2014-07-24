@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.codeforafrica.timby.listeningpost"
+    package="org.codeforafrica.starreports"
     android:installLocation="auto"
-    android:versionCode="128"
-    android:versionName="0.0.9-build112" >
+    android:versionCode="129"
+    android:versionName="0.0.9-build111" >
     <uses-sdk
         android:minSdkVersion="10"
         android:targetSdkVersion="17" />
@@ -41,8 +41,8 @@
         android:resizeable="true"   />
 
     <application
-        android:name="org.codeforafrica.timby.listeningpost.StoryMakerApp"
-        android:icon="@drawable/icon"
+        android:name="org.codeforafrica.starreports.StoryMakerApp"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:theme="@style/Theme.storymakerstyle"
         android:largeHeap="true"
@@ -63,7 +63,7 @@
             android:label="Register New Account" >
         </activity>
         <activity
-            android:name="org.codeforafrica.timby.listeningpost.HomePanelsActivity"
+            android:name="org.codeforafrica.starreports.HomePanelsActivity"
             android:configChanges="locale"
             android:label="@string/app_name"
             android:launchMode="singleTop"
@@ -75,35 +75,35 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.codeforafrica.timby.listeningpost.StoryNewActivity"
+            android:name="org.codeforafrica.starreports.StoryNewActivity"
             android:label="@string/title_activity_new_story" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomePanelsActivity" />
         </activity>
         <activity
-            android:name="org.codeforafrica.timby.listeningpost.ReportActivity"
+            android:name="org.codeforafrica.starreports.ReportActivity"
             android:label="@string/title_activity_new_story" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomePanelsActivity" />
         </activity>
         <activity
-            android:name="org.codeforafrica.timby.listeningpost.ReportEditorActivity"
+            android:name="org.codeforafrica.starreports.ReportEditorActivity"
             android:label="@string/title_activity_new_story" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ReportsActivity" />
         </activity>
         <activity
-            android:name="org.codeforafrica.timby.listeningpost.ReportsActivity"
+            android:name="org.codeforafrica.starreports.ReportsActivity"
             android:label="@string/reports_list" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomePanelsActivity" />
         </activity>
               <activity
-            android:name="org.codeforafrica.timby.listeningpost.ProjectsActivity"
+            android:name="org.codeforafrica.starreports.ProjectsActivity"
             android:configChanges="locale"
             android:label="@string/title_projects"
             android:launchMode="singleTop"
@@ -113,7 +113,7 @@
                 android:value=".HomePanelsActivity" />
         </activity>
         <activity
-            android:name="org.codeforafrica.timby.listeningpost.LessonsActivity"
+            android:name="org.codeforafrica.starreports.LessonsActivity"
             android:configChanges="locale"
             android:label="@string/title_activity_lessons"
             android:launchMode="singleTop"
@@ -125,7 +125,7 @@
         </activity>
 
         <activity
-            android:name="org.codeforafrica.timby.listeningpost.StoryTemplateChooserActivity"
+            android:name="org.codeforafrica.starreports.StoryTemplateChooserActivity"
             android:label="@string/title_activity_choose_template"
             >
             <meta-data
@@ -133,7 +133,7 @@
                 android:value=".ProjectsActivity" />
         </activity>
         <activity
-            android:name="org.codeforafrica.timby.listeningpost.StoryTemplateActivity"
+            android:name="org.codeforafrica.starreports.StoryTemplateActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_story_template" >
             <meta-data
@@ -141,7 +141,7 @@
                 android:value=".ProjectsActivity" />
         </activity>
         <activity
-            android:name="org.codeforafrica.timby.listeningpost.SceneEditorActivity"
+            android:name="org.codeforafrica.starreports.SceneEditorActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_scene_editor" >
             <meta-data
@@ -149,12 +149,12 @@
                 android:value=".ProjectsActivity" />
         </activity>
         <activity
-            android:name="org.codeforafrica.timby.listeningpost.WelcomeActivity"
+            android:name="org.codeforafrica.starreports.WelcomeActivity"
             android:label="@string/app_name"            
              >
         </activity>  
          <activity
-            android:name="org.codeforafrica.timby.listeningpost.ProjectListActivity">
+            android:name="org.codeforafrica.starreports.ProjectListActivity">
              <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomePanelsActivity" />
@@ -174,8 +174,8 @@
             android:configChanges="orientation|keyboardHidden|screenSize" >   
             	      
         </activity>
-        <activity android:name="org.codeforafrica.timby.listeningpost.MediaOutputPreferences" />
-        <activity android:name="org.codeforafrica.timby.listeningpost.SimplePreferences" />
+        <activity android:name="org.codeforafrica.starreports.MediaOutputPreferences" />
+        <activity android:name="org.codeforafrica.starreports.SimplePreferences" />
         
         <activity android:name=".media.OverlayCameraActivity" 
              android:screenOrientation="landscape"
@@ -188,17 +188,17 @@
        
        
         <provider
-		    android:authorities="org.codeforafrica.timby.listeningpost.db.LessonsProvider"
+		    android:authorities="org.codeforafrica.starreports.db.LessonsProvider"
 		    android:multiprocess="true"
 		    android:exported="false"
-		    android:name="org.codeforafrica.timby.listeningpost.db.LessonsProvider"></provider>
+		    android:name="org.codeforafrica.starreports.db.LessonsProvider"></provider>
         
         <provider
-		    android:authorities="org.codeforafrica.timby.listeningpost.db.ProjectsProvider"
+		    android:authorities="org.codeforafrica.starreports.db.ProjectsProvider"
 		    android:multiprocess="true"
 		     android:exported="false"
-		    android:name="org.codeforafrica.timby.listeningpost.db.ProjectsProvider"></provider>
-		      
+		    android:name="org.codeforafrica.starreports.db.ProjectsProvider"></provider>
+
         <activity
             android:configChanges="keyboardHidden"
            android:name="net.micode.soundrecorder.SoundRecorder"
@@ -227,7 +227,7 @@
         
         <receiver
        android:icon="@drawable/logo"
-       android:label="ListeningPost QuickStory"
+       android:label="starreports QuickStory"
        android:name="QuickStoryWidgetProvider" >
        <intent-filter >
             <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -245,15 +245,15 @@
             />
     <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/app_id"/>
     <activity android:name="com.facebook.LoginActivity"/>
-    <activity android:name="org.codeforafrica.timby.listeningpost.facebook.FacebookLogin"/>  
+    <activity android:name="org.codeforafrica.starreports.facebook.FacebookLogin"/>  
 	<activity android:name="net.hockeyapp.android.UpdateActivity" />
-	
-	<activity android:name="org.codeforafrica.timby.listeningpost.facebook.UpdateActivity" android:value="Update Profile"/>
-	<activity android:name="org.codeforafrica.timby.listeningpost.AboutActivity" android:label="About" />
-	<service android:name="org.codeforafrica.timby.listeningpost.api.SyncService" />
-	<service android:name="org.codeforafrica.timby.listeningpost.export.Export2SDService" />
-	<service android:name="org.codeforafrica.timby.listeningpost.encryption.EncryptionService" />
-	<service android:name="org.codeforafrica.timby.listeningpost.encryption.EncryptionBackground" />
+
+	<activity android:name="org.codeforafrica.starreports.facebook.UpdateActivity" android:value="Update Profile"/>
+	<activity android:name="org.codeforafrica.starreports.AboutActivity" android:label="About" />
+	<service android:name="org.codeforafrica.starreports.api.SyncService" />
+	<service android:name="org.codeforafrica.starreports.export.Export2SDService" />
+	<service android:name="org.codeforafrica.starreports.encryption.EncryptionService" />
+	<service android:name="org.codeforafrica.starreports.encryption.EncryptionBackground" />
     
     </application>
 

@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
 
-import org.codeforafrica.timby.listeningpost.R;
+import org.codeforafrica.starreports.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
