@@ -80,10 +80,11 @@ public class ReportsActivity extends BaseActivity implements OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reports);
+        initSlidingMenu();
         cd = new ConnectionDetector(getApplicationContext());
 
         // action bar stuff
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
          
         //getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFFFFF")));
         //getSupportActionBar().setTitle("View Reports");
@@ -330,18 +331,22 @@ public class ReportsActivity extends BaseActivity implements OnClickListener{
     	 		Media[] mediaList = project2.getScenesAsArray()[0].getMediaAsArray();
     	 		
     	 		for(int k = 0; k<mediaList.length; k++){
+    	 			
 	    	 		Media media = mediaList[k];
 	    	 		
-	    		 	String ptype = media.getMimeType();
-	    		 	if(ptype.contains("image")){
-	    		 		pics++;
-	    		 		
-	    		 	}else if(ptype.contains("video")){
-	    		 		vids++;
-	    		 		
-	    		 	}else if(ptype.contains("audio")){
-	    		 		auds++;
-	    		 	}
+	    	 		if(media!=null)
+	    	 		{
+		    		 	String ptype = media.getMimeType();
+		    		 	if(ptype.contains("image")){
+		    		 		pics++;
+		    		 		
+		    		 	}else if(ptype.contains("video")){
+		    		 		vids++;
+		    		 		
+		    		 	}else if(ptype.contains("audio")){
+		    		 		auds++;
+		    		 	}
+	    	 		}
     	 		}
         	}
     		Drawable reportThumb = getReportThumb(r.getId());

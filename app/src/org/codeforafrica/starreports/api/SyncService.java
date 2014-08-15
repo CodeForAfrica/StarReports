@@ -47,7 +47,7 @@ public class SyncService extends Service {
 	createObject create_Object=null;
 	//updateObjet update_Object=null;
 	
-	private ArrayList<Report> mListReports;
+	private ArrayList<Report> mListReports = new ArrayList<Report>();
 		
  	Button done;
  	TextView log;
@@ -69,16 +69,19 @@ public class SyncService extends Service {
     public void onCreate() {
           super.onCreate();
     }
+
     @Override
 	public int onStartCommand(Intent intent, int flags, int startId){
 		super.onStartCommand(intent, flags, startId);
-			
+
+	       Bundle extras = intent.getExtras();
 			showNotification("Syncing...");
 			cd = new ConnectionDetector(getApplicationContext());
         
-	       Bundle extras = intent.getExtras();
+	     //  Bundle extras = intent.getExtras();
 	       if(intent.hasExtra("rid")){
 	    	   rid = extras.getInt("rid");
+	    	   Log.d("rid", "rid : " + rid);
 	    	   mListReports.add(Report.get(getApplicationContext(), rid));
 	       }else{
 	    	   mListReports = Report.getAllAsList(getApplicationContext());
@@ -93,6 +96,7 @@ public class SyncService extends Service {
           //}else{
           	check_token = new checkToken().execute();
          // }
+	       
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     	delete_after_sync = prefs.getString("delete_after_sync","0");
 
@@ -248,6 +252,8 @@ public class SyncService extends Service {
 	 	
 		 	for (Media media: mediaList){
 
+		 		if(media!=null){
+		 			
 		 		String ppath = media.getPath();
 			 	String ptype = media.getMimeType();
 			 	
@@ -289,6 +295,7 @@ public class SyncService extends Service {
 			 	MyTaskParams params = new MyTaskParams(ppath, ptype, optype, ptitle, pid, preportid);
 			 	create_Object = new createObject();
 			 	create_Object.execute(params);	
+		 		}
 	 		}
 	 	}
 	}

@@ -2,7 +2,6 @@ package org.codeforafrica.starreports;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 
 import org.codeforafrica.starreports.R;
@@ -11,24 +10,18 @@ import org.codeforafrica.starreports.location.GPSTracker;
 import org.codeforafrica.starreports.model.Media;
 import org.codeforafrica.starreports.model.Project;
 import org.codeforafrica.starreports.model.Report;
-import org.holoeverywhere.app.AlertDialog;
+
 import org.holoeverywhere.widget.*;
 import org.json.JSONArray;
 
 import android.annotation.SuppressLint;
-import android.app.ActivityManager;
 import android.app.Dialog;
-import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -43,15 +36,11 @@ import android.widget.ImageView;
 import android.widget.ToggleButton;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
-import android.widget.RadioGroup;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 
@@ -347,14 +336,16 @@ OnItemLongClickListener{
 	 		Project project = mListProjects.get(j);
 	 		Media[] mediaList = project.getScenesAsArray()[0].getMediaAsArray();
 		 	for (Media media: mediaList){
-		 		String ptype = media.getMimeType();
-		 		if(ptype.contains("image")){
-			 		pics++;
-			 	}else if(ptype.contains("video")){
-			 		vids++;
-			 	}else if(ptype.contains("audio")){
-			 		auds++;
-			 	}
+		 		if(media!=null){
+			 		String ptype = media.getMimeType();
+			 		if(ptype.contains("image")){
+				 		pics++;
+				 	}else if(ptype.contains("video")){
+				 		vids++;
+				 	}else if(ptype.contains("audio")){
+				 		auds++;
+				 	}
+		 		}
 		 	}
 	 	}
 	 	
@@ -408,6 +399,7 @@ OnItemLongClickListener{
 				Intent i = new Intent(ReportActivity.this,SyncService.class);
 				i.putExtra("rid", rid);
   	        	startService(i);
+  	        	
   	        	
             	do_report_close();
 				dialog_publish.dismiss();
