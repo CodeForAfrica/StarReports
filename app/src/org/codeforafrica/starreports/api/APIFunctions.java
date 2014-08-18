@@ -26,7 +26,7 @@ public class APIFunctions {
 	private static String updateURL = "update.php";
 	private static String reportURL = "article.php";
 	private static String objectURL = "attachment.php";
-
+	private static String postsURL = "http://192.168.1.43/nickhargreaves/?json=get_posts";
 	private static String api_base_url = "http://starreports.codeforafrica.net/sm-api/";
 	private static String api_key = "2a80f2f6094f4e3d2e7b01ba21951f3720060454";
 	
@@ -107,7 +107,15 @@ public class APIFunctions {
 		// return json
 		return json;
 	}
+	public JSONObject getPosts() {
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
 
+		JSONObject json = jsonParser.getJSONFromUrl(postsURL, params);
+		
+		// return json
+		return json;
+	}
 	public JSONObject edit_profile(String token, String user_id, String password, String email, String first_name, String last_name, String location, String phone_number, Context ctx){
 		// Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
