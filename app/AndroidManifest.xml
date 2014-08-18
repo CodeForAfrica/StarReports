@@ -95,10 +95,10 @@
             android:label="@string/title_activity_new_story" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ReportsActivity" />
+                android:value=".ReportsFragmentsActivity" />
         </activity>
         <activity
-            android:name="org.codeforafrica.starreports.ReportsActivity"
+            android:name="org.codeforafrica.starreports.ReportsFragmentsActivity"
             android:label="@string/reports_list" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

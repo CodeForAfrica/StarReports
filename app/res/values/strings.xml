@@ -6,7 +6,8 @@
     <string name="title_projects">Stories</string>
     <string name="title_lessons">Lessons</string>
     <string name="action_publish">Publish</string>
-    <!-- TIMBY -->
+    <string name="title_latest_reports">Latest Reports</string>
+    <string name="title_my_reports">My Reports</string>
     <string name="add">Add</string>
     <string name="view">View Reports</string>
     <string name="help">Help</string>

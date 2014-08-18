@@ -628,7 +628,6 @@ import com.actionbarsherlock.view.MenuItem;
 
     @Override
     protected void onActivityResult(int reqCode, int resCode, Intent intent) {
-
     	
         if (resCode == RESULT_OK)
         {

@@ -117,7 +117,7 @@ public class HomePanelsActivity extends BaseActivity implements OnClickListener{
         //redirect in case no reports
 		ArrayList<Report> mListReports = Report.getAllAsList(HomePanelsActivity.this);
 		if(mListReports.size()>0){
-			Intent i = new Intent(HomePanelsActivity.this, ReportsActivity.class);
+			Intent i = new Intent(HomePanelsActivity.this, ReportsFragmentsActivity.class);
 			startActivity(i);
 			finish();
 		}else{
