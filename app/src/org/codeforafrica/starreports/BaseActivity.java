@@ -3,22 +3,30 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 
-
 import org.codeforafrica.starreports.R;
+import org.codeforafrica.starreports.api.SyncService;
+import org.codeforafrica.starreports.encryption.EncryptionService;
+import org.codeforafrica.starreports.export.Export2SDService;
 import org.codeforafrica.starreports.facebook.FacebookLogin;
 import org.codeforafrica.starreports.facebook.UpdateActivity;
 import org.codeforafrica.starreports.server.LoginActivity;
 import org.holoeverywhere.app.Activity;
 import org.holoeverywhere.preference.PreferenceManager;
 import org.holoeverywhere.preference.SharedPreferences;
+import org.holoeverywhere.widget.Toast;
 
+import android.app.ActivityManager;
+import android.app.Dialog;
+import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.content.SharedPreferences.Editor;
 import android.content.res.AssetManager;
@@ -39,6 +47,7 @@ public class BaseActivity extends Activity {
 
 	public SlidingMenu mSlidingMenu;
 	private static final String TAG=BaseActivity.class.getName();
+    public Dialog dialog;
 
     /**
      * Gets reference to global Application
@@ -214,7 +223,71 @@ public void onUserInteraction()
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
     	
-        if (item.getItemId() == R.id.home)
+    	if (item.getItemId() == R.id.menu_add_report)
+        {	
+        	   		
+    		Intent i = new Intent(getApplicationContext(),ReportActivity.class);
+			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(i);
+        }
+    	if (item.getItemId() == R.id.menu_sync_reports)
+        {	
+        	   		
+    		dialog = new Dialog(this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.dialog_sync);
+            dialog.findViewById(R.id.button_sync).setOnClickListener(new View.OnClickListener(){
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					if(isServiceRunning(SyncService.class)){
+		  	          	Toast.makeText(getBaseContext(), "Syncing is already started!", Toast.LENGTH_LONG).show();
+		        	}else if (isServiceRunning(EncryptionService.class)){
+		  	          	Toast.makeText(getBaseContext(), "Please wait for encryption to finish!", Toast.LENGTH_LONG).show();
+		        	}else if(isServiceRunning(Export2SDService.class)){
+		  	          	Toast.makeText(getBaseContext(), "Please wait for exporting to finish!", Toast.LENGTH_LONG).show();
+		        	}else{
+			        	
+			  	        	dialog.dismiss();
+			  	        	startService(new Intent(getApplicationContext(),SyncService.class));
+			  	   
+		        	}
+				}
+            	
+            });
+            dialog.findViewById(R.id.button_export).setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					dialog.dismiss();
+		        	
+		        	CheckBox cB = (CheckBox)dialog.findViewById(R.id.checkBox1);
+		        	
+		        	String includeExported;
+		        	if(cB.isChecked()){
+		        		includeExported = "1";
+		        	}else{
+		        		includeExported = "0";
+		        	}
+		        	
+		        	if(isServiceRunning(Export2SDService.class)){
+		  	          	Toast.makeText(getBaseContext(), "Export to SD is already started!", Toast.LENGTH_LONG).show();
+		        	}else if (isServiceRunning(EncryptionService.class)){
+		  	          	Toast.makeText(getBaseContext(), "Please wait for encryption to finish!", Toast.LENGTH_LONG).show();
+		        	}else if(isServiceRunning(SyncService.class)){
+		  	          	Toast.makeText(getBaseContext(), "Please wait for sync to finish!", Toast.LENGTH_LONG).show();
+		        	}else{
+		        		Intent eS = new Intent(getApplicationContext(),Export2SDService.class);
+		        		eS.putExtra("includeExported", includeExported);
+			  	        startService(eS); 
+		        	}
+				}
+			});
+            dialog.show();
+        }
+    	if (item.getItemId() == R.id.home)
         {
         	Intent intent = new Intent(getBaseContext(), HomePanelsActivity.class);
 	        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -289,7 +362,31 @@ public void onUserInteraction()
         }
 
     }
-
+    private boolean isServiceRunning(Class<?> cls) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (cls.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean isEncryptionRunning() {
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+			       
+        String encryption_running = settings.getString("encryption_running",null);
+        
+	        if (encryption_running == null){
+	        	return false;
+	        }else if(encryption_running.equals("end")){
+	        	return false;
+	        }else{
+	        	return true;
+	        }
+	      
+	    }
+ 
 	private void detectCoachOverlay ()
     {
         try {
