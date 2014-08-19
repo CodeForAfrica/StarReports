@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.codeforafrica.starreports.R;
 import org.codeforafrica.starreports.api.SyncService;
+import org.codeforafrica.starreports.assignments.AssignmentsActivity;
 import org.codeforafrica.starreports.encryption.EncryptionService;
 import org.codeforafrica.starreports.export.Export2SDService;
 import org.codeforafrica.starreports.facebook.FacebookLogin;
@@ -212,7 +213,6 @@ public void onUserInteraction()
             }
         });
         
-        
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -222,7 +222,12 @@ public void onUserInteraction()
     }
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-    	
+    	if (item.getItemId() == R.id.menu_assignments)
+        {	   		
+    		Intent i = new Intent(getApplicationContext(),AssignmentsActivity.class);
+			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(i);
+        }
     	if (item.getItemId() == R.id.menu_add_report)
         {	
         	   		

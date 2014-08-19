@@ -10,6 +10,11 @@
           android:title="Sync"
           android:showAsAction="always"
           />
+    <item android:id="@+id/menu_assignments"
+          android:icon="@drawable/assignments"
+          android:title="Sync"
+          android:showAsAction="always"
+          />
     <item android:id="@+id/menu_new_form"
           android:icon="@drawable/menu"
           android:title="Menu"

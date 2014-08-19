@@ -5,6 +5,7 @@
     <string name="app_id" translatable="false">500750433359090</string>
     <string name="title_projects">Stories</string>
     <string name="title_lessons">Lessons</string>
+    <string name="title_assignments">Assignments</string>
     <string name="action_publish">Publish</string>
     <string name="title_latest_reports">Latest Reports</string>
     <string name="title_my_reports">My Reports</string>

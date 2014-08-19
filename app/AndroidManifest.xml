@@ -95,6 +95,13 @@
                 android:value=".HomePanelsActivity" />
         </activity>
         <activity
+            android:name="org.codeforafrica.starreports.assignments.AssignmentsActivity"
+            android:label="@string/title_assignments" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomePanelsActivity" />
+        </activity>
+        <activity
             android:name="org.codeforafrica.starreports.ReportEditorActivity"
             android:label="@string/title_activity_new_story" >
             <meta-data
