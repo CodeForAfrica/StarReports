@@ -5,29 +5,22 @@ import java.util.List;
 
 import net.bican.wordpress.Page;
 
-import org.codeforafrica.starreports.api.APIFunctions;
-import org.codeforafrica.starreports.server.ServerManager;
 import org.codeforafrica.starreports.ui.MyCard;
 import org.holoeverywhere.LayoutInflater;
 import org.holoeverywhere.app.Fragment;
 import org.holoeverywhere.app.ProgressDialog;
 import org.holoeverywhere.preference.PreferenceManager;
 import org.holoeverywhere.preference.SharedPreferences;
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-
 import redstone.xmlrpc.XmlRpcFault;
 
 import com.animoto.android.views.DraggableGridView;
 import com.fima.cardsui.views.CardUI;
 
 import android.annotation.SuppressLint;
-import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -45,7 +38,7 @@ public class LatestReportsFragment extends Fragment {
     private SharedPreferences mSettings;
     
     protected DraggableGridView mOrderClipsDGV;
-    JSONArray posts = null;
+    List<Page> posts = null;
     private CardUI mCardView;
     private void initFragment ()
     {
@@ -88,7 +81,8 @@ public class LatestReportsFragment extends Fragment {
 	         */
         }
         protected String doInBackground(String... args) {
-        	    
+        	
+        	/*    
         	APIFunctions apiFunctions = new APIFunctions();
 			JSONObject sjson = apiFunctions.getPosts();
 
@@ -101,7 +95,18 @@ public class LatestReportsFragment extends Fragment {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
+			*/
+        	//Get Posts using xmlrpc
+        	try {
+				posts = StoryMakerApp.getServerManager().getRecentPosts(10);
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (XmlRpcFault e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	
         	return null;
         }
         protected void onPostExecute(String file_url) {
@@ -118,13 +123,13 @@ public class LatestReportsFragment extends Fragment {
     
     public void createCards() throws JSONException{
     	
-    	for(int i = 0; i<posts.length(); i++){
-    		String post = posts.getString(i);
-    		JSONObject json_data = new JSONObject(post);
+    	for(int i = 0; i<posts.size(); i++){
+    		Page post = posts.get(i);
     		
-    		String title = json_data.getString("title");
-    		String excerpt = json_data.getString("excerpt");
-    		String date = json_data.getString("date");
+    		
+    		String title = post.getTitle();
+    		String excerpt = post.getDescription();
+    		String date = post.getDateCreated().toString();
     		
     		mCardView.addCard(new MyCard(title, excerpt));
 			mCardView.refresh();

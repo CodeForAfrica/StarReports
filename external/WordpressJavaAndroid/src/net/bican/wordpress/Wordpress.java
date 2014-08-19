@@ -168,6 +168,20 @@ interface MetaWebLogBridge {
    */
   XmlRpcArray getRecentPosts(Integer blogid, String username, String password,
       Integer num_posts) throws XmlRpcFault;
+  /**
+   * @param blogid
+   *          Blog id (not used in wordpress)
+   * @param username
+   *          User name
+   * @param password
+   *          Password
+   * @param num_posts
+   *          Number of posts to retrieve
+   * @return List of assignments
+   * @throws XmlRpcFault
+   */
+  XmlRpcArray getRecentAssignments(Integer blogid, String username, String password,
+      Integer num_posts) throws XmlRpcFault;
 
   /**
    * @param blogid
@@ -589,7 +603,12 @@ public class Wordpress {
         num_posts);
     return fillFromXmlRpcArray(r, Page.class);
   }
-
+  @SuppressWarnings({ "unchecked", "boxing" })
+  public List<Page> getRecentAssignments(int num_posts) throws XmlRpcFault {
+    XmlRpcArray r = this.mw.getRecentAssignments(0, this.username, this.password,
+        num_posts);
+    return fillFromXmlRpcArray(r, Page.class);
+  }
   /**
    * @return Template page
    * @throws XmlRpcFault

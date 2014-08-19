@@ -133,7 +133,12 @@ public class ServerManager {
 		return post;
 		
 	}
-	
+	public List<Page> getRecentAssignments (int num) throws XmlRpcFault, MalformedURLException
+	{
+		connect();
+		List<Page> rPosts = mWordpress.getRecentAssignments(num);
+		return rPosts;
+	}
 	public List<Page> getRecentPosts (int num) throws XmlRpcFault, MalformedURLException
 	{
 		connect();

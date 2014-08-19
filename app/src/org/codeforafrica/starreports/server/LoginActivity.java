@@ -11,6 +11,7 @@ import net.bican.wordpress.Category;
 import org.codeforafrica.starreports.AppConstants;
 import org.codeforafrica.starreports.BaseActivity;
 import org.codeforafrica.starreports.R;
+import org.codeforafrica.starreports.ReportsFragmentsActivity;
 import org.codeforafrica.starreports.StoryMakerApp;
 import org.codeforafrica.starreports.facebook.FacebookLogin;
 import org.codeforafrica.starreports.model.Auth;
@@ -67,9 +68,9 @@ public class LoginActivity extends BaseActivity implements Runnable
 
 			@Override
 			public void onClick(View v) {
-				Intent fl = new Intent(getApplicationContext(), FacebookLogin.class);
-				startActivity(fl);
-				//handleLogin ();
+				//Intent fl = new Intent(getApplicationContext(), FacebookLogin.class);
+				//startActivity(fl);
+				handleLogin ();
 				
 			}
         	
@@ -204,6 +205,8 @@ public class LoginActivity extends BaseActivity implements Runnable
     private void loginSuccess ()
     {
     	updateCategories();
+    	Intent i = new Intent(LoginActivity.this, ReportsFragmentsActivity.class);
+    	startActivity(i);
     	finish();
     }
     private void updateCategories(){
