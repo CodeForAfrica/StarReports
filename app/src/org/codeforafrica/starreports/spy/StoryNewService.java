@@ -47,7 +47,7 @@ public class StoryNewService extends Service{
 	      	
 	      	String title = "Captured at "+currentdate;
 	      	
-	      	Report report = new Report (getApplicationContext(), 0, title, "0", "0", "", "", pLocation, "0", currentdate, "0", "0");
+	      	Report report = new Report (getApplicationContext(), 0, title, "0", "0", "", "", pLocation, "0", currentdate, "0", "0", "", "");
 
 	        report.save();
 	          

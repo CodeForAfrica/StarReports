@@ -49,24 +49,24 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="30dp" >
 
             <ImageView
-                android:id="@+id/imageView1"
+                android:id="@+id/imageViewPic"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="0.99"
                 android:src="@drawable/pics" />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/imageViewVid"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="0.99"
                 android:src="@drawable/vids" />
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/imageViewAud"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 	            android:layout_weight="1"
@@ -84,5 +84,29 @@
             android:maxLines="3"
 />
     </LinearLayout>
+<View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/stroke" />
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="4dp" >
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/bounty" />
+
+    <TextView
+        android:id="@+id/tvBounty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bounty" />
+
+</LinearLayout>
 
 </LinearLayout>

@@ -11,7 +11,7 @@ import android.util.Log;
 public class StoryMakerDB extends SQLiteOpenHelper {
     private static final String TAG = "ListeningPost";
     private static final int DB_VERSION = 10;
-    private static final String DB_NAME = "sm.db3";
+    private static final String DB_NAME = "sm.db4";
     private Context mContext;
     
     public StoryMakerDB(Context context) {
@@ -93,6 +93,8 @@ public class StoryMakerDB extends SQLiteOpenHelper {
              public static final String COL_DATE = "_date";
              public static final String COL_EXPORTED = "_exported";
              public static final String COL_SYNCED = "_synced";
+             public static final String COL_ASSIGNMENT = "_assignment";
+             public static final String COL_ASSIGNMENT_MEDIATYPES = "_assignment_mediatypes";
 
              private static final String CREATE_TABLE_REPORTS = "create table " + NAME + " (" 
                      + ID + " integer primary key autoincrement, " 
@@ -105,7 +107,9 @@ public class StoryMakerDB extends SQLiteOpenHelper {
                      + COL_SERVERID + " text default \'0\',"
                      + COL_DATE + " text,"
                      + COL_EXPORTED + " text default \'0\',"
-                     + COL_SYNCED + " text default \'0\'"
+                     + COL_SYNCED + " text default \'0\',"
+                     + COL_ASSIGNMENT + " text default \'0\',"
+                     + COL_ASSIGNMENT_MEDIATYPES + " text"
                      + "); ";
 
  			

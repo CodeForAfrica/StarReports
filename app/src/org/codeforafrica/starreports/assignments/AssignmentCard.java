@@ -20,10 +20,24 @@ public class AssignmentCard extends Card {
 	private TextView mTextViewDesc;
 	private int mId = -1;
 	private int mIcon = -1;
+	private String mdate;
+	private String mbounty;
+	private String mlocation;
+	private int mnarrative; 
+	private int mvideo;
+	private int maudio;
+	private int mimage;
 	
-	public AssignmentCard(String title, String desc){
+	public AssignmentCard(String title, String desc, String date, String bounty, String location, int narrative, int video, int audio, int image){
 		super(title);
 		mDesc = desc;
+		mdate = date;
+		mbounty = bounty;
+		mlocation = location;
+		mnarrative = narrative; 
+		mvideo = video;
+		maudio = audio;
+		mimage = image;
 	} 
 
 	public void setIcon (int icon)
@@ -52,7 +66,7 @@ public class AssignmentCard extends Card {
 		
 		mTextViewDesc = ( (TextView) mView.findViewById(R.id.description));
 		mTextViewDesc.setText(mDesc);
-
+		((TextView)mView.findViewById(R.id.tvBounty)).setText("Bounty:" + mbounty);
 		if (mId != -1)
 		{
 			mView.setId(mId);
@@ -76,6 +90,15 @@ public class AssignmentCard extends Card {
 			}
 		}
 		
+		if(mvideo!=0){
+			((ImageView)mView.findViewById(R.id.imageViewVid)).setImageResource(R.drawable.vids_);
+		}
+		if(mimage!=0){
+			((ImageView)mView.findViewById(R.id.imageViewPic)).setImageResource(R.drawable.pics_);
+		}
+		if(maudio!=0){
+			((ImageView)mView.findViewById(R.id.imageViewAud)).setImageResource(R.drawable.auds_);
+		}
 		return mView;
 	}
 	

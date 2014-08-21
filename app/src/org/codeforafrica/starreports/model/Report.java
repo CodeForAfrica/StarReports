@@ -25,9 +25,11 @@ public class Report {
     protected String _date;
     protected String _exported;
     protected String _synced;
+    protected String _assignment;
+    protected String _assignment_mediatypes;
     
     
-    public Report(Context context, int id, String title, String _sector, String _issue,String _entity, String _description, String _location, String _serverid, String _date, String _exported, String _synced) {
+    public Report(Context context, int id, String title, String _sector, String _issue,String _entity, String _description, String _location, String _serverid, String _date, String _exported, String _synced, String _assignment, String _assignment_mediatypes) {
         super();
         this.context = context;
         this.id = id;
@@ -41,6 +43,8 @@ public class Report {
         this._date = _date;
         this._exported = _exported;
         this._synced = _synced;
+        this._assignment = _assignment;
+        this._assignment_mediatypes = _assignment_mediatypes;
     }
 
     public Report(Context context, Cursor cursor) {
@@ -68,7 +72,11 @@ public class Report {
         		cursor.getString(cursor
         				.getColumnIndex(StoryMakerDB.Schema.Reports.COL_EXPORTED)),
 				cursor.getString(cursor
-        				.getColumnIndex(StoryMakerDB.Schema.Reports.COL_SYNCED)));
+        				.getColumnIndex(StoryMakerDB.Schema.Reports.COL_SYNCED)),
+        		cursor.getString(cursor
+                		.getColumnIndex(StoryMakerDB.Schema.Reports.COL_ASSIGNMENT)),
+                cursor.getString(cursor
+                        .getColumnIndex(StoryMakerDB.Schema.Reports.COL_ASSIGNMENT_MEDIATYPES)));
                // cursor.close();
 
     }
@@ -158,6 +166,9 @@ public class Report {
         values.put(StoryMakerDB.Schema.Reports.COL_DATE, _date);
         values.put(StoryMakerDB.Schema.Reports.COL_EXPORTED, _exported);
         values.put(StoryMakerDB.Schema.Reports.COL_SYNCED, _synced);
+        values.put(StoryMakerDB.Schema.Reports.COL_ASSIGNMENT, _assignment);
+        values.put(StoryMakerDB.Schema.Reports.COL_ASSIGNMENT_MEDIATYPES, _assignment_mediatypes);
+        
         return values;
     }
     private void insert() {
@@ -240,6 +251,12 @@ public class Report {
     public String getSynced() {
         return _synced;
     }
+    public String getAssignment() {
+        return _assignment;
+    }
+    public String getAssignmentMediaTypes() {
+        return _assignment_mediatypes;
+    }
     /**
      * @param title
      *            the title to set
@@ -273,6 +290,12 @@ public class Report {
     }
     public void setSynced(String _synced) {
         this._synced = _synced;
+    }
+    public void setAssignment(String _assignment) {
+        this._assignment = _assignment;
+    }
+    public void setAssignmentMediaTypes(String _assignment_mediatypes) {
+        this._assignment_mediatypes = _assignment_mediatypes;
     }
 
 }

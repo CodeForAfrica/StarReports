@@ -1,25 +1,32 @@
 package org.codeforafrica.starreports;
 
+import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import org.codeforafrica.starreports.R;
 import org.codeforafrica.starreports.api.SyncService;
+import org.codeforafrica.starreports.assignments.AssignmentsActivity;
 import org.codeforafrica.starreports.location.GPSTracker;
 import org.codeforafrica.starreports.model.Media;
 import org.codeforafrica.starreports.model.Project;
 import org.codeforafrica.starreports.model.Report;
-
+import org.codeforafrica.starreports.server.ServerManager;
 import org.holoeverywhere.widget.*;
 import org.json.JSONArray;
+import org.json.JSONException;
 
+import redstone.xmlrpc.XmlRpcFault;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
@@ -94,8 +101,13 @@ OnItemLongClickListener{
     private Dialog dialog_publish;
     private ToggleButton toggleGPS;
     private Button btnImport;
+    ProgressDialog pDialog;
 
     public boolean new_report = false;
+    
+    int assignmentID;
+    String mediaTypes;
+    
     @Override
     @SuppressLint("NewApi")
     public void onCreate(Bundle savedInstanceState) {
@@ -275,6 +287,28 @@ OnItemLongClickListener{
             
             setMediaCount();
             
+            if(!r.getAssignment().equals("0")){
+            	assignmentID = Integer.parseInt(r.getAssignment());
+            	mediaTypes = r.getAssignmentMediaTypes();
+            	        	
+            	//disable buttons not included
+    			if(!(mediaTypes.contains("video"))){
+    				video.setEnabled(false);
+    				video.setBackgroundColor(getResources().getColor(R.color.grey));
+    			}
+    			if(!(mediaTypes.contains("audio"))){
+    				audio.setEnabled(false);
+    				audio.setBackgroundColor(getResources().getColor(R.color.grey));
+
+    			}
+    			if(!(mediaTypes.contains("image"))){
+    				images.setEnabled(false);
+    				images.setBackgroundColor(getResources().getColor(R.color.grey));
+
+    			}
+
+            }
+            
         }else{
         	setLocation();
         	new_report = true;
@@ -323,6 +357,27 @@ OnItemLongClickListener{
                 }
             }
         });
+        
+        if(getIntent().hasExtra("assignmentID")){
+        	assignmentID = getIntent().getIntExtra("assignmentID", 0);
+        	mediaTypes = getIntent().getStringExtra("mediaTypes");
+        	        	
+        	//disable buttons not included
+			if(!(mediaTypes.contains("video"))){
+				video.setEnabled(false);
+				video.setBackgroundColor(getResources().getColor(R.color.grey));
+			}
+			if(!(mediaTypes.contains("audio"))){
+				audio.setEnabled(false);
+				audio.setBackgroundColor(getResources().getColor(R.color.grey));
+
+			}
+			if(!(mediaTypes.contains("image"))){
+				images.setEnabled(false);
+				images.setBackgroundColor(getResources().getColor(R.color.grey));
+
+			}
+        }
     }
     
     public void setMediaCount(){
@@ -396,10 +451,13 @@ OnItemLongClickListener{
 			@Override
 			public void onClick(View v) {
 				//TODO: check if sync or encrypt is running
-				Intent i = new Intent(ReportActivity.this,SyncService.class);
+				/*Intent i = new Intent(ReportActivity.this,SyncService.class);
 				i.putExtra("rid", rid);
   	        	startService(i);
-  	        	
+  	        	*/
+				
+				//Publish via Wordpress xmlrpc
+				new publish_report().execute();
   	        	
             	do_report_close();
 				dialog_publish.dismiss();
@@ -414,14 +472,50 @@ OnItemLongClickListener{
         });
     	dialog_publish.show();
     }
-
+    class publish_report extends AsyncTask<String, String, String> {
+	   	 @Override
+	        protected void onPreExecute() {
+		   		super.onPreExecute();
+		        /*pDialog = new ProgressDialog(ReportActivity.this);
+		        pDialog.setMessage("Posting report...");
+		        pDialog.setIndeterminate(false);
+		        pDialog.setCancelable(false);
+		        pDialog.show();
+		        */ 
+	        }
+	        protected String doInBackground(String... args) {
+	        	ServerManager sm = StoryMakerApp.getServerManager();
+	            //sm.setContext(getBaseContext());
+	        	
+	          
+	            String postId="";
+	            String urlPost="";
+				try {
+					postId = sm.post(title, description, null, null, null, null);
+					urlPost = sm.getPostUrl(postId);
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (XmlRpcFault e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	            
+	            
+	            return urlPost;    
+				
+	        }
+	        protected void onPostExecute(String file_url) {
+	            //pDialog.dismiss();
+		   }
+    }
    public void do_report_close(){ 	
     	//Hide keyboard
         InputMethodManager inputManager = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE); 
         inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(),      
         		    InputMethodManager.HIDE_NOT_ALWAYS);
         //NavUtils.navigateUpFromSameTask(this);
-        Intent i = new Intent(getBaseContext(), HomePanelsActivity.class);
+        Intent i = new Intent(getBaseContext(), ReportsFragmentsActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
         finish();
@@ -564,8 +658,15 @@ OnItemLongClickListener{
     	
     	Report report;
         if(rid==-1){
-        	report = new Report (this, 0, title, String.valueOf(pSector), String.valueOf(pIssue), pEntity, pDesc, pLocation, "0", currentdate, "0", "0");
-         }else{
+        	
+        	report = new Report (this, 0, title, String.valueOf(pSector), String.valueOf(pIssue), pEntity, pDesc, pLocation, "0", currentdate, "0", "0", "", "");
+        	if(getIntent().hasExtra("assignmentID")){
+            	report.setAssignment("1");
+            	report.setAssignmentMediaTypes(mediaTypes);
+            }
+        	
+        }else{
+        	
         	report = Report.get(this, rid);
         	report.setTitle(title);
         	report.setDescription(pDesc);
@@ -573,7 +674,9 @@ OnItemLongClickListener{
         	report.setIssue(String.valueOf(pIssue));
         	report.setSector(String.valueOf(pSector));
         	report.setLocation(pLocation);        	
+        
         }
+                
         report.save();
         
         rid = report.getId();
