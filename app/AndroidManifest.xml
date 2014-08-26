@@ -68,6 +68,10 @@
             android:label="Register New Account" >
         </activity>
         <activity
+            android:name="org.codeforafrica.starreports.ReportRemoteViewActivity"
+            android:label="Report" >
+        </activity>
+        <activity
 
             android:name="org.codeforafrica.starreports.server.LoginActivity"
 
@@ -98,6 +102,13 @@
         <activity
             android:name="org.codeforafrica.starreports.assignments.AssignmentsActivity"
             android:label="@string/title_assignments" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomePanelsActivity" />
+        </activity>
+        <activity
+            android:name="org.codeforafrica.starreports.Report_PageIndicatorActivity"
+            android:label="New Report" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomePanelsActivity" />

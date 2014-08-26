@@ -38,6 +38,27 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="about">StarReports is a simple and easy-to-use experience for users, minimising barriers to submitting media and providing an intuitive experience.</string>
+    
+    <!-- Report viewpage indicator -->
+    <string name="report_add_title">Title</string>
+    <string name="report_add_description">Description</string>
+    <string name="report_add_category">Category</string>
+    <string name="report_add_location">Location</string>
+    <string name="report_add_contact">Contact</string>
+    
+    <string name="report_add_title_desc">Your story title</string>
+    <string name="report_add_description_desc">Provide a compelling context</string>
+    <string name="report_add_category_desc">Add a suitable category</string>
+    <string name="report_add_location_desc">Where was this story captured</string>
+    <string name="report_add_contact_desc">Add contact information of your news source</string>
+    
+    <!-- Default categories -->
+    <string-array name="categories">
+        <item>General</item>
+        <item>Politics</item>
+        <item>Environment</item>
+        <item>News</item>
+    </string-array>
     <!-- menus -->
     <string name="menu_new_project">New</string>
     <string name="menu_projects">Stories</string>

@@ -5,11 +5,16 @@
           android:title="New Report"
           android:showAsAction="always"
           />
-    <item android:id="@+id/menu_sync_reports"
+    	<item android:id="@+id/menu_sync_search"
+          android:icon="@drawable/abs__ic_search"
+          android:title="Sync"
+          android:showAsAction="always"
+          /> 
+     <item android:id="@+id/menu_sync_reports"
           android:icon="@drawable/icon_sync"
           android:title="Sync"
           android:showAsAction="always"
-          />
+          /> 
     <item android:id="@+id/menu_assignments"
           android:icon="@drawable/assignments"
           android:title="Sync"
@@ -38,5 +43,5 @@
                   android:title="Logout"/>
         </menu>
     </item>
-
+	
 </menu>

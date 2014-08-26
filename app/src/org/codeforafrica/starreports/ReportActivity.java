@@ -1,23 +1,29 @@
 package org.codeforafrica.starreports;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.crypto.Cipher;
+
 import org.codeforafrica.starreports.R;
-import org.codeforafrica.starreports.api.SyncService;
 import org.codeforafrica.starreports.assignments.AssignmentsActivity;
+import org.codeforafrica.starreports.encryption.Encryption;
 import org.codeforafrica.starreports.location.GPSTracker;
 import org.codeforafrica.starreports.model.Media;
 import org.codeforafrica.starreports.model.Project;
+import org.codeforafrica.starreports.model.ProjectTable;
 import org.codeforafrica.starreports.model.Report;
 import org.codeforafrica.starreports.server.ServerManager;
 import org.holoeverywhere.widget.*;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import redstone.xmlrpc.XmlRpcFault;
+import redstone.xmlrpc.XmlRpcStruct;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -105,9 +111,8 @@ OnItemLongClickListener{
 
     public boolean new_report = false;
     
-    int assignmentID;
+    int assignmentID = 0;
     String mediaTypes;
-    
     @Override
     @SuppressLint("NewApi")
     public void onCreate(Bundle savedInstanceState) {
@@ -486,13 +491,78 @@ OnItemLongClickListener{
 	        protected String doInBackground(String... args) {
 	        	ServerManager sm = StoryMakerApp.getServerManager();
 	            //sm.setContext(getBaseContext());
-	        	
-	          
+
 	            String postId="";
 	            String urlPost="";
+            
 				try {
-					postId = sm.post(title, description, null, null, null, null);
+					
+					StringBuffer sbBody = new StringBuffer();
+					sbBody.append("");
+					
+					//upload media
+					ArrayList<Project> mListProjects;
+					mListProjects = Project.getAllAsList(getApplicationContext(), rid);
+				 	for (int j = 0; j < mListProjects.size(); j++) {
+				 		Project project = mListProjects.get(j);
+				 		
+				 		Media[] mediaList = project.getScenesAsArray()[0].getMediaAsArray();
+				 	
+					 	for (Media media: mediaList){
+
+					 		if(media!=null){
+					 			
+					 		String ppath = media.getPath();
+						 	String ptype = media.getMimeType();
+						 	
+						 	String file = ppath;
+						 	
+						 	//if encrypted, decrypt before upload
+						 	if(media.getEncrypted()!=0){
+						 	
+						 		Cipher cipher;
+								try {				
+									cipher = Encryption.createCipher(Cipher.DECRYPT_MODE);
+									Encryption.applyCipher(file, file+"_", cipher);
+								}catch (Exception e) {
+									// TODO Auto-generated catch block
+									Log.e("Encryption error", e.getLocalizedMessage());
+									e.printStackTrace();
+								}
+								//Then delete original file
+								File oldfile = new File(file);
+								oldfile.delete();
+								//Then remove _ on encrypted file
+								File newfile = new File(file+"_");
+								newfile.renameTo(new File(file));
+						 	}	
+						 		String murl = sm.addMedia(ptype, new File(file));
+						 		//create link depending on media type
+						 		if(ptype.contains("image")){
+						 			murl = "<img src=\"" + murl + "\"/>";
+						 		}else if(ptype.contains("video")){
+						 			murl = "[video width=\"640\" height=\"272\" mp4=\""+ murl +"\"][/video]";
+						 		}else{
+						 			murl = "[audio mp3=\"" + murl +"\"][/audio]";
+						 		}
+						 		//post file here
+						 		sbBody.append(murl);
+						 		sbBody.append("\n\n");
+
+					 		}
+				 		}
+				 	}
+					
+				 	String pDescription = description + "==Media==\n\n" + sbBody.toString();
+					
+				 	
+				 	XmlRpcStruct structA = new XmlRpcStruct();
+					structA.put("key","assignment_id");
+					structA.put("value",assignmentID);
+
+				 	postId = sm.post2(title, pDescription, null, null, null, null, null, null, structA);
 					urlPost = sm.getPostUrl(postId);
+					
 				} catch (MalformedURLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -509,6 +579,7 @@ OnItemLongClickListener{
 	            //pDialog.dismiss();
 		   }
     }
+    
    public void do_report_close(){ 	
     	//Hide keyboard
         InputMethodManager inputManager = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE); 
@@ -661,7 +732,7 @@ OnItemLongClickListener{
         	
         	report = new Report (this, 0, title, String.valueOf(pSector), String.valueOf(pIssue), pEntity, pDesc, pLocation, "0", currentdate, "0", "0", "", "");
         	if(getIntent().hasExtra("assignmentID")){
-            	report.setAssignment("1");
+            	report.setAssignment(String.valueOf(getIntent().getIntExtra("assignmentID", 0)));
             	report.setAssignmentMediaTypes(mediaTypes);
             }
         	

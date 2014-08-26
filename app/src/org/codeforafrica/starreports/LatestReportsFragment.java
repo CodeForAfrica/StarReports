@@ -12,12 +12,14 @@ import org.holoeverywhere.app.ProgressDialog;
 import org.holoeverywhere.preference.PreferenceManager;
 import org.holoeverywhere.preference.SharedPreferences;
 import org.json.JSONException;
+
 import redstone.xmlrpc.XmlRpcFault;
 
 import com.animoto.android.views.DraggableGridView;
 import com.fima.cardsui.views.CardUI;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -122,16 +124,34 @@ public class LatestReportsFragment extends Fragment {
 	}
     
     public void createCards() throws JSONException{
+    	final String[] urls = new String[posts.size()];
     	
     	for(int i = 0; i<posts.size(); i++){
-    		Page post = posts.get(i);
+    		Page post = posts.get(i); 		
+    		String url = post.getPermaLink();
     		
+    		final int localIndex = i;
+    		urls[i] = url.replace("localhost", "192.168.21.89");
     		
     		String title = post.getTitle();
     		String excerpt = post.getDescription();
-    		String date = post.getDateCreated().toString();
+
+    		String[] excerptparts = excerpt.split("==Media==");
     		
-    		mCardView.addCard(new MyCard(title, excerpt));
+    		String date = post.getDateCreated().toString();
+    		MyCard newCard = new MyCard(title, excerptparts[0]);
+    		newCard.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Intent i = new Intent(mActivity.getApplicationContext(), ReportRemoteViewActivity.class);
+					i.putExtra("postUrl", urls[localIndex]);
+					startActivity(i);
+				}
+			});
+    		
+    		mCardView.addCard(newCard);
 			mCardView.refresh();
     		
     	}

@@ -248,7 +248,81 @@ public class ServerManager {
 		
 		return postId;
 	}
-	
+	public String post2 (String title, String body, String[] catstrings, String medium, String mediaService, String mediaGuid, String mimeType, File file, XmlRpcStruct Assignment) throws XmlRpcFault, MalformedURLException
+	{
+		connect();
+		
+		MediaObject mObj = null;
+		
+		if (file != null)
+			mObj = mWordpress.newMediaObject(mimeType, file, false);
+		
+		Page page = new Page ();
+		page.setTitle(title);
+		
+		StringBuffer sbBody = new StringBuffer();
+		sbBody.append(body);
+		
+		if (mObj != null)
+		{
+			sbBody.append("\n\n");
+			sbBody.append(mObj.getUrl());
+		}
+		
+		page.setDescription(sbBody.toString());
+		
+		if (catstrings != null && catstrings.length > 0)
+		{
+			XmlRpcArray cats = new XmlRpcArray();
+			for (String catstr : catstrings)
+				cats.add(catstr);
+			page.setCategories(cats);
+		}
+		
+		XmlRpcArray custom_fields = new XmlRpcArray();
+
+		
+		if (medium != null)
+		{
+
+			XmlRpcStruct struct = new XmlRpcStruct();
+			struct.put("key","medium");
+			struct.put("value",medium);			
+			custom_fields.add(struct);
+
+		}
+
+		if (mediaService != null)
+		{
+			
+			
+			XmlRpcStruct struct = new XmlRpcStruct();
+			struct.put("key","media_value");
+			struct.put("value",mediaService);
+			custom_fields.add(struct);
+
+		}
+		
+		if (mediaGuid != null)
+		{
+			
+			XmlRpcStruct struct = new XmlRpcStruct();
+			struct.put("key","media_guid");
+			struct.put("value",mediaGuid);
+			custom_fields.add(struct);
+
+		}
+		
+		custom_fields.add(Assignment);
+
+		page.setCustom_fields(custom_fields);
+		
+		boolean publish = true; //let's push it out!
+		String postId = mWordpress.newPost(page, publish);
+		
+		
+		return postId;
+	}
 	public void createAccount (Activity activity)
 	{
 		//open web view here to reg form

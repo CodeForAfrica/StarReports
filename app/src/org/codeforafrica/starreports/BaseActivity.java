@@ -231,7 +231,7 @@ public void onUserInteraction()
     	if (item.getItemId() == R.id.menu_add_report)
         {	
         	   		
-    		Intent i = new Intent(getApplicationContext(),ReportActivity.class);
+    		Intent i = new Intent(getApplicationContext(),Report_PageIndicatorActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(i);
         }
@@ -330,7 +330,7 @@ public void onUserInteraction()
 	        startActivity(intent);
 	        finish();
         }
-       
+        
 		return true;
 	}
     @Override
