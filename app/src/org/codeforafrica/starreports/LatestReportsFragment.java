@@ -11,6 +11,7 @@ import org.holoeverywhere.app.Fragment;
 import org.holoeverywhere.app.ProgressDialog;
 import org.holoeverywhere.preference.PreferenceManager;
 import org.holoeverywhere.preference.SharedPreferences;
+import org.holoeverywhere.widget.Toast;
 import org.json.JSONException;
 
 import redstone.xmlrpc.XmlRpcFault;
@@ -25,6 +26,7 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 
 /**
@@ -38,7 +40,8 @@ public class LatestReportsFragment extends Fragment {
     ProgressDialog pDialog;
     private BaseActivity mActivity;
     private SharedPreferences mSettings;
-    
+    private ProgressBar pB;
+
     protected DraggableGridView mOrderClipsDGV;
     List<Page> posts = null;
     private CardUI mCardView;
@@ -62,6 +65,8 @@ public class LatestReportsFragment extends Fragment {
     	int layout = R.layout.fragment_latest_reports;//getArguments().getInt("layout");
     	
         mView = inflater.inflate(layout, null);
+        pB = (ProgressBar)mView.findViewById(R.id.pBLoading);
+
       //init CardView
         mCardView = (CardUI) mView.findViewById(R.id.cardsview);
         mCardView.setSwipeable(false);
@@ -112,7 +117,11 @@ public class LatestReportsFragment extends Fragment {
         	return null;
         }
         protected void onPostExecute(String file_url) {
-            //pDialog.dismiss();
+        	pB.setVisibility(View.GONE);
+        	
+        	if(posts.size()==0){
+        		Toast.makeText(mActivity.getApplicationContext(), "No assignments found", Toast.LENGTH_LONG).show();
+        	}
         	
         	try {
 				createCards();

@@ -51,10 +51,11 @@ public class ReportsFragmentsActivity extends BaseActivity implements ActionBar.
         
         MyReportsFragment fMyReports = new MyReportsFragment();
         LatestReportsFragment fLatestReports = new LatestReportsFragment();
+        AssignmentsFragment fAssignments = new AssignmentsFragment();
         
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), fMyReports, fLatestReports);
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), fMyReports, fLatestReports, fAssignments);
 
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
@@ -128,12 +129,14 @@ public class ReportsFragmentsActivity extends BaseActivity implements ActionBar.
     	
     	private MyReportsFragment fMyReports;
     	private LatestReportsFragment fLatestReports;
+    	private AssignmentsFragment fAssignments;
     	
-        public SectionsPagerAdapter(FragmentManager fm,MyReportsFragment mRFragment, LatestReportsFragment mLatestFragment ) {
+        public SectionsPagerAdapter(FragmentManager fm,MyReportsFragment mRFragment, LatestReportsFragment mLatestFragment, AssignmentsFragment mAssignmentsFragment ) {
             super(fm);
             
             fMyReports = mRFragment;
             fLatestReports = mLatestFragment;
+            fAssignments = mAssignmentsFragment;
         }
 
 		@Override
@@ -145,16 +148,20 @@ public class ReportsFragmentsActivity extends BaseActivity implements ActionBar.
         		fragment = fLatestReports;
  	            
         	}
-        	else
+        	else if (i == 1)
         	{
         		fragment = fMyReports;
+        	}
+        	else
+        	{
+        		fragment = fAssignments;
         	}
             return fragment;
         }
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
 
         @Override
@@ -162,6 +169,7 @@ public class ReportsFragmentsActivity extends BaseActivity implements ActionBar.
             switch (position) {
                 case 0: return getString(R.string.title_latest_reports);
                 case 1: return getString(R.string.title_my_reports);
+                case 2: return getString(R.string.title_assignments);
             }
             return null;
         }
