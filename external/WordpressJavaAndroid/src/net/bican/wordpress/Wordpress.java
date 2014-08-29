@@ -177,6 +177,23 @@ interface MetaWebLogBridge {
    *          Password
    * @param num_posts
    *          Number of posts to retrieve
+   * @param keyword
+   * 		  Search keyword
+   * @return List of pages
+   * @throws XmlRpcFault
+   */
+  XmlRpcArray getPostsByKeyword(Integer blogid, String username, String password,
+      Integer num_posts, String keyword) throws XmlRpcFault;
+  
+  /**
+   * @param blogid
+   *          Blog id (not used in wordpress)
+   * @param username
+   *          User name
+   * @param password
+   *          Password
+   * @param num_posts
+   *          Number of posts to retrieve
    * @return List of assignments
    * @throws XmlRpcFault
    */
@@ -601,6 +618,12 @@ public class Wordpress {
   public List<Page> getRecentPosts(int num_posts) throws XmlRpcFault {
     XmlRpcArray r = this.mw.getRecentPosts(0, this.username, this.password,
         num_posts);
+    return fillFromXmlRpcArray(r, Page.class);
+  }
+  @SuppressWarnings({ "unchecked", "boxing" })
+  public List<Page> getPostsByKeyword(int num_posts, String keyword) throws XmlRpcFault {
+    XmlRpcArray r = this.mw.getPostsByKeyword(0, this.username, this.password,
+        num_posts, keyword);
     return fillFromXmlRpcArray(r, Page.class);
   }
   @SuppressWarnings({ "unchecked", "boxing" })

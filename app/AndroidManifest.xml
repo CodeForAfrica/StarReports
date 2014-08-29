@@ -61,6 +61,18 @@
             >
         </activity>
         -->
+        <!-- Search results activity -->
+        <activity android:name=".SearchResultsActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+ 			<meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ReportsFragmentsActivity" />
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
         <!-- Entry for RegisterActivity.class -->
         <activity
             android:name=".server.RegisterActivity"
@@ -122,6 +134,9 @@
         <activity
             android:name="org.codeforafrica.starreports.ReportsFragmentsActivity"
             android:label="@string/reports_list" >
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchResultsActivity" />
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomePanelsActivity" />

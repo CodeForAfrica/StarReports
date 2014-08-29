@@ -120,7 +120,7 @@ public class LatestReportsFragment extends Fragment {
         	pB.setVisibility(View.GONE);
         	
         	if(posts.size()==0){
-        		Toast.makeText(mActivity.getApplicationContext(), "No assignments found", Toast.LENGTH_LONG).show();
+        		Toast.makeText(mActivity.getApplicationContext(), "No posts found", Toast.LENGTH_LONG).show();
         	}
         	
         	try {
@@ -143,7 +143,8 @@ public class LatestReportsFragment extends Fragment {
     		
     		String title = post.getTitle();
     		String excerpt = post.getDescription();
-
+    		
+    		
     		String[] excerptparts = excerpt.split("==Media==");
     		
     		String date = post.getDateCreated().toString();
@@ -164,4 +165,5 @@ public class LatestReportsFragment extends Fragment {
     		
     	}
     }
+    
 }

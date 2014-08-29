@@ -2,7 +2,6 @@ package org.codeforafrica.starreports;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
-
 import org.codeforafrica.starreports.R;
 import org.codeforafrica.starreports.api.SyncService;
 import org.codeforafrica.starreports.assignments.AssignmentsActivity;
@@ -15,10 +14,11 @@ import org.holoeverywhere.app.Activity;
 import org.holoeverywhere.preference.PreferenceManager;
 import org.holoeverywhere.preference.SharedPreferences;
 import org.holoeverywhere.widget.Toast;
-
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.Dialog;
 import android.app.ActivityManager.RunningServiceInfo;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,14 +36,15 @@ import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
 import android.view.WindowManager;
 import android.widget.ImageView;
-
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import android.widget.SearchView;
 import com.facebook.Session;
 //import com.google.analytics.tracking.android.EasyTracker;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.SlidingMenu.OnClosedListener;
 
+@SuppressLint("NewApi")
 public class BaseActivity extends Activity {
 
 	public SlidingMenu mSlidingMenu;
@@ -218,7 +219,16 @@ public void onUserInteraction()
     public boolean onCreateOptionsMenu(Menu menu) {
         getSupportMenuInflater().inflate(R.menu.activity_actionbar_menu, menu);
         
-        return true;
+     // Associate searchable configuration with the SearchView
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
+                .getActionView();
+        searchView.setSearchableInfo(searchManager
+                .getSearchableInfo(getComponentName()));
+ 
+        return super.onCreateOptionsMenu(menu);
+        
+        //return true;
     }
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
