@@ -5,8 +5,9 @@ import org.codeforafrica.starreports.LessonsActivity.LessonSectionFragment;
 import org.codeforafrica.starreports.lessons.WebViewSetupJB;
 import org.holoeverywhere.LayoutInflater;
 import org.holoeverywhere.app.Fragment;
-
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -21,8 +22,8 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.webkit.WebSettings.PluginState;
-
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.MenuItem;
 
 public class ReportsFragmentsActivity extends BaseActivity implements ActionBar.TabListener {
 
@@ -40,14 +41,14 @@ public class ReportsFragmentsActivity extends BaseActivity implements ActionBar.
     ViewPager mViewPager;
     
     
-    @Override
+    @SuppressLint("NewApi")
+	@Override
     public void onCreate(Bundle savedInstanceState) {
      
         
         super.onCreate(savedInstanceState);
            
         setContentView(R.layout.activity_reports_viewpager);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         
         MyReportsFragment fMyReports = new MyReportsFragment();
         LatestReportsFragment fLatestReports = new LatestReportsFragment();
@@ -59,8 +60,8 @@ public class ReportsFragmentsActivity extends BaseActivity implements ActionBar.
 
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("");
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -86,11 +87,10 @@ public class ReportsFragmentsActivity extends BaseActivity implements ActionBar.
                             .setTabListener(this));
         }
         
+        getSupportActionBar().setHomeButtonEnabled(true);
         
     }
 
-  
-    
    
     @Override
 	protected void onActivityResult(int reqCode, int resCode, Intent intent) {

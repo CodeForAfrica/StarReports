@@ -97,6 +97,8 @@ public class Page extends XmlRpcMapped implements StringHeader {
   String wp_password;
 
   String wp_slug;
+  
+  String wp_post_thumbnail;
 
   /**
    * @return the categories
@@ -118,7 +120,17 @@ public class Page extends XmlRpcMapped implements StringHeader {
   public Date getDate_created_gmt() {
     return this.date_created_gmt;
   }
-
+  /**
+   * @return the thumbnail
+   */
+  public String getThumbnail() {
+    return this.wp_post_thumbnail;
+  }
+  
+  public void setThumbnail(String wpthumb){
+	  this.wp_post_thumbnail = wpthumb;
+  }
+ 
   /**
    * @return the dateCreated
    */

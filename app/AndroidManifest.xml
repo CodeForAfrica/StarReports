@@ -48,11 +48,10 @@
         android:largeHeap="true"
         android:configChanges="orientation|keyboardHidden|screenSize|locale"
 		android:supportsRtl="true"
-		android:uiOptions="splitActionBarWhenNarrow"
+		><!-- android:uiOptions="splitActionBarWhenNarrow"
          >
-     	<!-- To support below API Level 14 -->
     <meta-data android:name="android.support.UI_OPTIONS"
-           android:value="splitActionBarWhenNarrow" />
+           android:value="splitActionBarWhenNarrow" /> -->
     	<!-- 
         <activity android:name=".server.LoginActivity"
             android:windowSoftInputMode="stateHidden"

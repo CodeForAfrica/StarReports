@@ -133,14 +133,13 @@ public class LatestReportsFragment extends Fragment {
 	}
     
     public void createCards() throws JSONException{
-    	final String[] urls = new String[posts.size()];
+    	final String[] postIds = new String[posts.size()];
     	
     	for(int i = 0; i<posts.size(); i++){
     		Page post = posts.get(i); 		
     		String url = post.getPermaLink();
-    		
     		final int localIndex = i;
-    		urls[i] = url.replace("localhost", "192.168.21.89");
+    		postIds[i] = String.valueOf(post.getPostid());
     		
     		String title = post.getTitle();
     		String excerpt = post.getDescription();
@@ -155,7 +154,7 @@ public class LatestReportsFragment extends Fragment {
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					Intent i = new Intent(mActivity.getApplicationContext(), ReportRemoteViewActivity.class);
-					i.putExtra("postUrl", urls[localIndex]);
+					i.putExtra("postId", postIds[localIndex]);
 					startActivity(i);
 				}
 			});

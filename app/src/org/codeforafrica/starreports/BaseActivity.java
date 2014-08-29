@@ -222,12 +222,7 @@ public void onUserInteraction()
     }
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-    	if (item.getItemId() == R.id.menu_assignments)
-        {	   		
-    		Intent i = new Intent(getApplicationContext(),AssignmentsActivity.class);
-			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(i);
-        }
+
     	if (item.getItemId() == R.id.menu_add_report)
         {	
         	   		
