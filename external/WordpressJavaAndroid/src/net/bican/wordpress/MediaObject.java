@@ -23,7 +23,7 @@ public class MediaObject extends XmlRpcMapped {
 
   String type;
   
-  String attachment_id;
+  String id;
 
   /**
    * @return the url
@@ -36,7 +36,7 @@ public class MediaObject extends XmlRpcMapped {
    * @return the attachment_id
    */
   public String getID() {
-    return this.attachment_id;
+    return this.id;
   }
   
   /**

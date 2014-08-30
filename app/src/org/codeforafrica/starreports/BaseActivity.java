@@ -170,7 +170,7 @@ public void onUserInteraction()
             	
             	mSlidingMenu.showContent(true);
                 
-            	 Intent i = new Intent(activity, HomeActivity.class);
+            	 Intent i = new Intent(activity, HomePanelsActivity.class);
                  activity.startActivity(i);
             }
         });

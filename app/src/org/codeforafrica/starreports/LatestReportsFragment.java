@@ -1,8 +1,14 @@
 package org.codeforafrica.starreports;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
+import net.bican.wordpress.Attachment;
+import net.bican.wordpress.MediaObject;
 import net.bican.wordpress.Page;
 
 import org.codeforafrica.starreports.ui.MyCard;
@@ -21,9 +27,14 @@ import com.fima.cardsui.views.CardUI;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -106,6 +117,7 @@ public class LatestReportsFragment extends Fragment {
         	//Get Posts using xmlrpc
         	try {
 				posts = StoryMakerApp.getServerManager().getRecentPosts(10);
+				createCards();
 			} catch (MalformedURLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -123,32 +135,55 @@ public class LatestReportsFragment extends Fragment {
         		Toast.makeText(mActivity.getApplicationContext(), "No posts found", Toast.LENGTH_LONG).show();
         	}
         	
-        	try {
-				createCards();
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+        	mCardView.refresh();	
         }
 	}
     
-    public void createCards() throws JSONException{
+    public void createCards(){
     	final String[] postIds = new String[posts.size()];
     	
     	for(int i = 0; i<posts.size(); i++){
     		Page post = posts.get(i); 		
+    		
+    		String thumbnail = null;
+    		thumbnail = post.getThumbnail();
+    		
+    		Drawable thumb = null;
+    		
+    		if(thumbnail!=null){
+    			try {
+					thumbnail = StoryMakerApp.getServerManager().getPostObject(thumbnail);
+						if(thumbnail==null){
+							  thumb = getResources().getDrawable(R.drawable.logo);
+						}else{
+							  try {
+								thumb = drawableFromUrl(thumbnail);
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+		                }					
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (XmlRpcFault e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    		}
+    		
+    		
     		String url = post.getPermaLink();
     		final int localIndex = i;
     		postIds[i] = String.valueOf(post.getPostid());
     		
     		String title = post.getTitle();
     		String excerpt = post.getDescription();
-    		
-    		
+    		    		
     		String[] excerptparts = excerpt.split("==Media==");
     		
     		String date = post.getDateCreated().toString();
-    		MyCard newCard = new MyCard(title, excerptparts[0]);
+    		MyCard newCard = new MyCard(title, excerptparts[0], thumb);
     		newCard.setOnClickListener(new View.OnClickListener() {
 				
 				@Override
@@ -161,9 +196,19 @@ public class LatestReportsFragment extends Fragment {
 			});
     		
     		mCardView.addCard(newCard);
-			mCardView.refresh();
+			
     		
     	}
+    }
+    public static Drawable drawableFromUrl(String url) throws IOException {
+        Bitmap x;
+
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+        connection.connect();
+        InputStream input = connection.getInputStream();
+
+        x = BitmapFactory.decodeStream(input);
+        return new BitmapDrawable(x);
     }
     
 }

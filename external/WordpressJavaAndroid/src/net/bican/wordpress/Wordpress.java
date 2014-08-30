@@ -153,7 +153,9 @@ interface MetaWebLogBridge {
    */
   XmlRpcStruct getPost(Integer post_ID, String username, String password)
       throws XmlRpcFault;
-
+  
+  XmlRpcStruct getPostObject(String objectId, String username, String password)
+	      throws XmlRpcFault;
   /**
    * @param blogid
    *          Blog id (not used in wordpress)
@@ -199,7 +201,9 @@ interface MetaWebLogBridge {
    */
   XmlRpcArray getRecentAssignments(Integer blogid, String username, String password,
       Integer num_posts) throws XmlRpcFault;
-
+  
+  XmlRpcArray getPostAttachments(Integer blogid, String username, String password,
+	      String postId) throws XmlRpcFault;
   /**
    * @param blogid
    *          Blog id (not used in wordpress)
@@ -607,6 +611,14 @@ public class Wordpress {
     return result;
   }
 
+  @SuppressWarnings("boxing")
+  public MediaObject getPostObject(String objectId) throws XmlRpcFault {
+    XmlRpcStruct r = this.mw.getPostObject(objectId, this.username, this.password);
+    MediaObject result = new MediaObject();
+    result.fromXmlRpcStruct(r);
+    return result;
+  }
+  
   /**
    * @param num_posts
    *          Number of posts to be retrieved.
@@ -631,6 +643,12 @@ public class Wordpress {
     XmlRpcArray r = this.mw.getRecentAssignments(0, this.username, this.password,
         num_posts);
     return fillFromXmlRpcArray(r, Page.class);
+  }
+  @SuppressWarnings({ "unchecked", "boxing" })
+  public List<MediaObject> getPostAttachments(String postId) throws XmlRpcFault {
+    XmlRpcArray r = this.mw.getPostAttachments(0, this.username, this.password,
+        postId);
+    return fillFromXmlRpcArray(r, MediaObject.class);
   }
   /**
    * @return Template page

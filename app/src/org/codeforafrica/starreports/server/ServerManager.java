@@ -9,6 +9,7 @@ import org.codeforafrica.starreports.StoryMakerApp;
 import org.codeforafrica.starreports.model.Auth;
 import org.codeforafrica.starreports.model.AuthTable;
 
+import net.bican.wordpress.MediaObject;
 import net.bican.wordpress.Category;
 import net.bican.wordpress.Comment;
 import net.bican.wordpress.MediaObject;
@@ -125,13 +126,25 @@ public class ServerManager {
 		return post.getPermaLink();
 		
 	}
-	
+	public String getPostObject (String objectId) throws XmlRpcFault, MalformedURLException
+	{
+		connect();
+		MediaObject object = mWordpress.getPostObject(objectId);
+		return object.getUrl();
+		
+	}
 	public Page getPost (String postId) throws XmlRpcFault, MalformedURLException
 	{
 		connect();
 		Page post = mWordpress.getPost(Integer.parseInt(postId));
 		return post;
 		
+	}
+	public List<MediaObject> getPostAttachments (String postId) throws XmlRpcFault, MalformedURLException
+	{
+		connect();
+		List<MediaObject> rPosts = mWordpress.getPostAttachments(postId);
+		return rPosts;
 	}
 	public List<Page> getRecentAssignments (int num) throws XmlRpcFault, MalformedURLException
 	{
@@ -178,7 +191,17 @@ public class ServerManager {
 		
 		return mObj.getUrl();
 	}
-	
+	public String addThumbnail (String mimeType, File file) throws XmlRpcFault, MalformedURLException
+	{
+		connect();
+		
+		MediaObject mObj = null;
+		
+		if (file != null)
+			mObj = mWordpress.newMediaObject(mimeType, file, false);
+		
+		return mObj.getID();
+	}
 	public String post (String title, String body, String[] catstrings, String medium, String mediaService, String mediaGuid, String mimeType, File file) throws XmlRpcFault, MalformedURLException
 	{
 		connect();
@@ -254,7 +277,7 @@ public class ServerManager {
 		
 		return postId;
 	}
-	public String post2 (String title, String body, String[] catstrings, String medium, String mediaService, String mediaGuid, String mimeType, File file, XmlRpcStruct Assignment) throws XmlRpcFault, MalformedURLException
+	public String post2 (String title, String body, String[] catstrings, String medium, String mediaService, String mediaGuid, String mimeType, File file, XmlRpcStruct Assignment, String thumbID) throws XmlRpcFault, MalformedURLException
 	{
 		connect();
 		
@@ -265,6 +288,10 @@ public class ServerManager {
 		
 		Page page = new Page ();
 		page.setTitle(title);
+		
+		if(thumbID !=null){
+			page.setThumbnail(thumbID);
+		}
 		
 		StringBuffer sbBody = new StringBuffer();
 		sbBody.append(body);

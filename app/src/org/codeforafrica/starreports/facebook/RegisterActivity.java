@@ -19,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.codeforafrica.starreports.ConnectionDetector;
-import org.codeforafrica.starreports.HomeActivity;
 import org.codeforafrica.starreports.R;
 import org.codeforafrica.starreports.api.APIFunctions;
 public class RegisterActivity extends Activity implements Runnable{

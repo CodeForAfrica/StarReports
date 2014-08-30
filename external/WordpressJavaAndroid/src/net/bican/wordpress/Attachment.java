@@ -16,7 +16,7 @@ package net.bican.wordpress;
  * @author Can Bican &lt;can@bican.net&gt;
  * 
  */
-class Attachment extends XmlRpcMapped {
+public class Attachment extends XmlRpcMapped {
   byte[] bits;
 
   String name;
@@ -24,6 +24,8 @@ class Attachment extends XmlRpcMapped {
   Boolean overwrite;
 
   String type;
+  
+  String post_id;
 
   /**
    * @return the bits
@@ -80,4 +82,13 @@ class Attachment extends XmlRpcMapped {
   public void setType(String type) {
     this.type = type;
   }
+
+  public void setPostId(String pid) {
+		// TODO Auto-generated method stub
+		this.post_id = pid;
+  }
+  public String getPostId() {
+	    return this.post_id;
+	  }
+
 }

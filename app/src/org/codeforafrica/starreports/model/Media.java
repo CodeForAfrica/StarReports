@@ -479,7 +479,26 @@ public class Media extends Model {
     public void setEncrypted(int encrypted) {
         this.encrypted = encrypted;
     }
+    public static String getThumbnailUrl(Context context, Media media, Project project){
+    	if (media == null)
+    		return null;
+    	
+    	File thumbDir = new File(Environment.getExternalStorageDirectory() + "/" +AppConstants.TAG + "/.thumbs");
+    	if(!thumbDir.exists()){
+    		thumbDir.mkdirs();
+    	}
+        File fileThumb = new File(thumbDir + "/" + media.getId()+".jpg");
 
+        if (media.getMimeType() == null)
+        {
+            return null;
+        }
+        if(media.getMimeType().startsWith("audio")){
+        	return null;
+        }
+        
+        return fileThumb.getAbsolutePath();
+    }
     // FIXME this should probably be refactored and split half into the media layer
     public static Bitmap getThumbnail(Context context, Media media, Project project) 
     {

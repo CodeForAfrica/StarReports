@@ -22,11 +22,15 @@ public class MyCard extends Card {
 	private int mIcon = -1;
 	private Drawable mImage = null;
 	
+	public MyCard(String title, String desc, Drawable thumb){
+		super(title);
+		mDesc = desc;
+		mImage = thumb;
+	}
 	public MyCard(String title, String desc){
 		super(title);
 		mDesc = desc;
 	}
-
 	public void setIcon (int icon)
 	{
 		mIcon = icon;

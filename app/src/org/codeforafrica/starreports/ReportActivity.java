@@ -30,6 +30,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Message;
@@ -494,8 +495,13 @@ OnItemLongClickListener{
 
 	            String postId="";
 	            String urlPost="";
-            
+	            XmlRpcStruct structA = new XmlRpcStruct();
+				structA.put("key","assignment_id");
+				structA.put("value",assignmentID);
+			 	
+				
 				try {
+					
 					
 					StringBuffer sbBody = new StringBuffer();
 					sbBody.append("");
@@ -503,6 +509,7 @@ OnItemLongClickListener{
 					//upload media
 					ArrayList<Project> mListProjects;
 					mListProjects = Project.getAllAsList(getApplicationContext(), rid);
+					String thumbnail= null;
 				 	for (int j = 0; j < mListProjects.size(); j++) {
 				 		Project project = mListProjects.get(j);
 				 		
@@ -511,6 +518,7 @@ OnItemLongClickListener{
 					 	for (Media media: mediaList){
 
 					 		if(media!=null){
+					 			
 					 			
 					 		String ppath = media.getPath();
 						 	String ptype = media.getMimeType();
@@ -548,19 +556,23 @@ OnItemLongClickListener{
 						 		//post file here
 						 		sbBody.append(murl);
 						 		sbBody.append("\n\n");
-
+						 		
+						 		String bmp = Media.getThumbnailUrl(ReportActivity.this,media,project);
+		            			if (bmp != null)
+		            				thumbnail = bmp;
 					 		}
 				 		}
 				 	}
 					
-				 	String pDescription = description + "==Media==\n\n" + sbBody.toString();
-					
 				 	
-				 	XmlRpcStruct structA = new XmlRpcStruct();
-					structA.put("key","assignment_id");
-					structA.put("value",assignmentID);
-
-				 	postId = sm.post2(title, pDescription, null, null, null, null, null, null, structA);
+				 	//upload thumbnail
+				 	if(thumbnail!=null){
+				 		thumbnail = sm.addThumbnail("image/jpeg", new File(thumbnail));
+				 	}
+				 	
+				 	String pDescription = description + "==Media==\n\n" + sbBody.toString();
+				 	
+				 	postId = sm.post2(title, pDescription, null, null, null, null, null, null, structA, thumbnail);
 					urlPost = sm.getPostUrl(postId);
 					
 				} catch (MalformedURLException e) {

@@ -1,7 +1,7 @@
 package org.codeforafrica.starreports;
 
-import org.codeforafrica.starreports.HomeActivity.MyAdapter;
-import org.codeforafrica.starreports.HomeActivity.MyFragment;
+import org.codeforafrica.starreports.HomePanelsActivity.MyAdapter;
+import org.codeforafrica.starreports.HomePanelsActivity.MyFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
