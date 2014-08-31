@@ -52,7 +52,8 @@ public class Report_PageIndicatorActivity extends BaseActivity implements BaseSl
     
 	@Override
     public void onCreate(Bundle savedInstanceState) {
-    
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+
     	super.onCreate(savedInstanceState);
     	getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     	getSupportActionBar().setTitle("");

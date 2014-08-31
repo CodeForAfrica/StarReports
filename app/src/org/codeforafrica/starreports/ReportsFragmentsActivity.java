@@ -53,7 +53,8 @@ public class ReportsFragmentsActivity extends BaseActivity implements ActionBar.
      
         
         super.onCreate(savedInstanceState);
-           
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+        
         setContentView(R.layout.activity_reports_viewpager);
         
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
