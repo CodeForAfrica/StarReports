@@ -16,6 +16,7 @@ import org.codeforafrica.starreports.location.PlaceJSONParser;
 import org.holoeverywhere.widget.ProgressBar;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -36,6 +37,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.SimpleAdapter;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.viewpagerindicator.CirclePageIndicator;
 
 public class Report_PageIndicatorActivity extends BaseActivity{
@@ -46,9 +49,39 @@ public class Report_PageIndicatorActivity extends BaseActivity{
     public void onCreate(Bundle savedInstanceState) {
     
     	super.onCreate(savedInstanceState);
+    	getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    	getSupportActionBar().setTitle("");
     	initIntroActivityList();
 	}
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        
+        getSupportMenuInflater().inflate(R.menu.save_report, menu);
+       
+        menu.findItem(R.id.about).setVisible(false);
+        menu.findItem(R.id.menu_add_report).setVisible(false);
+        menu.findItem(R.id.menu_sync_reports).setVisible(false);
+        menu.findItem(R.id.menu_new_form).setVisible(false);
+        menu.findItem(R.id.action_search).setVisible(false);
 
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        	
+        
+            case android.R.id.home:
+            	Intent i = new Intent(Report_PageIndicatorActivity.this, ReportsFragmentsActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            	startActivity(i);
+            	
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 private void initIntroActivityList ()
 {
   	setContentView(R.layout.report_pageindicator);
