@@ -9,5 +9,5 @@
         android:id="@+id/menu_discard"
         android:icon="@android:drawable/ic_menu_delete"
         android:showAsAction="always"
-        android:title="Save"/>
+        android:title="Delete"/>
 </menu>
