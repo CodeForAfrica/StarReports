@@ -22,7 +22,7 @@ public class APIFunctions {
 	
 	private JSONParser jsonParser;
 	private static String loginURL = "login.php";
-	private static String registerURL = "login.php";
+	private static String registerURL = "http://192.168.1.41/storymaker/api/users/register/";
 	private static String updateURL = "update.php";
 	private static String reportURL = "article.php";
 	private static String objectURL = "attachment.php";
@@ -146,7 +146,7 @@ public class APIFunctions {
 		params.add(new BasicNameValuePair("phone_number", phone_number));
 		params.add(new BasicNameValuePair("tag", "register"));
 
-		JSONObject json = jsonParser.getJSONFromUrl(api_base_url + registerURL, params);
+		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
 		// return json
 		return json;
 	}

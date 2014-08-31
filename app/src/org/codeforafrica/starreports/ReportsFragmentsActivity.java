@@ -4,6 +4,7 @@ import org.codeforafrica.starreports.R;
 import org.codeforafrica.starreports.LessonsActivity.LessonSectionFragment;
 import org.codeforafrica.starreports.facebook.FacebookLogin;
 import org.codeforafrica.starreports.lessons.WebViewSetupJB;
+import org.codeforafrica.starreports.server.LoginActivity;
 import org.holoeverywhere.LayoutInflater;
 import org.holoeverywhere.app.Fragment;
 
@@ -63,7 +64,7 @@ public class ReportsFragmentsActivity extends BaseActivity implements ActionBar.
         
         if ((user == null)||(user.equals("0")))
         {
-        	Intent intent = new Intent(this,FacebookLogin.class);
+        	Intent intent = new Intent(this,LoginActivity.class);
         	startActivity(intent);
         	finish();
         }
