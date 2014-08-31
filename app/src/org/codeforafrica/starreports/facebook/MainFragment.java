@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.codeforafrica.starreports.ConnectionDetector;
 import org.codeforafrica.starreports.HomePanelsActivity;
 import org.codeforafrica.starreports.R;
+import org.codeforafrica.starreports.ReportsFragmentsActivity;
 import org.codeforafrica.starreports.api.APIFunctions;
 import org.holoeverywhere.widget.Toast;
 import org.json.JSONException;
@@ -12,7 +13,9 @@ import org.json.JSONObject;
 
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.Request;
@@ -32,10 +35,12 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.telephony.TelephonyManager;
 import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -64,6 +69,7 @@ public class MainFragment extends Fragment implements Runnable {
 	//Connection detector class
     ConnectionDetector cd;
     
+    private boolean mPasswordVisible = false;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
@@ -83,6 +89,10 @@ public class MainFragment extends Fragment implements Runnable {
         txtStatus = (TextView)view.findViewById(R.id.status);
         txtUser = (EditText)view.findViewById(R.id.login_username);
         txtPass = (EditText)view.findViewById(R.id.login_password);
+        
+        RelativeLayout lLayout = (RelativeLayout)view.findViewById(R.id.loginLayout);
+        
+        lLayout.getBackground().setAlpha(120); 
         
         Button btnRegister = (Button) view.findViewById(R.id.btnRegister);
         btnRegister.setOnClickListener(new OnClickListener ()
@@ -107,22 +117,29 @@ public class MainFragment extends Fragment implements Runnable {
 			}
         	
         });
-        final CheckBox showPassword = (CheckBox)view.findViewById(R.id.showPassword);
 
-		showPassword.setOnClickListener(new View.OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						if(showPassword.isChecked()){
-							txtPass.setInputType(InputType.TYPE_CLASS_TEXT);
-				        }else{
-				        	txtPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-				        }
-					}
-				});
+        initPasswordVisibilityButton((ImageView) view.findViewById(R.id.password_visibility), txtPass);
         return view;    
     }
+	protected void initPasswordVisibilityButton(final ImageView passwordVisibilityToggleView,
+            final EditText passwordEditText) {
+		passwordVisibilityToggleView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mPasswordVisible = !mPasswordVisible;
+				if (mPasswordVisible) {
+					passwordVisibilityToggleView.setImageResource(R.drawable.dashicon_eye_open);
+					passwordVisibilityToggleView.setColorFilter(v.getContext().getResources().getColor(R.color.lp_blue));
+					passwordEditText.setTransformationMethod(null);
+				} else {
+					passwordVisibilityToggleView.setImageResource(R.drawable.dashicon_eye_closed);
+					passwordVisibilityToggleView.setColorFilter(v.getContext().getResources().getColor(R.color.lp_red));
+					passwordEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+				}
+					passwordEditText.setSelection(passwordEditText.length());
+			}
+		});
+	}
 	private void hideKeyBoard(){
    	 InputMethodManager inputManager = (InputMethodManager) getActivity()
    	            .getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -240,7 +257,7 @@ public class MainFragment extends Fragment implements Runnable {
     
     private void loginSuccess ()
     {
-    	Intent i = new Intent(getActivity(), HomePanelsActivity.class);
+    	Intent i = new Intent(getActivity(), ReportsFragmentsActivity.class);
     	startActivity(i);
     	getActivity().finish();
     }
@@ -280,7 +297,7 @@ public class MainFragment extends Fragment implements Runnable {
 
 					editor.commit();
 
-					Intent i = new Intent(getActivity(), HomePanelsActivity.class);
+					Intent i = new Intent(getActivity(), ReportsFragmentsActivity.class);
 					startActivity(i);
 
 				}else{

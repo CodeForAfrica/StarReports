@@ -89,13 +89,16 @@
         </activity>
         <activity
 
-            android:name="org.codeforafrica.starreports.server.LoginActivity"
+            android:name="org.codeforafrica.starreports.ReportsFragmentsActivity"
 
             android:configChanges="locale"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             
              >
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchResultsActivity" />
             <intent-filter android:label="@string/app_name" >
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -106,28 +109,28 @@
             android:label="@string/title_activity_new_story" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomePanelsActivity" />
+                android:value=".ReportsFragmentsActivity" />
         </activity>
         <activity
             android:name="org.codeforafrica.starreports.ReportActivity"
             android:label="@string/title_activity_new_story" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomePanelsActivity" />
+                android:value=".ReportsFragmentsActivity" />
         </activity>
         <activity
             android:name="org.codeforafrica.starreports.assignments.AssignmentsActivity"
             android:label="@string/title_assignments" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomePanelsActivity" />
+                android:value=".ReportsFragmentsActivity" />
         </activity>
         <activity
             android:name="org.codeforafrica.starreports.Report_PageIndicatorActivity"
             android:label="New Report" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomePanelsActivity" />
+                android:value=".ReportsFragmentsActivity" />
         </activity>
         <activity
             android:name="org.codeforafrica.starreports.ReportEditorActivity"
@@ -136,16 +139,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ReportsFragmentsActivity" />
         </activity>
+        
         <activity
-            android:name="org.codeforafrica.starreports.ReportsFragmentsActivity"
-            android:label="@string/reports_list" >
-            <meta-data
-                android:name="android.app.default_searchable"
-                android:value=".SearchResultsActivity" />
+            android:name="org.codeforafrica.starreports.facebook.RegisterActivity"
+            android:label="New account" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomePanelsActivity" />
+                android:value=".facebook.FacebookLogin" />
         </activity>
+        
               <activity
             android:name="org.codeforafrica.starreports.ProjectsActivity"
             android:configChanges="locale"
@@ -154,7 +156,7 @@
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomePanelsActivity" />
+                android:value=".ReportsFragmentsActivity" />
         </activity>
         <activity
             android:name="org.codeforafrica.starreports.LessonsActivity"
@@ -165,7 +167,7 @@
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomePanelsActivity" />
+                android:value=".ReportsFragmentsActivity" />
         </activity>
 
         <activity
@@ -201,7 +203,7 @@
             android:name="org.codeforafrica.starreports.ProjectListActivity">
              <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomePanelsActivity" />
+                android:value=".ReportsFragmentsActivity" />
         </activity>
         <activity
             android:name=".lessons.LessonViewActivity"

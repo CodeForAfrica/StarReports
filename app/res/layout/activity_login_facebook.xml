@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent"
-  android:fillViewport="true">
+  android:fillViewport="true"
+  android:orientation="vertical"
+  android:background="@drawable/background_image" 
+  >
 
   <RelativeLayout
+      android:id="@+id/loginLayout"
       android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:background="#fff"
-      android:gravity="center" >
+      android:layout_height="fill_parent"
+      android:background="@color/lp_blue"
+      android:gravity="center">
  
         
         <!-- Registration Form -->
         <LinearLayout
           android:id="@+id/regLayout"
+          
+     
           android:orientation="vertical"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -37,7 +43,9 @@
               android:layout_gravity="center_horizontal"
               android:text="@string/strapline" 
               style="@style/CardTitle"
-              android:textSize="15sp"/>
+              android:textSize="22sp"
+              android:textColor="@color/white"/>
+          
           <LinearLayout
             android:id="@+id/lyt_login"
             android:layout_width="match_parent"
@@ -45,7 +53,7 @@
             android:layout_alignParentBottom="true"
             android:layout_weight="0.6"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="5dp">
 
           <!--  Email Label -->          
 
@@ -53,45 +61,64 @@
               android:id="@+id/login_username"
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
-              android:layout_marginBottom="20dip"
+              android:layout_marginBottom="10dip"
               android:layout_marginTop="5dip"
               android:background="@color/lp_grey"
               android:hint="username"
-              android:padding="10dp"
+              android:padding="5dp"
               android:singleLine="true"
-              android:textColor="@color/lp_blue" />
+              android:textColor="@color/lp_blue"
+              android:drawableLeft="@drawable/ic_action_person"
+              style="@style/CardTitle"
+              android:textSize="15sp" />
 
           <!--  Password Label -->          
+		 <RelativeLayout
+            android:id="@+id/lyt_pass"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/lp_grey">
 
           <EditText
               android:id="@+id/login_password"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginBottom="5dp"
-              android:layout_marginTop="5dip"
-              android:background="@color/lp_grey"
-              android:hint="password"
-              android:padding="10dp"
-              android:password="true"
-              android:singleLine="true"
-              android:textColor="@color/lp_blue" />
-
-          <!-- Login button -->
-
-          <CheckBox
-              android:id="@+id/showPassword"
+              style="@style/CardTitle"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              
-              android:text="Show password" />
+              android:layout_alignParentLeft="true"
+              android:layout_marginBottom="5dp"
+              android:layout_marginTop="5dip"
+              android:layout_toLeftOf="@+id/password_visibility"
+              android:background="@color/lp_grey"
+              android:drawableLeft="@drawable/ic_action_secure"
+              android:hint="password"
+              android:padding="5dp"
+              android:password="true"
+              android:singleLine="true"
+              android:textColor="@color/lp_blue"
+              android:textSize="15sp" />
+
+          <ImageView
+              android:id="@+id/password_visibility"
+              android:layout_width="wrap_content"
+              android:layout_height="20dp"
+              android:layout_alignParentRight="true"
+              android:layout_centerVertical="true"
+              android:layout_weight="0.20"
+              android:src="@drawable/dashicon_eye_closed"
+              android:tint="@color/lp_red"
+               />
+
+		</RelativeLayout>
+          <!-- Login button -->
 
           <TextView
               android:id="@+id/status"
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
               android:gravity="center"
-              android:textColor="#555555"
-              android:textSize="18dip" />
+              style="@style/CardTitle"
+              android:textSize="13sp"
+              android:textColor="@color/white" />
 
           <Button
               android:id="@+id/btnLogin"
@@ -100,11 +127,9 @@
               android:background="@color/lp_red"
               android:text="Login"/>
            
-             <LinearLayout 
+             <RelativeLayout 
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-             	android:gravity="center"
-                android:orientation="horizontal"
                 >
                   
           <Button
@@ -121,31 +146,29 @@
               android:textColor="#0b84aa"
               android:textSize="20dip" 
               android:visibility="gone"/>
-          
-          
+
           <Button
               android:id="@+id/btnRegister"
+              style="@style/CardTitle"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-               android:gravity="center"
-               android:background="#FFFFFF"
-              android:paddingBottom="20dp"
-              android:paddingLeft="10dp"
-              android:paddingRight="10dp"
-              android:paddingTop="20dp"
-              android:text="Register"
-              android:textColor="@color/lp_blue"
-              android:textSize="20dip"/>
+              android:layout_alignParentRight="true"
+              android:layout_alignParentTop="true"
+              android:background="@color/transparent"
+              android:gravity="center"
+              android:text="No account? Register here"
+              android:textColor="@color/white"
+              android:textSize="16sp" />
 
- </LinearLayout>
+ </RelativeLayout>
  
         </LinearLayout>
           <com.facebook.widget.LoginButton
         android:id="@+id/authButton"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:padding="5dp"
         />
           
@@ -153,4 +176,4 @@
         </LinearLayout>
         <!-- Registration Form Ends -->
   </RelativeLayout>
-</ScrollView>
+</LinearLayout>

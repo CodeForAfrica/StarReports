@@ -9,7 +9,6 @@ import org.codeforafrica.starreports.encryption.EncryptionService;
 import org.codeforafrica.starreports.export.Export2SDService;
 import org.codeforafrica.starreports.facebook.FacebookLogin;
 import org.codeforafrica.starreports.facebook.UpdateActivity;
-import org.codeforafrica.starreports.server.LoginActivity;
 import org.holoeverywhere.app.Activity;
 import org.holoeverywhere.preference.PreferenceManager;
 import org.holoeverywhere.preference.SharedPreferences;

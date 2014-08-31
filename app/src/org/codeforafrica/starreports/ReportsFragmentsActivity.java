@@ -2,14 +2,18 @@ package org.codeforafrica.starreports;
 
 import org.codeforafrica.starreports.R;
 import org.codeforafrica.starreports.LessonsActivity.LessonSectionFragment;
+import org.codeforafrica.starreports.facebook.FacebookLogin;
 import org.codeforafrica.starreports.lessons.WebViewSetupJB;
 import org.holoeverywhere.LayoutInflater;
 import org.holoeverywhere.app.Fragment;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
@@ -22,6 +26,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.webkit.WebSettings.PluginState;
+
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 
@@ -49,6 +54,19 @@ public class ReportsFragmentsActivity extends BaseActivity implements ActionBar.
         super.onCreate(savedInstanceState);
            
         setContentView(R.layout.activity_reports_viewpager);
+        
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        
+        String user = settings.getString("logged_in",null);
+        
+        //Toast.makeText(getApplicationContext(), " " + user, Toast.LENGTH_LONG).show();
+        
+        if ((user == null)||(user.equals("0")))
+        {
+        	Intent intent = new Intent(this,FacebookLogin.class);
+        	startActivity(intent);
+        	finish();
+        }
         
         MyReportsFragment fMyReports = new MyReportsFragment();
         LatestReportsFragment fLatestReports = new LatestReportsFragment();
