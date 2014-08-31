@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" 
+    android:padding="3dp"
+    >
+    <org.codeforafrica.starreports.location.PlacesAutoCompleteTextView
+        android:id="@+id/atv_places"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/grey_blue"
+        android:layout_margin="3dp"
+        android:padding="10dp"
+        style="@style/CardTitle"
+        android:hint="@string/str_atv_places" />
+	<RelativeLayout 
+	     android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center|center">
+	    <ProgressBar
+        android:id="@+id/pBLoadWebView"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:visibility="gone" />
+	</RelativeLayout>
+    
+  
+    
+</LinearLayout>

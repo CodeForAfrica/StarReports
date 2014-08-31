@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" 
+    android:padding="3dp"
+    >
+	<Spinner
+        android:id="@+id/add_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:padding="10dp"        
+        style="@style/CardTitle" 
+        android:background="@color/grey_blue"
+        android:entries="@array/categories"/>
+    <EditText
+        android:id="@+id/add_tags"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:inputType="textMultiLine"
+        android:background="@color/grey_blue"
+        android:gravity="top|left"
+        android:layout_margin="3dp"
+        android:padding="10dp"
+        android:hint="Add tags separated by commas"
+        style="@style/CardTitle" />
+    
+    
+</LinearLayout>

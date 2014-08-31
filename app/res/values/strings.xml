@@ -18,9 +18,12 @@
     <string name="add_caption">Add Caption</string>
 	<string name="skip">Skip</string>
 	<string name="add_caption_alert">Do you want to a caption?</string>
-	<string name="add_picture">Image</string>
-	<string name="add_video">Video</string>
-	<string name="add_audio">Audio</string>
+	<string name="str_atv_places">Start typing place name</string>
+	<string name="add_picture">Add Picture</string>
+	<string name="add_video">Add Video</string>
+	<string name="add_audio">Add Audio</string>
+	<string name="import_from_gallery">Import From Gallery</string>
+	
 	<string name="view_gallery">Gallery</string>
 	<string name="description_field">Description</string>
 	<string name="done">Done</string>
@@ -44,7 +47,7 @@
     <string name="report_add_description">Description</string>
     <string name="report_add_category">Category</string>
     <string name="report_add_location">Location</string>
-    <string name="report_add_contact">Contact</string>
+    <string name="report_add_additional">Additional</string>
     
     <string name="report_add_title_desc">Your story title</string>
     <string name="report_add_description_desc">Provide a compelling context</string>
@@ -54,6 +57,7 @@
     
     <!-- Default categories -->
     <string-array name="categories">
+        <item>Select Category</item>
         <item>General</item>
         <item>Politics</item>
         <item>Environment</item>

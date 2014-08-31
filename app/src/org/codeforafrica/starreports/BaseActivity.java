@@ -41,13 +41,11 @@ import com.actionbarsherlock.view.MenuItem;
 import android.widget.SearchView;
 import com.facebook.Session;
 //import com.google.analytics.tracking.android.EasyTracker;
-import com.slidingmenu.lib.SlidingMenu;
-import com.slidingmenu.lib.SlidingMenu.OnClosedListener;
 
 @SuppressLint("NewApi")
 public class BaseActivity extends Activity {
 
-	public SlidingMenu mSlidingMenu;
+	//public SlidingMenu mSlidingMenu;
 	private static final String TAG=BaseActivity.class.getName();
     public Dialog dialog;
 
@@ -80,7 +78,7 @@ public void onUserInteraction()
 	}
 	
     public void initSlidingMenu ()
-    {
+    {/*
 
         mSlidingMenu = new SlidingMenu(this);
         mSlidingMenu.setShadowWidthRes(R.dimen.shadow_width);
@@ -213,7 +211,7 @@ public void onUserInteraction()
                 activity.startActivity(i);
             }
         });
-        
+        */
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
