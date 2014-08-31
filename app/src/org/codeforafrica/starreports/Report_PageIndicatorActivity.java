@@ -52,7 +52,8 @@ public class Report_PageIndicatorActivity extends BaseActivity implements BaseSl
     
 	@Override
     public void onCreate(Bundle savedInstanceState) {
-        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+        overridePendingTransition(R.anim.anim_slide_in_left,
+                R.anim.anim_slide_out_left);
 
     	super.onCreate(savedInstanceState);
     	getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -73,7 +74,11 @@ public class Report_PageIndicatorActivity extends BaseActivity implements BaseSl
 
         return true;
     }
-
+	@Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -83,7 +88,7 @@ public class Report_PageIndicatorActivity extends BaseActivity implements BaseSl
             	Intent i = new Intent(Report_PageIndicatorActivity.this, ReportsFragmentsActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             	startActivity(i);
-            	
+            	finish();
             return true;
         }
         return super.onOptionsItemSelected(item);

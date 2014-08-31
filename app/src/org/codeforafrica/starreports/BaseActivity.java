@@ -2,6 +2,7 @@ package org.codeforafrica.starreports;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+
 import org.codeforafrica.starreports.R;
 import org.codeforafrica.starreports.api.SyncService;
 import org.codeforafrica.starreports.assignments.AssignmentsActivity;
@@ -9,10 +10,12 @@ import org.codeforafrica.starreports.encryption.EncryptionService;
 import org.codeforafrica.starreports.export.Export2SDService;
 import org.codeforafrica.starreports.facebook.FacebookLogin;
 import org.codeforafrica.starreports.facebook.UpdateActivity;
+import org.codeforafrica.starreports.server.LoginActivity;
 import org.holoeverywhere.app.Activity;
 import org.holoeverywhere.preference.PreferenceManager;
 import org.holoeverywhere.preference.SharedPreferences;
 import org.holoeverywhere.widget.Toast;
+
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.Dialog;
@@ -35,9 +38,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
 import android.view.WindowManager;
 import android.widget.ImageView;
+
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+
 import android.widget.SearchView;
+
 import com.facebook.Session;
 //import com.google.analytics.tracking.android.EasyTracker;
 
@@ -326,7 +332,7 @@ public void onUserInteraction()
     		editor.putString("logged_in", "0");
         	editor.commit();
         	
-        	Intent intent = new Intent(getBaseContext(), FacebookLogin.class);
+        	Intent intent = new Intent(getBaseContext(), LoginActivity.class);
 	        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	        intent.putExtra("logout", "1");
 	        startActivity(intent);
