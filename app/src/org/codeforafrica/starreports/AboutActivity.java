@@ -3,8 +3,11 @@ package org.codeforafrica.starreports;
 import org.codeforafrica.starreports.R;
 import org.codeforafrica.starreports.ui.MyCard;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.fima.cardsui.views.CardUI;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -38,5 +41,31 @@ public class AboutActivity extends BaseActivity{
 			
 			mCardView.refresh();
 	  }
+	  @Override
+	    public boolean onCreateOptionsMenu(Menu menu) {
+	        super.onCreateOptionsMenu(menu);
+	        
+	       
+	        menu.findItem(R.id.about).setVisible(false);
+	        menu.findItem(R.id.menu_add_report).setVisible(false);
+	        menu.findItem(R.id.menu_sync_reports).setVisible(false);
+	        menu.findItem(R.id.menu_new_form).setVisible(false);
+	        menu.findItem(R.id.action_search).setVisible(false);
+
+	        return true;
+	    }
+	  @Override
+	    public boolean onOptionsItemSelected(MenuItem item) {
+	        switch (item.getItemId()) {
+	        	
+	            case android.R.id.home:
+	            	Intent i = new Intent(AboutActivity.this, ReportsFragmentsActivity.class);
+	                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	            	startActivity(i);
+	            	
+	            return true;
+	        }
+	        return super.onOptionsItemSelected(item);
+	    }
 
 }

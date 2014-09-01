@@ -255,7 +255,7 @@ public class AddClipsFragment extends Fragment {
         	bitThumb = BitmapFactory.decodeFile(media.getPath());
         }
         	try{
-        		filename = thumbDir + "/" + media.getId()+".jpg";
+        		filename = thumbDir.getAbsolutePath() + "/" + media.getId()+".jpg";
         		FileOutputStream out = new FileOutputStream(filename);
         		bitThumb.compress(Bitmap.CompressFormat.JPEG, 30, out);
         		out.close();

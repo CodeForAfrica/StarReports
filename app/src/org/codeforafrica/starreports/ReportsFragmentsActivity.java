@@ -2,6 +2,7 @@ package org.codeforafrica.starreports;
 
 import org.codeforafrica.starreports.R;
 import org.codeforafrica.starreports.LessonsActivity.LessonSectionFragment;
+import org.codeforafrica.starreports.encryption.EncryptionBackground;
 import org.codeforafrica.starreports.facebook.FacebookLogin;
 import org.codeforafrica.starreports.lessons.WebViewSetupJB;
 import org.codeforafrica.starreports.server.LoginActivity;
@@ -9,6 +10,9 @@ import org.holoeverywhere.LayoutInflater;
 import org.holoeverywhere.app.Fragment;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningServiceInfo;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -70,8 +74,13 @@ public class ReportsFragmentsActivity extends BaseActivity implements ActionBar.
         	finish();
         }
         
+      //start encryption
+        if(!isServiceRunning(EncryptionBackground.class)){
+        	startService(new Intent(ReportsFragmentsActivity.this, EncryptionBackground.class));
+        }
+        
         MyReportsFragment fMyReports = new MyReportsFragment();
-        LatestReportsFragment fLatestReports = new LatestReportsFragment();
+  LatestReportsFragment fLatestReports = new LatestReportsFragment();
         AssignmentsFragment fAssignments = new AssignmentsFragment();
         
         // Create the adapter that will return a fragment for each of the three primary sections
@@ -110,7 +119,15 @@ public class ReportsFragmentsActivity extends BaseActivity implements ActionBar.
         getSupportActionBar().setHomeButtonEnabled(true);
         
     }
-
+    private boolean isServiceRunning(Class<?> cls) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (cls.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
     @Override
 	protected void onActivityResult(int reqCode, int resCode, Intent intent) {
 		

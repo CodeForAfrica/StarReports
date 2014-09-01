@@ -1,10 +1,16 @@
 package org.codeforafrica.starreports.facebook;
 
+import org.codeforafrica.starreports.AboutActivity;
 import org.codeforafrica.starreports.BaseActivity;
 import org.codeforafrica.starreports.R;
+import org.codeforafrica.starreports.ReportsFragmentsActivity;
 import org.holoeverywhere.preference.PreferenceManager;
 import org.holoeverywhere.preference.SharedPreferences;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
  
@@ -21,6 +27,7 @@ public class UpdateActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         // Set View to register.xml
         setContentView(R.layout.activity_update_profile);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         registerUsername = (EditText)findViewById(R.id.registerUsername);
         first_name = (EditText)findViewById(R.id.first_name);
@@ -42,5 +49,31 @@ public class UpdateActivity extends BaseActivity {
     	location.setText(prefs.getString("location", ""));
 
     	
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        
+       
+        menu.findItem(R.id.about).setVisible(false);
+        menu.findItem(R.id.menu_add_report).setVisible(false);
+        menu.findItem(R.id.menu_sync_reports).setVisible(false);
+        menu.findItem(R.id.menu_new_form).setVisible(false);
+        menu.findItem(R.id.action_search).setVisible(false);
+
+        return true;
+    }
+  @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        	
+            case android.R.id.home:
+            	Intent i = new Intent(UpdateActivity.this, ReportsFragmentsActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            	startActivity(i);
+            	
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -39,6 +39,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -176,38 +177,8 @@ private void initIntroActivityList ()
   	setContentView(R.layout.report_pageindicator);
   	
      //gallery slideshow
-     mDemoSlider = (SliderLayout)findViewById(R.id.slider);
-     HashMap<String,String> url_maps = new HashMap<String, String>();
-     url_maps.put("Hannibal", "http://static2.hypable.com/wp-content/uploads/2013/12/hannibal-season-2-release-date.jpg");
-     url_maps.put("Big Bang Theory", "http://tvfiles.alphacoders.com/100/hdclearart-10.png");
-     url_maps.put("House of Cards", "http://cdn3.nflximg.net/images/3093/2043093.jpg");
-     url_maps.put("Game of Thrones", "http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
-
-     HashMap<String,Integer> file_maps = new HashMap<String, Integer>();
-     file_maps.put("Hannibal",R.drawable.hannibal);
-     file_maps.put("Big Bang Theory",R.drawable.bigbang);
-     file_maps.put("House of Cards",R.drawable.house);
-     file_maps.put("Game of Thrones", R.drawable.game_of_thrones);
-
-     for(String name : file_maps.keySet()){
-         TextSliderView textSliderView = new TextSliderView(this);
-         // initialize a SliderLayout
-         textSliderView
-                 .description(name)
-                 .image(file_maps.get(name))
-                 .setScaleType(BaseSliderView.ScaleType.Fit)
-                 .setOnSliderClickListener(this);
-
-         //add your extra information
-         textSliderView.getBundle()
-                 .putString("extra",name);
-
-     mDemoSlider.addSlider(textSliderView);
-     }
-     mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
-     mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-     mDemoSlider.setCustomAnimation(new DescriptionAnimation());
-     mDemoSlider.setDuration(4000);
+     mDemoSlider = (SliderLayout)findViewById(R.id.slider);  
+     
      
      web = (WebView) findViewById(R.id.webView);
 	 //WebSettings webSettings = myWebView.getSettings();
@@ -305,17 +276,100 @@ public void initializeReport(){
 
         }
         new_report = false;
+        
+        loadSlider(r);
     }else{
+    	    	
     	setLocation();
     	
     	getSupportActionBar().setTitle("Add Report");
     	
+    	loadSlider(null);
+    	
     }
+}
+public void loadSlider(Report r){
+	int totalClips =  0;
+	HashMap<String,File> file_maps = new HashMap<String, File>();
+	
+	if(r!=null){
+		ArrayList<Project> mListProjects = Project.getAllAsList(getApplicationContext(), rid);
+	 	for (int j = 0; j < mListProjects.size(); j++) {
+	 		Project project = mListProjects.get(j);
+	 		
+	 		Media[] mediaList = project.getScenesAsArray()[0].getMediaAsArray();
+	 	
+		 	for (Media media: mediaList){
+	
+		 		if(media!=null){
+		 			
+		 			File thumb = new File(Environment.getExternalStorageDirectory() + "/" + AppConstants.TAG + "/.thumbs/" + media.getId() + ".jpg");
+		 			if(thumb.exists()){
+		 				
+		 				totalClips++;
+		 				file_maps.put(project.getTitle(),thumb);
+		 				constructSlider2(file_maps);
+		 			}
+		 		}
+		 	}
+	 	}
+	}
+	
+	if(totalClips == 0){
+		HashMap<String,Integer> file_maps2 = new HashMap<String, Integer>();
+		file_maps2.put("No media added yet!",R.drawable.gallery_slider);
+		constructSlider(file_maps2);
+	}
+}
+
+private void constructSlider2(HashMap<String, File> file_maps) {
+	for(String name : file_maps.keySet()){
+        TextSliderView textSliderView = new TextSliderView(this);
+        // initialize a SliderLayout
+        textSliderView
+                .description(name)
+                .image(file_maps.get(name))
+                .setScaleType(BaseSliderView.ScaleType.CenterCrop)
+                .setOnSliderClickListener(this);
+
+        //add your extra information
+        textSliderView.getBundle()
+                .putString("extra",name);
+
+    mDemoSlider.addSlider(textSliderView);
+    }
+    mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
+    mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+    mDemoSlider.setCustomAnimation(new DescriptionAnimation());
+    mDemoSlider.setDuration(4000);
+	
+}
+public void constructSlider(HashMap<String,Integer> file_maps){
+
+    for(String name : file_maps.keySet()){
+        TextSliderView textSliderView = new TextSliderView(this);
+        // initialize a SliderLayout
+        textSliderView
+                .description(name)
+                .image(file_maps.get(name))
+                .setScaleType(BaseSliderView.ScaleType.CenterInside)
+                .setOnSliderClickListener(this);
+
+        //add your extra information
+        textSliderView.getBundle()
+                .putString("extra",name);
+
+    mDemoSlider.addSlider(textSliderView);
+    }
+    mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
+    mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+    mDemoSlider.setCustomAnimation(new DescriptionAnimation());
+    mDemoSlider.setDuration(4000);
 }
 
 @Override
 public void onSliderClick(BaseSliderView slider) {
-    Toast.makeText(this,slider.getBundle().get("extra") + "",Toast.LENGTH_SHORT).show();
+    //Toast.makeText(this,slider.getBundle().get("extra") + "",Toast.LENGTH_SHORT).show();
 }
 public void setSelectedItem(Spinner spinner,String string){
 	int index = 0;

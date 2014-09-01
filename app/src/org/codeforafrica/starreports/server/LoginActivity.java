@@ -202,7 +202,7 @@ public class LoginActivity extends BaseActivity implements Runnable
         Auth storymakerAuth = (new AuthTable()).getAuthDefault(getApplicationContext(), Auth.STORYMAKER);
         if (storymakerAuth != null) {
         	txtUser.setText(storymakerAuth.getUserName());
-        	txtPass.setText(storymakerAuth.getCredentials());
+        	//txtPass.setText(storymakerAuth.getCredentials());
         } 
     }
     public void run ()

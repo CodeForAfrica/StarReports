@@ -77,7 +77,8 @@
             android:id="@+id/lyt_pass"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@color/lp_grey">
+            android:background="@color/lp_grey"
+            android:layout_marginBottom="5dp">
 
           <EditText
               android:id="@+id/login_password"
@@ -85,7 +86,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_alignParentLeft="true"
-              android:layout_marginBottom="5dp"
+              
               android:layout_marginTop="5dip"
               android:layout_toLeftOf="@+id/password_visibility"
               android:background="@color/lp_grey"
