@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/menu_add_report"
-          android:icon="@drawable/icon_new_report"
+          android:icon="@drawable/ic_action_add"
           android:title="New Report"
           android:showAsAction="always"
           />
     	 
      <item android:id="@+id/menu_sync_reports"
-          android:icon="@drawable/icon_sync"
+          android:icon="@drawable/ic_action_swap"
           android:title="Sync"
           android:showAsAction="always"
           /> 
@@ -19,25 +19,22 @@
       android:actionViewClass="android.widget.SearchView"/>
 
     <item android:id="@+id/menu_new_form"
-          android:icon="@drawable/menu"
+          android:icon="@drawable/abs__ic_menu_moreoverflow_normal_holo_dark"
           android:title="Menu"
           android:showAsAction="always"
           >
         <menu>
-            <item android:id="@+id/home"
-                  android:icon="@drawable/home"
-                  android:title="Home"/>
             
             <item android:id="@+id/about"
-                  android:icon="@drawable/about"
+                  android:icon="@drawable/ic_action_about"
                   android:title="About"/>
             
             <item android:id="@+id/profile"
-                  android:icon="@drawable/profile"
+                  android:icon="@drawable/ic_action_person"
                   android:title="Edit Profile"/>
            
             <item android:id="@+id/logout"
-                  android:icon="@drawable/logout"
+                  android:icon="@drawable/ic_action_cancel"
                   android:title="Logout"/>
         </menu>
     </item>

@@ -105,9 +105,7 @@ public class OverlayCameraActivity extends SherlockActivity implements Callback,
        mSurfaceHolder.addCallback(this);
        mSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
        addContentView(mOverlayView, new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT));  
-       if(getIntent().hasExtra("take1")){
-    	   closeOverlay();
-       }
+      
     }
 
     private void closeOverlay ()

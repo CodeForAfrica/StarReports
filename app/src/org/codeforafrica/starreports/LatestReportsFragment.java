@@ -86,6 +86,8 @@ public class LatestReportsFragment extends Fragment {
         return mView;
     }
     
+    
+    
     class GetRecentPosts extends AsyncTask<String, String, String> {
    	 @Override
         protected void onPreExecute() {

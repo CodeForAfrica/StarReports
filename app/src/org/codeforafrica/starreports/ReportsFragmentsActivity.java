@@ -111,7 +111,6 @@ public class ReportsFragmentsActivity extends BaseActivity implements ActionBar.
         
     }
 
-   
     @Override
 	protected void onActivityResult(int reqCode, int resCode, Intent intent) {
 		

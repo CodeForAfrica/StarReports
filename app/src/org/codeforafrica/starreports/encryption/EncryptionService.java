@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import javax.crypto.Cipher;
 
-import org.codeforafrica.starreports.HomePanelsActivity;
+import org.codeforafrica.starreports.ReportsFragmentsActivity;
 import org.codeforafrica.starreports.encryption.Encryption;
 import org.codeforafrica.starreports.model.Media;
 import org.codeforafrica.starreports.model.Project;
@@ -94,7 +94,7 @@ public class EncryptionService extends Service{
 	   	 CharSequence text = message;
 	   	 Notification notification = new Notification(R.drawable.ic_secure, text, System.currentTimeMillis());
 	   	 PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-	   	                new Intent(this, HomePanelsActivity.class), 0);
+	   	                new Intent(this, ReportsFragmentsActivity.class), 0);
 	   	notification.setLatestEventInfo(this, "LP: Encryption",
 	   	      text, contentIntent);
 	   	NotificationManager nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);

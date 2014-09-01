@@ -95,7 +95,7 @@ public class ReportsActivity extends BaseActivity implements OnClickListener{
         load_new_report.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {
-				Intent i = new Intent(getApplicationContext(),ReportActivity.class);
+				Intent i = new Intent(getApplicationContext(),Report_PageIndicatorActivity.class);
 				i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(i);
 				
@@ -355,7 +355,7 @@ public class ReportsActivity extends BaseActivity implements OnClickListener{
     		androidViewsCard2.setOnClickListener(new OnClickListener(){
     			@Override
     			public void onClick(View v) {
-    				Intent intent =  new Intent(ReportsActivity.this, ReportActivity.class);
+    				Intent intent =  new Intent(ReportsActivity.this, Report_PageIndicatorActivity.class);
     				intent.putExtra("rid", rid);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     		        startActivity(intent);
@@ -471,7 +471,7 @@ public class ReportsActivity extends BaseActivity implements OnClickListener{
 			
 				Report report = mListReports.get(position);
 				Intent intent = null;
-				intent = new Intent(ReportsActivity.this, ReportActivity.class);
+				intent = new Intent(ReportsActivity.this, Report_PageIndicatorActivity.class);
 				intent.putExtra("title",report.getTitle());
 				intent.putExtra("issue", report.getIssue());
                 intent.putExtra("sector", report.getSector());

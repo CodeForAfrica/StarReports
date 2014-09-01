@@ -254,7 +254,7 @@ public class LoginActivity extends BaseActivity implements Runnable
 
 		@Override
 		public void handleMessage(Message msg) {
-			pBLogin.setVisibility(View.GONE);
+			pBLogin.setVisibility(View.INVISIBLE);
 			
 				
 			switch (msg.what)

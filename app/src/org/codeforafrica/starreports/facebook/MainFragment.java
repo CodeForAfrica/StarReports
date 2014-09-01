@@ -3,7 +3,6 @@ package org.codeforafrica.starreports.facebook;
 import java.util.Arrays;
 
 import org.codeforafrica.starreports.ConnectionDetector;
-import org.codeforafrica.starreports.HomePanelsActivity;
 import org.codeforafrica.starreports.R;
 import org.codeforafrica.starreports.ReportsFragmentsActivity;
 import org.codeforafrica.starreports.api.APIFunctions;

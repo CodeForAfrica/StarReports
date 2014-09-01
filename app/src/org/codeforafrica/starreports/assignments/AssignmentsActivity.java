@@ -8,7 +8,7 @@ import net.bican.wordpress.Page;
 
 import org.codeforafrica.starreports.BaseActivity;
 import org.codeforafrica.starreports.R;
-import org.codeforafrica.starreports.ReportActivity;
+import org.codeforafrica.starreports.Report_PageIndicatorActivity;
 import org.codeforafrica.starreports.StoryMakerApp;
 import org.codeforafrica.starreports.R.id;
 import org.codeforafrica.starreports.R.layout;
@@ -150,7 +150,7 @@ public class AssignmentsActivity extends BaseActivity{
 						public void onClick(View v) {
 
 							// TODO: Auto-generated method stub
-							Intent intent = new Intent(AssignmentsActivity.this, ReportActivity.class);
+							Intent intent = new Intent(AssignmentsActivity.this, Report_PageIndicatorActivity.class);
 							intent.putExtra("mediaTypes", _mediaTypes[s]);
 							intent.putExtra("assignmentID", assignmentID[s]);
 							startActivity(intent);

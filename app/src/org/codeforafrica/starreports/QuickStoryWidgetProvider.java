@@ -28,7 +28,7 @@ public class QuickStoryWidgetProvider extends AppWidgetProvider {
       // Set the text
       //remoteViews.setTextViewText(R.id.update, String.valueOf(number));
 
-      Intent intentHome = new Intent(context, HomePanelsActivity.class);
+      Intent intentHome = new Intent(context, ReportsFragmentsActivity.class);
       PendingIntent pendingIntentHome = PendingIntent.getActivity(context,
     		  intentHome.hashCode(), intentHome, 0);
       remoteViews.setOnClickPendingIntent(R.id.btnWidgetHome, pendingIntentHome);

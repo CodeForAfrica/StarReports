@@ -54,21 +54,21 @@
             <ImageView
                 android:id="@+id/imageViewPic"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="20dp"
                 android:layout_weight="0.99"
                 android:src="@drawable/pics" />
 
             <ImageView
                 android:id="@+id/imageViewVid"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="20dp"
                 android:layout_weight="0.99"
                 android:src="@drawable/vids" />
 
             <ImageView
                 android:id="@+id/imageViewAud"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="20dp"
 	            android:layout_weight="1"
                 android:src="@drawable/auds" />
 

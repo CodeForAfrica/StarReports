@@ -35,7 +35,7 @@ public class AddClipsThumbnailFragment extends Fragment {
         mActivity = activity;
     }
 
-    public static final String ARG_CLIP_TYPE_ID = "clip_type_id";
+	public static final String ARG_CLIP_TYPE_ID = "clip_type_id";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

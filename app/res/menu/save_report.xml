@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/menu_add_media"
+        android:icon="@drawable/ic_action_new_attachment"
+        android:showAsAction="always|withText"
+        android:title="Add Media">
+	    	<menu>
+	            
+	            <item android:id="@+id/add_picture"
+	                  android:icon="@drawable/ic_action_camera"
+	                  android:title="Add picture"/>
+	            
+	            <item android:id="@+id/add_video"
+	                  android:icon="@drawable/ic_action_video"
+	                  android:title="Add video"/>
+	           
+	            <item android:id="@+id/add_audio"
+	                  android:icon="@drawable/ic_action_mic"
+	                  android:title="Add audio"/>
+	            
+	            <item android:id="@+id/import_from_gallery"
+	                  android:icon="@drawable/ic_action_picture"
+	                  android:title="Import from gallery"/>
+	        </menu>
+        </item>
+    <item
         android:id="@+id/menu_save"
         android:icon="@android:drawable/ic_menu_save"
         android:showAsAction="always"

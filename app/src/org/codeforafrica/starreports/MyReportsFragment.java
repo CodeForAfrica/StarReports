@@ -85,6 +85,7 @@ public class MyReportsFragment extends Fragment {
       createCards();
         return mView;
     }
+    
     public void createCards(){
     	for(int i = 0; i<mListReports.size(); i++){
     		
@@ -147,10 +148,11 @@ public class MyReportsFragment extends Fragment {
     		androidViewsCard2.setOnClickListener(new OnClickListener(){
     			@Override
     			public void onClick(View v) {
-    				Intent intent =  new Intent(mActivity, ReportActivity.class);
+    				Intent intent =  new Intent(mActivity, Report_PageIndicatorActivity.class);
     				intent.putExtra("rid", rid);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     		        startActivity(intent);
+    		        getActivity().finish();
     			}
     		});
     		

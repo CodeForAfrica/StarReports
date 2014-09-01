@@ -300,12 +300,6 @@ public void onUserInteraction()
 			});
             dialog.show();
         }
-    	if (item.getItemId() == R.id.home)
-        {
-        	Intent intent = new Intent(getBaseContext(), HomePanelsActivity.class);
-	        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	        startActivity(intent);
-        }
         if (item.getItemId() == R.id.about)
         {	
         	   		

@@ -112,7 +112,7 @@
                 android:value=".ReportsFragmentsActivity" />
         </activity>
         <activity
-            android:name="org.codeforafrica.starreports.ReportActivity"
+            android:name="org.codeforafrica.starreports.old_ReportActivity"
             android:label="@string/title_activity_new_story" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

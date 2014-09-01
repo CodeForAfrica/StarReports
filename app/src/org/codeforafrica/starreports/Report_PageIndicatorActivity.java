@@ -1,38 +1,55 @@
 package org.codeforafrica.starreports;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.crypto.Cipher;
+
+import org.codeforafrica.starreports.encryption.Encryption;
 import org.codeforafrica.starreports.location.GPSTracker;
 import org.codeforafrica.starreports.location.PlaceJSONParser;
+import org.codeforafrica.starreports.model.Media;
+import org.codeforafrica.starreports.model.Project;
+import org.codeforafrica.starreports.model.Report;
+import org.codeforafrica.starreports.server.ServerManager;
 import org.holoeverywhere.widget.ProgressBar;
+import org.holoeverywhere.widget.Spinner;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import redstone.xmlrpc.XmlRpcFault;
+import redstone.xmlrpc.XmlRpcStruct;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.webkit.WebSettings;
+import android.view.Window;
+import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.SimpleAdapter;
@@ -44,12 +61,38 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
-import com.viewpagerindicator.CirclePageIndicator;
 
 public class Report_PageIndicatorActivity extends BaseActivity implements BaseSliderView.OnSliderClickListener{
 	private SliderLayout mDemoSlider;
-	
+	String mMessage;
+	String mTitle;
+	// Google Map
+	private GPSTracker gpsT; 
+    private double latitude;
+    private double longitude;
+    private ProgressBar pB;
+    private WebView web;
+    AutoCompleteTextView atvPlaces;
+    PlacesTask placesTask;
+    ParserTask parserTask;
     
+    EditText editTextTitle;
+    EditText editTextDescription;
+    Spinner spinnerCategories;
+    private Dialog dialog;
+    private Dialog dialog_save;
+    private Dialog dialog_publish;
+    
+    public boolean new_report = true;
+    int resultMode;
+    int assignmentID = 0;
+    String mediaTypes;
+    int rid;
+	String title;
+	String category;
+	String description;
+	String location;
+    int story_mode;
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         overridePendingTransition(R.anim.anim_slide_in_left,
@@ -77,66 +120,61 @@ public class Report_PageIndicatorActivity extends BaseActivity implements BaseSl
 	@Override
     public void finish() {
         super.finish();
+        Intent i = new Intent(getBaseContext(), ReportsFragmentsActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        	
-        
-            case android.R.id.home:
-            	Intent i = new Intent(Report_PageIndicatorActivity.this, ReportsFragmentsActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            	startActivity(i);
-            	finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+	 @Override
+	    public boolean onOptionsItemSelected(MenuItem item) {
+	        switch (item.getItemId()) {
+	            case android.R.id.home:
+	            	if(new_report){
+	            		if(something_changed()){
+	            			showSaveAlert();
+	            		}else{
+	            			do_report_close();
+	            		}
+	            	}else{
+	            		//old report
+	            		if(something_changed_db()){
+	            			showSaveAlert();
+	            		}else{
+	            			do_report_close();
+	            		}
+	            	}
+	            	break;
+	            case R.id.add_picture:
+	            	story_mode = 2;
+					resultMode = Project.STORY_TYPE_PHOTO;
+					launchProject(editTextTitle.getText().toString(), 0,spinnerCategories.getSelectedItemPosition(),"",editTextDescription.getText().toString(),atvPlaces.getText().toString(), false, false);		
+					break;
+	            case R.id.add_video:
+	            	story_mode = 2;
+					resultMode = Project.STORY_TYPE_VIDEO;
+					launchProject(editTextTitle.getText().toString(), 0,spinnerCategories.getSelectedItemPosition(),"",editTextDescription.getText().toString(),atvPlaces.getText().toString(), false, false);		
+					break;
+	            case R.id.add_audio:
+	            	story_mode = 2;
+					resultMode = Project.STORY_TYPE_AUDIO;
+					launchProject(editTextTitle.getText().toString(), 0,spinnerCategories.getSelectedItemPosition(),"",editTextDescription.getText().toString(),atvPlaces.getText().toString(), false, false);		
+					break;
+	            case R.id.import_from_gallery:
+	            	launchProject(editTextTitle.getText().toString(), 0,spinnerCategories.getSelectedItemPosition(),"",editTextDescription.getText().toString(),atvPlaces.getText().toString(), false, true);		
+	            	break;
+	            case R.id.menu_save:
+	            	report_save();
+	            	break;
+	            case R.id.menu_discard:
+	            	delete_report();
+	            	break;
+	        }
+	        return super.onOptionsItemSelected(item);
+	    }
 private void initIntroActivityList ()
 {
   	setContentView(R.layout.report_pageindicator);
   	
-	int[] titles1 =
-		{(R.string.report_add_title),
-			(R.string.report_add_description),
-			(R.string.report_add_category),
-			(R.string.report_add_location)
-			};
-	
-	int[] messages1 =
-		{(R.string.report_add_title_desc),
-			(R.string.report_add_description_desc),
-			(R.string.report_add_category_desc),
-			(R.string.report_add_location_desc)
-			};
-	
-
-	
-
-	MyAdapter adapter = new MyAdapter(getSupportFragmentManager(), titles1,messages1);
-	ViewPager pager = ((ViewPager)findViewById(R.id.pager1));
-	
-	pager.setId((int)(Math.random()*10000));
-	pager.setOffscreenPageLimit(5);
-		
-	pager.setAdapter(adapter);
-		 
-	//Bind the title indicator to the adapter
-     CirclePageIndicator indicator = (CirclePageIndicator)findViewById(R.id.circles1);
-     indicator.setViewPager(pager);
-     indicator.setSnap(true);
-     
-     
-     final float density = getResources().getDisplayMetrics().density;
-     
-     indicator.setRadius(5 * density);
-     indicator.setFillColor(0xFFFF0000);
-     indicator.setPageColor(0xFFaaaaaa);
-     //indicator.setStrokeColor(0xFF000000);
-     //indicator.setStrokeWidth(2 * density);
-	    		
-     
      //gallery slideshow
      mDemoSlider = (SliderLayout)findViewById(R.id.slider);
      HashMap<String,String> url_maps = new HashMap<String, String>();
@@ -164,149 +202,471 @@ private void initIntroActivityList ()
          textSliderView.getBundle()
                  .putString("extra",name);
 
-        mDemoSlider.addSlider(textSliderView);
+     mDemoSlider.addSlider(textSliderView);
      }
      mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
      mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
      mDemoSlider.setCustomAnimation(new DescriptionAnimation());
      mDemoSlider.setDuration(4000);
+     
+     web = (WebView) findViewById(R.id.webView);
+	 //WebSettings webSettings = myWebView.getSettings();
+	 //webSettings.setJavaScriptEnabled(true);
+	 
+	 	pB = (ProgressBar) findViewById(R.id.pBLoadWebView);
+		
+		web.setWebViewClient(new myWebClient());
+		web.getSettings().setJavaScriptEnabled(true);
+		
+		//get user location
+    		gpsT = new GPSTracker(this); 
+    		  
+            // check if GPS enabled 
+            if(gpsT.canGetLocation()){ 
+            	
+                latitude = gpsT.getLatitude(); 
+                longitude = gpsT.getLongitude(); 
+                
+                web.loadUrl("http://192.168.1.41/webview_map.php?lat="+latitude+"&long="+longitude);
+            
+            }else{  
+                gpsT.showSettingsAlert(); 
+            } 
+        
+            //autocomplete location 
+            atvPlaces = (AutoCompleteTextView) findViewById(R.id.atv_places);
+            atvPlaces.setThreshold(1);
+     
+            atvPlaces.addTextChangedListener(new TextWatcher() {
+     
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    placesTask = new PlacesTask();
+                    placesTask.execute(s.toString());
+                }
+     
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count,
+                int after) {
+                    // TODO Auto-generated method stub
+                }
+     
+                @Override
+                public void afterTextChanged(Editable s) {
+                    // TODO Auto-generated method stub
+                }
+            });
+            
+            
+          //txtNewStoryDesc = (TextView)findViewById(R.id.txtNewStoryDesc);
+            editTextTitle = (EditText)findViewById(R.id.add_title);
+            
+            spinnerCategories = (Spinner)findViewById(R.id.add_category);  
+            setCategories();
+            
+            editTextDescription = (EditText)findViewById(R.id.add_description);
+            
+            initializeReport();
 }
+
+public void initializeReport(){
+	Intent i = getIntent();
+    rid = i.getIntExtra("rid", -1);
+    
+    if(rid!=-1){ 
+    	getSupportActionBar().setTitle("Edit Report");
+    	Report r = Report.get(this, rid);
+    	
+    	location = r.getLocation();
+    	title = r.getTitle();
+        category = r.getSector();
+        description = r.getDescription();
+        
+        
+        editTextTitle.setText(title);
+        spinnerCategories.setSelection(Integer.parseInt(category));
+       
+        editTextDescription.setText(description);
+        atvPlaces.setText(location);
+        
+        if(!r.getAssignment().equals("0")){
+        	assignmentID = Integer.parseInt(r.getAssignment());
+        	mediaTypes = r.getAssignmentMediaTypes();
+        	        	
+        	//disable buttons not included
+			if(!(mediaTypes.contains("video"))){
+			}
+			if(!(mediaTypes.contains("audio"))){
+
+			}
+			if(!(mediaTypes.contains("image"))){
+
+			}
+
+        }
+        new_report = false;
+    }else{
+    	setLocation();
+    	
+    	getSupportActionBar().setTitle("Add Report");
+    	
+    }
+}
+
 @Override
 public void onSliderClick(BaseSliderView slider) {
     Toast.makeText(this,slider.getBundle().get("extra") + "",Toast.LENGTH_SHORT).show();
 }
-public class MyAdapter extends FragmentPagerAdapter {
-	 
-	 int[] mMessages;
-	 int[] mTitles;
-	 
-       public MyAdapter(FragmentManager fm, int[] titles, int[] messages) {
-           super(fm);
-           mTitles = titles;
-           mMessages = messages;
-       }
-
-       @Override
-       public int getCount() {
-           return mMessages.length;
-       }
-
-       @Override
-       public Fragment getItem(int position) {
-       	Bundle bundle = new Bundle();
-       	bundle.putString("title",getString(mTitles[position]));
-       	bundle.putString("msg", getString(mMessages[position]));
-       	
-       	Fragment f = new MyFragment();
-       	f.setArguments(bundle);
-       	
-           return f;
-       }
-   }
-
-public static final class MyFragment extends Fragment {
-
-	String mMessage;
-	String mTitle;
-	// Google Map
-	private GPSTracker gpsT; 
-    private double latitude;
-    private double longitude;
-    private ProgressBar pB;
-    private WebView web;
-    AutoCompleteTextView atvPlaces;
-    PlacesTask placesTask;
-    ParserTask parserTask;
-	 /**
-  * When creating, retrieve this instance's number from its arguments.
-  */
- @Override
- public void onCreate(Bundle savedInstanceState) {
-     super.onCreate(savedInstanceState);
-
-     mTitle = getArguments().getString("title");
-     mMessage = getArguments().getString("msg");
- }
-
- /**
-  * The Fragment's UI is just a simple text view showing its
-  * instance number.
-  */
- @Override
- public View onCreateView(LayoutInflater inflater, ViewGroup container,
-         Bundle savedInstanceState) {
+public void setSelectedItem(Spinner spinner,String string){
+	int index = 0;
+	for (int i = 0; i < spinner.getAdapter().getCount(); i++){
+		if (spinner.getItemAtPosition(i).equals(string)){
+			index = i;
+		}
+	}
+		spinner.setSelection(index);
+}
+private void launchProject(String title, int pIssue, int pSector, String pEntity, String pDesc, String pLocation, boolean update, boolean importing) {
 	
-	 ViewGroup root = null;
-   
-	 //set visibility depending on section
-	 if(mTitle.equals(getResources().getString(R.string.report_add_title))){
-		 root = (ViewGroup) inflater.inflate(R.layout.report_pager_edit_title, null);
-		 ((EditText)root.findViewById(R.id.add_title)).setHint(mMessage);
-		 
-     }else if(mTitle.equals(getResources().getString(R.string.report_add_description))){
-		 root = (ViewGroup) inflater.inflate(R.layout.report_pager_edit_description, null);
-		 ((EditText)root.findViewById(R.id.add_description)).setHint(mMessage);
-		 
-     }else if(mTitle.equals(getResources().getString(R.string.report_add_category))){
-    	 root = (ViewGroup) inflater.inflate(R.layout.report_pager_edit_taxonomy, null);
-     }else if(mTitle.equals(getResources().getString(R.string.report_add_location))){
-    	 root = (ViewGroup) inflater.inflate(R.layout.report_pager_edit_location, null);
-    	 
-		 //((EditText)root.findViewById(R.id.add_location)).setHint(mMessage);
-		  web = (WebView) root.findViewById(R.id.webView);
-		 //WebSettings webSettings = myWebView.getSettings();
-		 //webSettings.setJavaScriptEnabled(true);
-		 
-		 	pB = (ProgressBar) root.findViewById(R.id.pBLoadWebView);
-			
-			web.setWebViewClient(new myWebClient());
-			web.getSettings().setJavaScriptEnabled(true);
-			
-			//get user location
-	    		gpsT = new GPSTracker(getActivity()); 
-	    		  
-	            // check if GPS enabled 
-	            if(gpsT.canGetLocation()){ 
-	            	
-	                latitude = gpsT.getLatitude(); 
-	                longitude = gpsT.getLongitude(); 
-	                
-	                web.loadUrl("http://192.168.1.41/webview_map.php?lat="+latitude+"&long="+longitude);
-	            
-	            }else{  
-	                gpsT.showSettingsAlert(); 
-	            } 
-	        
-	            //autocomplete location 
-	            atvPlaces = (AutoCompleteTextView) root.findViewById(R.id.atv_places);
-	            atvPlaces.setThreshold(1);
-	     
-	            atvPlaces.addTextChangedListener(new TextWatcher() {
-	     
-	                @Override
-	                public void onTextChanged(CharSequence s, int start, int before, int count) {
-	                    placesTask = new PlacesTask();
-	                    placesTask.execute(s.toString());
-	                }
-	     
-	                @Override
-	                public void beforeTextChanged(CharSequence s, int start, int count,
-	                int after) {
-	                    // TODO Auto-generated method stub
-	                }
-	     
-	                @Override
-	                public void afterTextChanged(Editable s) {
-	                    // TODO Auto-generated method stub
-	                }
-	            });
-		 
+	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	String currentdate = dateFormat.format(new Date());
+	
+	if(pLocation.equals("Location not set")){
+		pLocation = "0, 0";
+	}
+	
+	if (title == null || title.length() == 0)
+	{
+		title = "Captured at "+currentdate;
+	}
+	
+	
+	Report report;
+    if(rid==-1){
+    	
+    	report = new Report (this, 0, title, String.valueOf(pSector), String.valueOf(pIssue), pEntity, pDesc, pLocation, "0", currentdate, "0", "0", "0", "");
+    	if(getIntent().hasExtra("assignmentID")){
+        	report.setAssignment(String.valueOf(getIntent().getIntExtra("assignmentID", 0)));
+        	report.setAssignmentMediaTypes(mediaTypes);
+        }
+    	
+    }else{
+    	
+    	report = Report.get(this, rid);
+    	report.setTitle(title);
+    	report.setDescription(pDesc);
+    	report.setEntity(pEntity);
+    	report.setIssue(String.valueOf(pIssue));
+    	report.setSector(String.valueOf(pSector));
+    	report.setLocation(pLocation);        
+    }
+            
+    report.save();
+    
+    rid = report.getId();
+            
+    if(update == false){
+    	
+        Intent intent = new Intent(getBaseContext(), StoryNewActivity.class);
+        intent.putExtra("storymode", resultMode);
+        intent.putExtra("importing", importing);
+        intent.putExtra("rid", report.getId());
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        //setMediaCount();
+         
+    }else{
+    	/*if(pLocation.equals("0, 0")){
+    		Toast.makeText(getApplicationContext(), "Trouble finding location. Try again later!", Toast.LENGTH_LONG).show();
+    	}else{
+    	*/	
+        	Toast.makeText(getBaseContext(), String.valueOf(rid)+" Updated successfully!", Toast.LENGTH_LONG).show();
+        	report_close();
+    	//}      	
+    }
+     
+}
 
-     }
-     
-     
-     return root;
- 	}
+public void delete_report(){
+	dialog_save = new Dialog(Report_PageIndicatorActivity.this);
+	dialog_save.requestWindowFeature(Window.FEATURE_NO_TITLE);
+	dialog_save.setContentView(R.layout.dialog_delete);
+	dialog_save.findViewById(R.id.button_ok).setOnClickListener(new OnClickListener(){
+		@Override
+		public void onClick(View v) {
+			if(rid!=-1){
+				Report.get(getApplicationContext(), rid).delete();
+			}
+			dialog_save.dismiss();
+			finish();
+		}        	
+    });
+	dialog_save.findViewById(R.id.button_cancel).setOnClickListener(new OnClickListener(){
+		@Override
+		public void onClick(View v) {
+			dialog_save.dismiss();
+		}        	
+    });
+	dialog_save.show();
+}
+
+public void showSaveAlert(){
+	dialog_save = new Dialog(Report_PageIndicatorActivity.this);
+	dialog_save.requestWindowFeature(Window.FEATURE_NO_TITLE);
+	dialog_save.setContentView(R.layout.dialog_save);
+	dialog_save.findViewById(R.id.button_save).setOnClickListener(new OnClickListener(){
+		@Override
+		public void onClick(View v) {
+			report_save();  
+        	report_close();
+			dialog_save.dismiss();
+		}        	
+    });
+	dialog_save.findViewById(R.id.button_discard).setOnClickListener(new OnClickListener(){
+		@Override
+		public void onClick(View v) {
+        	report_close();
+			dialog_save.dismiss();
+		}        	
+    });
+	dialog_save.show();
+}
+
+public boolean something_changed_db(){
+	Report report = Report.get(this, rid);
+	
+	if((editTextTitle.getText().toString().equals(report.getTitle()))&&
+			(spinnerCategories.getSelectedItemPosition()==Integer.parseInt(report.getSector()))&&
+			(atvPlaces.equals(report.getLocation()))&&
+			(editTextDescription.getText().toString().equals(report.getDescription())))
+			{
+		return false;
+	}else{
+		return true;
+	}
+}
+public boolean something_changed(){
+		if((editTextTitle.getText().toString().equals(""))&&
+			(spinnerCategories.getSelectedItemPosition()==0)&&
+			(atvPlaces.getText().toString().equals(""))&&
+			(editTextDescription.getText().toString().equals(""))
+			){
+		//nothing changed; ignore location change
+		
+		return false;
+	}else{
+			
+    	return true;
+	}
+}
+public void setLocation(){
+	gpsT = new GPSTracker(Report_PageIndicatorActivity.this); 
+	  
+    // check if GPS enabled 
+    if(gpsT.canGetLocation()){ 
+
+        double latitude = gpsT.getLatitude(); 
+        double longitude = gpsT.getLongitude(); 
+
+        // \n is for new line 
+        //gpsInfo.setText(latitude+", "+longitude); 
+       /* GeoPoint myGeoPoint = new GeoPoint( 
+              (int)(latitude*1000000), 
+              (int)(longitude*1000000)); 
+      	CenterLocatio(myGeoPoint); */
+        if(String.valueOf(latitude).equals("0")){
+            gpsT.showSettingsAlert(); 
+        }
+    }else{ 
+        // can't get location 
+        // GPS or Network is not enabled 
+        // Ask user to enable GPS/network in settings 
+        gpsT.showSettingsAlert(); 
+    } 
+}
+public void report_save(){
+	
+	if (formValid()) {
+		launchProject(editTextTitle.getText().toString(), 0,spinnerCategories.getSelectedItemPosition(),"",editTextDescription.getText().toString(),atvPlaces.getText().toString(), true, false);		
+	}
+	
+}
+public boolean formValid(){
+	return true;
+}
+public void report_close(){
+	dialog_publish = new Dialog(Report_PageIndicatorActivity.this);
+	dialog_publish.requestWindowFeature(Window.FEATURE_NO_TITLE);
+	dialog_publish.setContentView(R.layout.dialog_publish);
+	dialog_publish.findViewById(R.id.button_publish).setOnClickListener(new OnClickListener(){
+		@Override
+		public void onClick(View v) {
+			//TODO: check if sync or encrypt is running
+			/*Intent i = new Intent(Report_PageIndicatorActivity.this,SyncService.class);
+			i.putExtra("rid", rid);
+	        	startService(i);
+	        	*/
+			
+			//Publish via Wordpress xmlrpc
+			new publish_report().execute();
+	        	
+        	do_report_close();
+			dialog_publish.dismiss();
+		}        	
+    });
+	dialog_publish.findViewById(R.id.button_skip).setOnClickListener(new OnClickListener(){
+		@Override
+		public void onClick(View v) {
+        	do_report_close();
+			dialog_publish.dismiss();
+		}        	
+    });
+	dialog_publish.show();
+}
+class publish_report extends AsyncTask<String, String, String> {
+   	 @Override
+        protected void onPreExecute() {
+	   		super.onPreExecute();
+	        /*pDialog = new ProgressDialog(Report_PageIndicatorActivity.this);
+	        pDialog.setMessage("Posting report...");
+	        pDialog.setIndeterminate(false);
+	        pDialog.setCancelable(false);
+	        pDialog.show();
+	        */ 
+        }
+        protected String doInBackground(String... args) {
+        	ServerManager sm = StoryMakerApp.getServerManager();
+            //sm.setContext(getBaseContext());
+
+            String postId="";
+            String urlPost="";
+            XmlRpcStruct structA = new XmlRpcStruct();
+			structA.put("key","assignment_id");
+			structA.put("value",assignmentID);
+		 	
+			
+			try {
+				
+				
+				StringBuffer sbBody = new StringBuffer();
+				sbBody.append("");
+				
+				//upload media
+				ArrayList<Project> mListProjects;
+				mListProjects = Project.getAllAsList(getApplicationContext(), rid);
+				String thumbnail= null;
+			 	for (int j = 0; j < mListProjects.size(); j++) {
+			 		Project project = mListProjects.get(j);
+			 		
+			 		Media[] mediaList = project.getScenesAsArray()[0].getMediaAsArray();
+			 	
+				 	for (Media media: mediaList){
+
+				 		if(media!=null){
+				 			
+				 			
+				 		String ppath = media.getPath();
+					 	String ptype = media.getMimeType();
+					 	
+					 	String file = ppath;
+					 	
+					 	//if encrypted, decrypt before upload
+					 	if(media.getEncrypted()!=0){
+					 	
+					 		Cipher cipher;
+							try {				
+								cipher = Encryption.createCipher(Cipher.DECRYPT_MODE);
+								Encryption.applyCipher(file, file+"_", cipher);
+							}catch (Exception e) {
+								// TODO Auto-generated catch block
+								Log.e("Encryption error", e.getLocalizedMessage());
+								e.printStackTrace();
+							}
+							//Then delete original file
+							File oldfile = new File(file);
+							oldfile.delete();
+							//Then remove _ on encrypted file
+							File newfile = new File(file+"_");
+							newfile.renameTo(new File(file));
+					 	}	
+					 		String murl = sm.addMedia(ptype, new File(file));
+					 		//create link depending on media type
+					 		if(ptype.contains("image")){
+					 			murl = "<img src=\"" + murl + "\"/>";
+					 		}else if(ptype.contains("video")){
+					 			murl = "[video width=\"640\" height=\"272\" mp4=\""+ murl +"\"][/video]";
+					 		}else{
+					 			murl = "[audio mp3=\"" + murl +"\"][/audio]";
+					 		}
+					 		//post file here
+					 		sbBody.append(murl);
+					 		sbBody.append("\n\n");
+					 		
+					 		String bmp = Media.getThumbnailUrl(Report_PageIndicatorActivity.this,media,project);
+	            			if (bmp != null)
+	            				thumbnail = bmp;
+				 		}
+			 		}
+			 	}
+				
+			 	
+			 	//upload thumbnail
+			 	if(thumbnail!=null){
+			 		thumbnail = sm.addThumbnail("image/jpeg", new File(thumbnail));
+			 	}
+			 	
+			 	String pDescription = description + "==Media==\n\n" + sbBody.toString();
+			 	
+			 	postId = sm.post2(title, pDescription, null, null, null, null, null, null, structA, thumbnail);
+				urlPost = sm.getPostUrl(postId);
+				
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (XmlRpcFault e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            
+            
+            return urlPost;    
+			
+        }
+        protected void onPostExecute(String file_url) {
+            //pDialog.dismiss();
+	   }
+}
+
+public void do_report_close(){ 	
+	//Hide keyboard
+    InputMethodManager inputManager = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE); 
+    inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(),      
+    		    InputMethodManager.HIDE_NOT_ALWAYS);
+    //NavUtils.navigateUpFromSameTask(this);
+    
+    finish();
+}
+public void setCategories(){
+	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+	try {
+	    JSONArray jsonArray2 = new JSONArray(prefs.getString("categories", "[]"));
+	    ArrayList<String> list=new ArrayList<String>();
+	    list.add("Select Category");
+		for(int i=0;i<jsonArray2.length();i++)
+		{
+			list.add(jsonArray2.getString(i));
+		}
+		
+		ArrayAdapter<String> spinnerMenu = new ArrayAdapter<String>(getApplicationContext(),  R.layout.spinner_report_new, list);
+		spinnerCategories.setAdapter(spinnerMenu);
+
+		
+	}catch (Exception e) {
+	    e.printStackTrace();
+	}
+}
+
+
  	public class myWebClient extends WebViewClient
 	{
 
@@ -456,11 +816,12 @@ public static final class MyFragment extends Fragment {
             int[] to = new int[] { android.R.id.text1 };
  
             // Creating a SimpleAdapter for the AutoCompleteTextView
-            SimpleAdapter adapter = new SimpleAdapter(getActivity().getBaseContext(), result, android.R.layout.simple_list_item_1, from, to);
+            SimpleAdapter adapter = new SimpleAdapter(getBaseContext(), result, android.R.layout.simple_list_item_1, from, to);
  
             // Setting the adapter
             atvPlaces.setAdapter(adapter);
         }
     }
-}
+    
+    
 }

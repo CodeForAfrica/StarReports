@@ -8,7 +8,7 @@ import java.util.TimerTask;
 import javax.crypto.Cipher;
 
 import org.codeforafrica.starreports.ConnectionDetector;
-import org.codeforafrica.starreports.HomePanelsActivity;
+import org.codeforafrica.starreports.ReportsFragmentsActivity;
 import org.codeforafrica.starreports.encryption.Encryption;
 import org.codeforafrica.starreports.model.Media;
 import org.codeforafrica.starreports.model.Project;
@@ -125,7 +125,7 @@ public class SyncService extends Service {
     	 CharSequence text = message;
     	 Notification notification = new Notification(R.drawable.ic_menu_upload, text, System.currentTimeMillis());
     	 PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-    	                new Intent(this, HomePanelsActivity.class), 0);
+    	                new Intent(this, ReportsFragmentsActivity.class), 0);
     	notification.setLatestEventInfo(this, "LP: Sync",
     	      text, contentIntent);
     	NotificationManager nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);

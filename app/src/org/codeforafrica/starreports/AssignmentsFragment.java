@@ -170,7 +170,7 @@ public class AssignmentsFragment extends Fragment {
 					public void onClick(View v) {
 
 						// TODO: Auto-generated method stub
-						Intent intent = new Intent(getActivity(), ReportActivity.class);
+						Intent intent = new Intent(getActivity(), Report_PageIndicatorActivity.class);
 						intent.putExtra("mediaTypes", _mediaTypes[s]);
 						intent.putExtra("assignmentID", assignmentID[s]);
 						startActivity(intent);

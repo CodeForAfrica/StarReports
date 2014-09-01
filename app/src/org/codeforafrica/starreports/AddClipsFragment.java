@@ -40,6 +40,7 @@ import android.view.ViewGroup;
  */
 @SuppressLint("ValidFragment")
 public class AddClipsFragment extends Fragment {
+	
     private final static String TAG = "AddClipsFragment";
     public ViewPager mAddClipsViewPager;
     View mView = null;
@@ -206,13 +207,15 @@ public class AddClipsFragment extends Fragment {
 
             ArrayList<Media> lMedia = mActivity.mMPM.mScene.getMediaAsList();
             Media media = null;
-
+            
             if (lMedia.size() > i)
             {
                 media = lMedia.get(i);
                 //add to queue for encryption if not added
                 try {
-					addToQ(media);
+					if(media!=null){
+						addToQ(media);
+						}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

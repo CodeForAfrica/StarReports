@@ -26,7 +26,7 @@ public class APIFunctions {
 	private static String updateURL = "update.php";
 	private static String reportURL = "article.php";
 	private static String objectURL = "attachment.php";
-	private static String postsURL = "http://192.168.1.43/storymaker/?json=get_posts";
+	private static String postsURL = "http://192.168.1.41/storymaker/api/get_recent_posts/";
 	private static String api_base_url = "http://starreports.codeforafrica.net/sm-api/";
 	private static String api_key = "2a80f2f6094f4e3d2e7b01ba21951f3720060454";
 	private static String assignmentsURL = "http://192.168.1.43/storymaker/?json=get_category_posts&id=2";

@@ -338,7 +338,7 @@ public class PublishFragment extends Fragment {
         
         //Load report screen
         int reportid = mActivity.mMPM.mProject.getReport();
-        Intent i = new Intent(mActivity, ReportActivity.class);
+        Intent i = new Intent(mActivity, Report_PageIndicatorActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         i.putExtra("rid", reportid);
         mActivity.startActivity(i);

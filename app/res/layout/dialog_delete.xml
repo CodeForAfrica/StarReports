@@ -27,7 +27,7 @@ android:background="@color/white" >
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="OK"
+        android:text="YES"
         android:background="@color/lp_blue"
         android:textColor="@color/white" />
 
@@ -36,7 +36,7 @@ android:background="@color/white" >
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="CANCEL"
+        android:text="NO"
         android:background="@color/lp_red"
         android:textColor="@color/white" />
 </LinearLayout>
