@@ -197,8 +197,9 @@ private void initIntroActivityList ()
             	
                 latitude = gpsT.getLatitude(); 
                 longitude = gpsT.getLongitude(); 
+                String mapurl = DefaultsActivity.site_url.replace("/wp", "");
                 
-                web.loadUrl("http://192.168.1.41/webview_map.php?lat="+latitude+"&long="+longitude);
+                web.loadUrl(mapurl + "/webview_map.php?lat="+latitude+"&long="+longitude);
             
             }else{  
                 gpsT.showSettingsAlert(); 
@@ -385,9 +386,6 @@ private void launchProject(String title, int pIssue, int pSector, String pEntity
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	String currentdate = dateFormat.format(new Date());
 	
-	if(pLocation.equals("Location not set")){
-		pLocation = "0, 0";
-	}
 	
 	if (title == null || title.length() == 0)
 	{
@@ -519,8 +517,8 @@ public void setLocation(){
     // check if GPS enabled 
     if(gpsT.canGetLocation()){ 
 
-        double latitude = gpsT.getLatitude(); 
-        double longitude = gpsT.getLongitude(); 
+        latitude = gpsT.getLatitude(); 
+        longitude = gpsT.getLongitude(); 
 
         // \n is for new line 
         //gpsInfo.setText(latitude+", "+longitude); 

@@ -125,7 +125,7 @@
         android:layout_marginBottom="10dp"
         android:orientation="horizontal" >
          <RadioButton
-            android:id="@+id/radioStoryType0"
+            android:id="@+id/radioStoryType01"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             
@@ -133,7 +133,7 @@
             android:checked="true" />
 
         <RadioButton
-            android:id="@+id/radioStoryType1"
+            android:id="@+id/radioStoryType11"
               android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/new_story_choose_template"

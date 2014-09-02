@@ -283,7 +283,8 @@ public class LoginActivity extends BaseActivity implements Runnable
     	if(registering==true){
     		
     		registering = false;
-    		
+        	txtStatus.setText("Registration successfull, you can log in now!");
+
     	}else{
 	    	//login successful
 			SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());

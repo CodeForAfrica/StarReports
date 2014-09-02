@@ -13,6 +13,7 @@ import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.message.BasicNameValuePair;
+import org.codeforafrica.starreports.DefaultsActivity;
 import org.json.JSONObject;
 
 import android.content.Context;
@@ -22,7 +23,7 @@ public class APIFunctions {
 	
 	private JSONParser jsonParser;
 	private static String loginURL = "login.php";
-	private static String registerURL = "http://192.168.1.41/storymaker/api/users/register/";
+	private static String registerURL = DefaultsActivity.site_url + "/api/users/register/";
 	private static String updateURL = "update.php";
 	private static String reportURL = "article.php";
 	private static String objectURL = "attachment.php";

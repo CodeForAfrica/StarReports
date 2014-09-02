@@ -48,7 +48,7 @@ public class StoryMakerApp extends Application {
 	private static Locale mLessonLocale = new Locale(LOCALE_DEFAULT);
 		
 	private final static String URL_PATH_LESSONS = "/appdata/lessons/";
-	private final static String STORYMAKER_DEFAULT_SERVER_URL = "http://192.168.1.41/storymaker";
+	private final static String STORYMAKER_DEFAULT_SERVER_URL = DefaultsActivity.site_url;
 	private static String mBaseUrl = null;
 	
 	 public void InitializeSQLCipher(String dbName, String passphrase) {

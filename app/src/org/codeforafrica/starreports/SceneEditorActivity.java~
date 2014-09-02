@@ -207,7 +207,7 @@ import com.actionbarsherlock.view.MenuItem;
  			@Override
  			public void onClick(View v) {
  				EditText etCaption = (EditText)(dialog.findViewById(R.id.caption));
-
+				   dialog.dismiss();
 			       mMPM.mProject.setTitle(etCaption.getText().toString());
 			       mMPM.mProject.save();
 			     //Load report screen
@@ -217,7 +217,7 @@ import com.actionbarsherlock.view.MenuItem;
 				    i.putExtra("rid", reportid);
 				    startActivity(i);
 				    finish();
- 								   dialog.dismiss();
+ 				
  			}
          });
          dialog.findViewById(R.id.button_discard).setOnClickListener(new OnClickListener(){
