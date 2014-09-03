@@ -286,6 +286,8 @@ public class LoginActivity extends BaseActivity implements Runnable
         	txtStatus.setText("Registration successfull, you can log in now!");
 
     	}else{
+        	txtStatus.setText("Loading...");
+
 	    	//login successful
 			SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 	        Editor editor = settings.edit();
