@@ -469,7 +469,7 @@ public class Media extends Model {
     /**
      * @return encrypted
      */
-    public float getEncrypted() {
+    public int getEncrypted() {
         return encrypted;
     }
 

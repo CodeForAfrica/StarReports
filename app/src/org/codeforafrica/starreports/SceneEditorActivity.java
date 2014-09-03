@@ -203,7 +203,7 @@ import com.actionbarsherlock.view.MenuItem;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setTitle("Add caption");
     	dialog.setContentView(R.layout.dialog_caption);
-    	 dialog.findViewById(R.id.button_caption).setOnClickListener(new OnClickListener(){
+    	dialog.findViewById(R.id.button_caption).setOnClickListener(new OnClickListener(){
  			@Override
  			public void onClick(View v) {
  				EditText etCaption = (EditText)(dialog.findViewById(R.id.caption));
@@ -217,7 +217,7 @@ import com.actionbarsherlock.view.MenuItem;
 				    i.putExtra("rid", reportid);
 				    startActivity(i);
 				    finish();
- 								   dialog.dismiss();
+ 					dialog.dismiss();
  			}
          });
          dialog.findViewById(R.id.button_discard).setOnClickListener(new OnClickListener(){
