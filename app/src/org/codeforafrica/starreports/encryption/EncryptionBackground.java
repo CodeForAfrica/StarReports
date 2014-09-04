@@ -67,9 +67,13 @@ public class EncryptionBackground extends Service {
 				                    
 				                    for (int i = 0; i < jsonArray2.length(); i++) {
 				                        if(i!=0){
+				    					 	Log.d("encryption status:", "encryptionb4" + media.getEncrypted());
+
 				                        	jsonArray3.put(jsonArray2.getString(i));
 				                        	media.setEncrypted(1);
 				                        	media.save();
+				    					 
+				                        	Log.d("encryption status:", "encryptionafter" + media.getEncrypted());
 				                        }
 				                   }
 			                    }
@@ -86,9 +90,12 @@ public class EncryptionBackground extends Service {
 			                		Editor editor = prefs.edit();
 			                		editor.putString("eQ", jsonArray3.toString());
 					                editor.commit();
-			                	
-				                
-				                
+		    					 	Log.d("encryption status:", "encryptionb4" + media.getEncrypted());
+
+					                media.setEncrypted(1);
+		                        	media.save();
+		                        	Log.d("encryption status:", "encryptionafter" + media.getEncrypted());
+
 			                	
 			                	Intent startMyService= new Intent(getApplicationContext(), EncryptionService.class);
 				                startMyService.putExtra("filepath", filepath);

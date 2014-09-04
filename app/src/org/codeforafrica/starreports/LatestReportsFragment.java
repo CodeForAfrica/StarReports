@@ -1,5 +1,6 @@
 package org.codeforafrica.starreports;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -203,14 +204,28 @@ public class LatestReportsFragment extends Fragment {
     	}
     }
     public static Drawable drawableFromUrl(String url) throws IOException {
-        Bitmap x;
+        try{
+    	Bitmap x;
 
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         connection.connect();
         InputStream input = connection.getInputStream();
-
-        x = BitmapFactory.decodeStream(input);
-        return new BitmapDrawable(x);
+        
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 6; 
+        
+        x = BitmapFactory.decodeStream(input, null, options);
+        return new BitmapDrawable(x);}
+        catch (OutOfMemoryError e) {
+            e.printStackTrace();
+            System.gc();
+            return null;
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
     }
+    
     
 }

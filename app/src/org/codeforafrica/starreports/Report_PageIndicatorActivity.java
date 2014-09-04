@@ -25,6 +25,7 @@ import org.codeforafrica.starreports.model.Media;
 import org.codeforafrica.starreports.model.Project;
 import org.codeforafrica.starreports.model.Report;
 import org.codeforafrica.starreports.server.ServerManager;
+import org.holoeverywhere.app.ProgressDialog;
 import org.holoeverywhere.widget.ProgressBar;
 import org.holoeverywhere.widget.Spinner;
 import org.json.JSONArray;
@@ -94,7 +95,9 @@ public class Report_PageIndicatorActivity extends BaseActivity implements BaseSl
 	String description;
 	String location;
     int story_mode;
-	@Override
+    
+    ProgressDialog pDialog;
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         overridePendingTransition(R.anim.anim_slide_in_left,
                 R.anim.anim_slide_out_left);
@@ -562,7 +565,6 @@ public void report_close(){
 			//Publish via Wordpress xmlrpc
 			new publish_report().execute();
 	        	
-        	do_report_close();
 			dialog_publish.dismiss();
 		}        	
     });
@@ -579,12 +581,12 @@ class publish_report extends AsyncTask<String, String, String> {
    	 @Override
         protected void onPreExecute() {
 	   		super.onPreExecute();
-	        /*pDialog = new ProgressDialog(Report_PageIndicatorActivity.this);
+	        pDialog = new ProgressDialog(Report_PageIndicatorActivity.this);
 	        pDialog.setMessage("Posting report...");
 	        pDialog.setIndeterminate(false);
 	        pDialog.setCancelable(false);
 	        pDialog.show();
-	        */ 
+	        
         }
         protected String doInBackground(String... args) {
         	ServerManager sm = StoryMakerApp.getServerManager();
@@ -622,6 +624,8 @@ class publish_report extends AsyncTask<String, String, String> {
 					 	
 					 	String file = ppath;
 					 	
+					 	Log.d("encryption status:", "encryptionstatus" + media.getEncrypted());
+					 	
 					 	//if encrypted, decrypt before upload
 					 	if(media.getEncrypted()!=0){
 					 	
@@ -644,7 +648,7 @@ class publish_report extends AsyncTask<String, String, String> {
 					 		String murl = sm.addMedia(ptype, new File(file));
 					 		//create link depending on media type
 					 		if(ptype.contains("image")){
-					 			murl = "<img src=\"" + murl + "\"/>";
+					 			murl = "<img width=\"100%\" src=\"" + murl + "\"/>";
 					 		}else if(ptype.contains("video")){
 					 			murl = "[video width=\"640\" height=\"272\" mp4=\""+ murl +"\"][/video]";
 					 		}else{
@@ -685,7 +689,8 @@ class publish_report extends AsyncTask<String, String, String> {
 			
         }
         protected void onPostExecute(String file_url) {
-            //pDialog.dismiss();
+            pDialog.dismiss();
+        	do_report_close();
 	   }
 }
 
