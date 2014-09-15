@@ -65,6 +65,12 @@ public class LoginActivity extends BaseActivity implements Runnable
 	String Vphone_number = "";
 	
 	private boolean registering = false;
+	
+	// Connection detector class
+    ConnectionDetector cd;
+    //flag for Internet connection status
+    Boolean isInternetPresent = false;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -207,6 +213,20 @@ public class LoginActivity extends BaseActivity implements Runnable
     }
     public void run ()
     {
+    	// creating connection detector class instance
+        cd = new ConnectionDetector(getApplicationContext());
+        
+		//get Internet status
+        isInternetPresent = cd.isConnectingToInternet();
+        
+        if(!isInternetPresent){
+        	
+        	Message msgErr= mHandler.obtainMessage(1);
+            msgErr.getData().putString("err","You have no internet connection!");
+            mHandler.sendMessage(msgErr);
+            
+        }else{
+        	
     	if(registering == true){
     		
     		APIFunctions userFunction = new APIFunctions();
@@ -246,7 +266,8 @@ public class LoginActivity extends BaseActivity implements Runnable
 				Log.e(AppConstants.TAG,"login err",e);
 			}
 
-    	}
+    		}
+        }
     }
     
     private Handler mHandler = new Handler ()
