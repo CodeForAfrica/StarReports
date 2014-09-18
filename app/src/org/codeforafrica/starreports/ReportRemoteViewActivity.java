@@ -105,6 +105,7 @@ public class ReportRemoteViewActivity extends BaseActivity{
                 wv.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                 wv.getSettings().setUseWideViewPort(true);
                 wv.getSettings().setLoadWithOverviewMode(true);
+                
             }
         });
     }

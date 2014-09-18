@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.codeforafrica.starreports"
     android:installLocation="auto"
-    android:versionCode="135"
-    android:versionName="0.0.9-build115" >
+    android:versionCode="137"
+    android:versionName="0.0.9-build117" >
     
     <uses-sdk
         android:minSdkVersion="10"

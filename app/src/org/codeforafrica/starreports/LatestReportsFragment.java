@@ -8,8 +8,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-import net.bican.wordpress.Attachment;
-import net.bican.wordpress.MediaObject;
 import net.bican.wordpress.Page;
 
 import org.codeforafrica.starreports.ui.MyCard;
@@ -19,8 +17,6 @@ import org.holoeverywhere.app.ProgressDialog;
 import org.holoeverywhere.preference.PreferenceManager;
 import org.holoeverywhere.preference.SharedPreferences;
 import org.holoeverywhere.widget.Toast;
-import org.json.JSONException;
-
 import redstone.xmlrpc.XmlRpcFault;
 
 import com.animoto.android.views.DraggableGridView;
@@ -35,7 +31,6 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
