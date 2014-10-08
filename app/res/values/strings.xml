@@ -2,6 +2,8 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <string name="app_name">StarReports</string>
+    <string name="add_report">Add Report</string>
+    <string name="my_reports">My Reports</string>
     <string name="app_id" translatable="false">500750433359090</string>
     <string name="title_projects">Stories</string>
     <string name="title_lessons">Lessons</string>

@@ -62,15 +62,15 @@
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/imageView1"
                 android:textColor="#ffffff"
-                android:text="@string/add" />
+                android:text="@string/add_report" />
             
         </RelativeLayout>
         <RelativeLayout
-            android:id="@+id/load_reports"
+            android:id="@+id/load_my_reports"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:background="@color/lp_brown"
+            android:background="@color/lp_blue"
             android:clickable="true" >
 
             <TextView
@@ -80,7 +80,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/imageView2"
                 android:textColor="#ffffff"
-                android:text="@string/view" />
+                android:text="@string/my_reports" />
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -115,7 +115,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/imageView3"
                 android:textColor="#ffffff"
-                android:text="@string/help" />
+                android:text="@string/title_lessons" />
 
             <ImageView
                 android:id="@+id/imageView3"
@@ -128,11 +128,11 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/load_sync"
+            android:id="@+id/load_assignments"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_weight="0.39"
-            android:background="@color/lp_blue" 
+            android:background="@color/lp_brown" 
             android:clickable="true">
 
             <TextView
@@ -142,16 +142,15 @@
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/imageView4"
                 android:textColor="#ffffff"
-                android:text="@string/sync" />
+                android:text="@string/title_assignments" />
 
             <ImageView
                 android:id="@+id/imageView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/icon_sync" />
+                android:src="@drawable/ic_action_edit" />
 
         </RelativeLayout>
 

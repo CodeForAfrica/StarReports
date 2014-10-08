@@ -114,17 +114,15 @@ public class Report_PageIndicatorActivity extends BaseActivity implements BaseSl
         getSupportMenuInflater().inflate(R.menu.save_report, menu);
        
         menu.findItem(R.id.about).setVisible(false);
-        menu.findItem(R.id.menu_add_report).setVisible(false);
         menu.findItem(R.id.menu_sync_reports).setVisible(false);
         menu.findItem(R.id.menu_new_form).setVisible(false);
-        menu.findItem(R.id.action_search).setVisible(false);
 
         return true;
     }
 	@Override
     public void finish() {
         super.finish();
-        Intent i = new Intent(getBaseContext(), ReportsFragmentsActivity.class);
+        Intent i = new Intent(getBaseContext(), HomePanelsActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);

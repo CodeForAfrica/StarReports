@@ -178,10 +178,8 @@ import com.actionbarsherlock.view.MenuItem;
         
 
         menu.findItem(R.id.about).setVisible(false);
-        menu.findItem(R.id.menu_add_report).setVisible(false);
         menu.findItem(R.id.menu_sync_reports).setVisible(false);
         menu.findItem(R.id.menu_new_form).setVisible(false);
-        menu.findItem(R.id.action_search).setVisible(false);
         return true;//hide SM menu for now
     }
 

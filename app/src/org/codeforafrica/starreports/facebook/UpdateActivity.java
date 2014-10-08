@@ -2,8 +2,9 @@ package org.codeforafrica.starreports.facebook;
 
 import org.codeforafrica.starreports.AboutActivity;
 import org.codeforafrica.starreports.BaseActivity;
+import org.codeforafrica.starreports.HomePanelsActivity;
 import org.codeforafrica.starreports.R;
-import org.codeforafrica.starreports.ReportsFragmentsActivity;
+import org.codeforafrica.starreports.HomePanelsActivity;
 import org.holoeverywhere.preference.PreferenceManager;
 import org.holoeverywhere.preference.SharedPreferences;
 
@@ -56,10 +57,8 @@ public class UpdateActivity extends BaseActivity {
         
        
         menu.findItem(R.id.about).setVisible(false);
-        menu.findItem(R.id.menu_add_report).setVisible(false);
         menu.findItem(R.id.menu_sync_reports).setVisible(false);
         menu.findItem(R.id.menu_new_form).setVisible(false);
-        menu.findItem(R.id.action_search).setVisible(false);
 
         return true;
     }
@@ -68,7 +67,7 @@ public class UpdateActivity extends BaseActivity {
         switch (item.getItemId()) {
         	
             case android.R.id.home:
-            	Intent i = new Intent(UpdateActivity.this, ReportsFragmentsActivity.class);
+            	Intent i = new Intent(UpdateActivity.this, HomePanelsActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             	startActivity(i);
             	

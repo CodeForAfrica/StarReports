@@ -73,7 +73,7 @@
             </intent-filter>
  			<meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ReportsFragmentsActivity" />
+                android:value=".HomePanelsActivity" />
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -89,55 +89,51 @@
         </activity>
         <activity
 
-            android:name="org.codeforafrica.starreports.ReportsFragmentsActivity"
+            android:name="org.codeforafrica.starreports.HomePanelsActivity"
 
             android:configChanges="locale"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
-            
-             >
-            <meta-data
-                android:name="android.app.default_searchable"
-                android:value=".SearchResultsActivity" />
+            android:launchMode="singleTop">
             <intent-filter android:label="@string/app_name" >
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
         <activity
             android:name="org.codeforafrica.starreports.StoryNewActivity"
             android:label="@string/title_activity_new_story" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ReportsFragmentsActivity" />
+                android:value=".HomePanelsActivity" />
         </activity>
         <activity
             android:name="org.codeforafrica.starreports.old_ReportActivity"
             android:label="@string/title_activity_new_story" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ReportsFragmentsActivity" />
+                android:value=".HomePanelsActivity" />
         </activity>
         <activity
             android:name="org.codeforafrica.starreports.assignments.AssignmentsActivity"
             android:label="@string/title_assignments" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ReportsFragmentsActivity" />
+                android:value=".HomePanelsActivity" />
         </activity>
         <activity
             android:name="org.codeforafrica.starreports.Report_PageIndicatorActivity"
             android:label="New Report" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ReportsFragmentsActivity" />
+                android:value=".HomePanelsActivity" />
         </activity>
         <activity
             android:name="org.codeforafrica.starreports.ReportEditorActivity"
             android:label="@string/title_activity_new_story" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ReportsFragmentsActivity" />
+                android:value=".HomePanelsActivity" />
         </activity>
         
         <activity
@@ -156,7 +152,7 @@
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ReportsFragmentsActivity" />
+                android:value=".HomePanelsActivity" />
         </activity>
         <activity
             android:name="org.codeforafrica.starreports.LessonsActivity"
@@ -167,7 +163,7 @@
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ReportsFragmentsActivity" />
+                android:value=".HomePanelsActivity" />
         </activity>
 
         <activity
@@ -203,7 +199,7 @@
             android:name="org.codeforafrica.starreports.ProjectListActivity">
              <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ReportsFragmentsActivity" />
+                android:value=".HomePanelsActivity" />
         </activity>
         <activity
             android:name=".lessons.LessonViewActivity"

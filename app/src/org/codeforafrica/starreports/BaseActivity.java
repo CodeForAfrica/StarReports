@@ -221,13 +221,6 @@ public void onUserInteraction()
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getSupportMenuInflater().inflate(R.menu.activity_actionbar_menu, menu);
-        
-     // Associate searchable configuration with the SearchView
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
-                .getActionView();
-        searchView.setSearchableInfo(searchManager
-                .getSearchableInfo(getComponentName()));
  
         return super.onCreateOptionsMenu(menu);
         
@@ -236,13 +229,6 @@ public void onUserInteraction()
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
-    	if (item.getItemId() == R.id.menu_add_report)
-        {	
-        	   		
-    		Intent i = new Intent(getApplicationContext(),Report_PageIndicatorActivity.class);
-			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(i);
-        }
     	if (item.getItemId() == R.id.menu_sync_reports)
         {	
         	   		

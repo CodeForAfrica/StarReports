@@ -47,10 +47,8 @@ public class AboutActivity extends BaseActivity{
 	        
 	       
 	        menu.findItem(R.id.about).setVisible(false);
-	        menu.findItem(R.id.menu_add_report).setVisible(false);
 	        menu.findItem(R.id.menu_sync_reports).setVisible(false);
 	        menu.findItem(R.id.menu_new_form).setVisible(false);
-	        menu.findItem(R.id.action_search).setVisible(false);
 
 	        return true;
 	    }
@@ -59,7 +57,7 @@ public class AboutActivity extends BaseActivity{
 	        switch (item.getItemId()) {
 	        	
 	            case android.R.id.home:
-	            	Intent i = new Intent(AboutActivity.this, ReportsFragmentsActivity.class);
+	            	Intent i = new Intent(AboutActivity.this, HomePanelsActivity.class);
 	                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	            	startActivity(i);
 	            	

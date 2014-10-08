@@ -9,8 +9,8 @@ import net.bican.wordpress.Category;
 
 import org.codeforafrica.starreports.AppConstants;
 import org.codeforafrica.starreports.BaseActivity;
+import org.codeforafrica.starreports.HomePanelsActivity;
 import org.codeforafrica.starreports.R;
-import org.codeforafrica.starreports.ReportsFragmentsActivity;
 import org.codeforafrica.starreports.StoryMakerApp;
 import org.codeforafrica.starreports.api.APIFunctions;
 import org.codeforafrica.starreports.api.SyncService;
@@ -317,7 +317,7 @@ public class LoginActivity extends BaseActivity implements Runnable
 			editor.commit();
 	    			
 	    	updateCategories();
-	    	Intent intent = new Intent(this,ReportsFragmentsActivity.class);
+	    	Intent intent = new Intent(this,HomePanelsActivity.class);
 	    	startActivity(intent);
 	    	finish();
     	}

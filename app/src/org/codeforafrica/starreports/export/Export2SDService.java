@@ -16,7 +16,7 @@ import java.util.zip.ZipOutputStream;
 import javax.crypto.Cipher;
 
 import org.codeforafrica.starreports.AppConstants;
-import org.codeforafrica.starreports.ReportsFragmentsActivity;
+import org.codeforafrica.starreports.HomePanelsActivity;
 import org.codeforafrica.starreports.encryption.Encryption;
 import org.codeforafrica.starreports.model.Media;
 import org.codeforafrica.starreports.model.Project;
@@ -77,7 +77,7 @@ public class Export2SDService extends Service {
 	private void showNotification(String message) {
    	 CharSequence text = message;
    	 Notification notification = new Notification(R.drawable.ic_menu_send, text, System.currentTimeMillis());
-   	 PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, ReportsFragmentsActivity.class), 0);
+   	 PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, HomePanelsActivity.class), 0);
    	 notification.setLatestEventInfo(this, "LP: Export to SD", text, contentIntent);
    	NotificationManager nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 		nm.notify("service started", 1, notification);

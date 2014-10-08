@@ -3,8 +3,8 @@ package org.codeforafrica.starreports.facebook;
 import java.util.Arrays;
 
 import org.codeforafrica.starreports.ConnectionDetector;
+import org.codeforafrica.starreports.HomePanelsActivity;
 import org.codeforafrica.starreports.R;
-import org.codeforafrica.starreports.ReportsFragmentsActivity;
 import org.codeforafrica.starreports.api.APIFunctions;
 import org.holoeverywhere.widget.Toast;
 import org.json.JSONException;
@@ -256,7 +256,7 @@ public class MainFragment extends Fragment implements Runnable {
     
     private void loginSuccess ()
     {
-    	Intent i = new Intent(getActivity(), ReportsFragmentsActivity.class);
+    	Intent i = new Intent(getActivity(), HomePanelsActivity.class);
     	startActivity(i);
     	getActivity().finish();
     }
@@ -296,7 +296,7 @@ public class MainFragment extends Fragment implements Runnable {
 
 					editor.commit();
 
-					Intent i = new Intent(getActivity(), ReportsFragmentsActivity.class);
+					Intent i = new Intent(getActivity(), HomePanelsActivity.class);
 					startActivity(i);
 
 				}else{
