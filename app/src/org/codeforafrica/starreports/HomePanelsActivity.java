@@ -87,7 +87,7 @@ public class HomePanelsActivity extends BaseActivity implements OnClickListener{
         try {
             String pkg = getPackageName();
             String vers= getPackageManager().getPackageInfo(pkg, 0).versionName;
-            setTitle(getTitle() + " v" + vers);
+            setTitle(getTitle());
                     
         } catch (NameNotFoundException e) {
            

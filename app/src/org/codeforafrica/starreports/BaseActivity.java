@@ -233,7 +233,7 @@ public void onUserInteraction()
         {	
         	   		
     		dialog = new Dialog(this);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setTitle("Sync Reports");
             dialog.setContentView(R.layout.dialog_sync);
             dialog.findViewById(R.id.button_sync).setOnClickListener(new View.OnClickListener(){
 

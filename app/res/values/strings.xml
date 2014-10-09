@@ -15,7 +15,7 @@
     <string name="view">View Reports</string>
     <string name="help">Help</string>
     <string name="sync">Sync</string>
-    <string name="export_option">Include already exported/synced files?</string>
+    <string name="export_option">Include already synced/exported files</string>
     <string name="export">Export</string>
     <string name="add_caption">Add Caption</string>
 	<string name="skip">Skip</string>
