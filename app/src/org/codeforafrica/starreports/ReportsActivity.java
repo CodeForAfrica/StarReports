@@ -44,6 +44,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,8 +66,6 @@ public class ReportsActivity extends BaseActivity implements OnClickListener{
 	private ReportArrayAdapter aaReports;
 	ProgressDialog pDialog;
 	getThumbnail get_thumbnail=null;
-    RelativeLayout load_new_report;
-    RelativeLayout load_sync;
 
     private Dialog dialog;
     
@@ -75,7 +74,16 @@ public class ReportsActivity extends BaseActivity implements OnClickListener{
     //flag for Internet connection status
     Boolean isInternetPresent = false;
     private CardUI mCardView;
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+	        		NavUtils.navigateUpFromSameTask(this);
+	        	
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,44 +92,13 @@ public class ReportsActivity extends BaseActivity implements OnClickListener{
         cd = new ConnectionDetector(getApplicationContext());
 
         // action bar stuff
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
          
         //getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFFFFF")));
         //getSupportActionBar().setTitle("View Reports");
 
         //TextView title2 = (TextView) getWindow().getDecorView().findViewById(getResources().getIdentifier("action_bar_title", "id", "android"));
         //title2.setTextColor(getResources().getColor(R.color.soft_purple));
-        load_new_report = (RelativeLayout)findViewById(R.id.load_new_report);
-        load_new_report.setOnClickListener(new View.OnClickListener() {
-
-			public void onClick(View view) {
-				Intent i = new Intent(getApplicationContext(),Report_PageIndicatorActivity.class);
-				i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(i);
-				
-			}
-		});  
-        
-        load_sync = (RelativeLayout)findViewById(R.id.load_sync_r);
-        load_sync.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				
-	            dialog = new Dialog(ReportsActivity.this);
-	            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.dialog_sync);
-                dialog.findViewById(R.id.button_sync).setOnClickListener(
-                        ReportsActivity.this);
-                dialog.findViewById(R.id.button_export).setOnClickListener(
-                        ReportsActivity.this);
-                dialog.findViewById(R.id.checkBox1).setOnClickListener(
-                        ReportsActivity.this);
-                dialog.show();
-                
-			}
-		});
-        
         
        //init CardView
 		mCardView = (CardUI) findViewById(R.id.cardsview);

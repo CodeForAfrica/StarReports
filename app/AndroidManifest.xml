@@ -101,6 +101,16 @@
         </activity>
         
         <activity
+            android:name="org.codeforafrica.starreports.ReportsActivity"
+			android:configChanges="locale"
+            android:label="@string/my_reports"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomePanelsActivity" />
+        </activity>
+        
+        <activity
             android:name="org.codeforafrica.starreports.StoryNewActivity"
             android:label="@string/title_activity_new_story" >
             <meta-data

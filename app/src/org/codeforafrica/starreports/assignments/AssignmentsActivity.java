@@ -14,6 +14,7 @@ import org.codeforafrica.starreports.R.id;
 import org.codeforafrica.starreports.R.layout;
 import org.codeforafrica.starreports.api.APIFunctions;
 import org.codeforafrica.starreports.ui.MyCard;
+import org.holoeverywhere.widget.ProgressBar;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,20 +23,23 @@ import redstone.xmlrpc.XmlRpcArray;
 import redstone.xmlrpc.XmlRpcFault;
 import redstone.xmlrpc.XmlRpcStruct;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.fima.cardsui.views.CardUI;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import net.bican.wordpress.Page;
 public class AssignmentsActivity extends BaseActivity{
     private CardUI mCardView;
-    ProgressDialog pDialog;
     List<Page> posts = null;
+    ProgressBar pB;
 
 	  @Override
 	    public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,8 @@ public class AssignmentsActivity extends BaseActivity{
 			mCardView = (CardUI) findViewById(R.id.cardsview);
 			mCardView.setSwipeable(false);
 			
+			pB = (ProgressBar)findViewById(R.id.pBLoading);
+			
 			new GetAssignments().execute();
 			
 	  }
@@ -58,12 +64,7 @@ public class AssignmentsActivity extends BaseActivity{
 		   	 @Override
 		        protected void onPreExecute() {
 			   		super.onPreExecute();
-			        pDialog = new ProgressDialog(AssignmentsActivity.this);
-			        pDialog.setMessage("Retrieving assignments...");
-			        pDialog.setIndeterminate(false);
-			        pDialog.setCancelable(false);
-			        pDialog.show();
-			         
+			   		pB.setVisibility(View.VISIBLE);
 		        }
 		        protected String doInBackground(String... args) {
 		        	    
@@ -79,7 +80,7 @@ public class AssignmentsActivity extends BaseActivity{
 		        	return null;
 		        }
 		        protected void onPostExecute(String file_url) {
-		            pDialog.dismiss();
+			   		pB.setVisibility(View.GONE);
 		        	
 		        	try {
 						createCards();
@@ -162,5 +163,23 @@ public class AssignmentsActivity extends BaseActivity{
 					mCardView.refresh();
 		    		
 		    	}
+		    }
+		    @Override
+		    public boolean onCreateOptionsMenu(Menu menu) {
+		        super.onCreateOptionsMenu(menu);
+		        
+		        menu.findItem(R.id.menu_sync_reports).setVisible(false);
+
+		        return true;
+		    }
+		    @Override
+		    public boolean onOptionsItemSelected(MenuItem item) {
+		        switch (item.getItemId()) {
+		            case android.R.id.home:
+			        		NavUtils.navigateUpFromSameTask(this);
+			        	
+		                return true;
+		        }
+		        return super.onOptionsItemSelected(item);
 		    }
 }

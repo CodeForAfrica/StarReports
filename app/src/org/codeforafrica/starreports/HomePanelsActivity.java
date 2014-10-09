@@ -14,6 +14,7 @@ import java.util.Date;
 import net.sqlcipher.database.SQLiteDatabase;
 
 import org.codeforafrica.starreports.api.SyncService;
+import org.codeforafrica.starreports.assignments.AssignmentsActivity;
 import org.codeforafrica.starreports.encryption.EncryptionBackground;
 import org.codeforafrica.starreports.encryption.EncryptionService;
 import org.codeforafrica.starreports.export.Export2SDService;
@@ -159,7 +160,7 @@ public class HomePanelsActivity extends BaseActivity implements OnClickListener{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent i = new Intent(getApplicationContext(),ReportsActivity.class);
+				Intent i = new Intent(getApplicationContext(),AssignmentsActivity.class);
 				i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(i);
 			}
