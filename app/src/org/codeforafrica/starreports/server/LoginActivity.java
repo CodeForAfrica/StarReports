@@ -124,7 +124,7 @@ public class LoginActivity extends BaseActivity implements Runnable
     public void showRegistrationDialog(){
     	final Dialog dialog = new Dialog(this, R.style.DialogSlideAnim);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //dialog.setTitle("Create new account");
+        dialog.setTitle("Create new account");
     	dialog.setContentView(R.layout.activity_registration_dialog);
         dialog.findViewById(R.id.btnRegister).setOnClickListener(new View.OnClickListener(){
 			@Override
