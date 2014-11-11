@@ -65,7 +65,7 @@ import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 
 public class Report_PageIndicatorActivity extends BaseActivity implements BaseSliderView.OnSliderClickListener{
-	private SliderLayout mDemoSlider;
+	private SliderLayout gallerySlider;
 	String mMessage;
 	String mTitle;
 	// Google Map
@@ -178,7 +178,7 @@ private void initIntroActivityList ()
   	setContentView(R.layout.report_pageindicator);
   	
      //gallery slideshow
-     mDemoSlider = (SliderLayout)findViewById(R.id.slider);  
+     gallerySlider = (SliderLayout)findViewById(R.id.slider);  
      
      
      web = (WebView) findViewById(R.id.webView);
@@ -338,12 +338,12 @@ private void constructSlider2(HashMap<String, File> file_maps) {
         textSliderView.getBundle()
                 .putString("extra",name);
 
-    mDemoSlider.addSlider(textSliderView);
+    gallerySlider.addSlider(textSliderView);
     }
-    mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
-    mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-    mDemoSlider.setCustomAnimation(new DescriptionAnimation());
-    mDemoSlider.setDuration(4000);
+    gallerySlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
+    gallerySlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+    gallerySlider.setCustomAnimation(new DescriptionAnimation());
+    gallerySlider.setDuration(4000);
 	
 }
 public void constructSlider(HashMap<String,Integer> file_maps){
@@ -361,12 +361,18 @@ public void constructSlider(HashMap<String,Integer> file_maps){
         textSliderView.getBundle()
                 .putString("extra",name);
 
-    mDemoSlider.addSlider(textSliderView);
+        gallerySlider.addSlider(textSliderView);
+    
     }
-    mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
-    mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-    mDemoSlider.setCustomAnimation(new DescriptionAnimation());
-    mDemoSlider.setDuration(4000);
+	    gallerySlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
+	    gallerySlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+	    gallerySlider.setCustomAnimation(new DescriptionAnimation());
+	    gallerySlider.setDuration(4000);
+	    
+	    if(file_maps.size()<2){
+	    	gallerySlider.stopAutoCycle();
+	    }
+	    
 }
 
 @Override
