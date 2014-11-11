@@ -9,153 +9,147 @@
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
       android:background="#fff"
-      android:gravity="center" >
+      >
  
         
         <!-- Registration Form -->
+
         <LinearLayout
-          android:id="@+id/regLayout"
-          android:orientation="vertical"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:padding="10dip"
-          >
+            android:id="@+id/regLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical"
+            android:padding="10dip" >
+
           <!-- Full Name Label -->
           <!--  Email Label -->
+          <!-- Password Label -->
 
-            <EditText
-                android:id="@+id/registerUsername"
-                android:layout_width="fill_parent"
+            <LinearLayout
+                android:id="@+id/basic_info"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dip"
-                android:background="@color/lp_grey"
-                android:ems="10"
-                android:hint="Username"
-                android:padding="10dp"
-                android:singleLine="true"
-              style="@style/CardTitle"
-              android:textColor="@color/lp_blue"
-              android:textSize="16sp" 
-                 />
+                android:orientation="vertical" >
 
-            <EditText
-                android:id="@+id/registerPassword"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dip"
-                android:background="@color/lp_grey"
-                android:ems="10"
-                android:hint="Password"
-                android:inputType="textPassword"
-                android:padding="10dp"
-                android:singleLine="true"
-                
-              style="@style/CardTitle"
-              android:textColor="@color/lp_blue"
-              android:textSize="16sp"  />
+                <EditText
+                    android:id="@+id/registerUsername"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dip"
+                    android:background="@color/lp_grey"
+                    android:ems="10"
+                    android:hint="Username"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/lp_blue" />
 
-          
+                <EditText
+                    android:id="@+id/registerPassword"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dip"
+                    android:background="@color/lp_grey"
+                    android:ems="10"
+                    android:hint="Password"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/lp_blue" />
 
-            <EditText
-                android:id="@+id/confirmPassword"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dip"
-                android:background="@color/lp_grey"
-                android:ems="10"
-                android:hint="Confirm Password"
-                android:inputType="textPassword"
-                android:padding="10dp"
-                android:singleLine="true"
-                
-              style="@style/CardTitle"
-              android:textColor="@color/lp_blue"
-              android:textSize="16sp"  >
+                <EditText
+                    android:id="@+id/confirmPassword"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dip"
+                    android:background="@color/lp_grey"
+                    android:ems="10"
+                    android:hint="Confirm password"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/lp_blue" />
 
-         
-            </EditText>
-          <!-- Password Label --> 
-                
-          <EditText android:id="@+id/first_name"
-                android:layout_width="fill_parent"
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dip"
+                    android:background="@color/lp_grey"
+                    android:ems="10"
+                    android:hint="Email"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/lp_blue" />
+            </LinearLayout>
+
+            <LinearLayout  
+                android:id="@+id/more_info"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="First Name"
-                android:singleLine="true"
-                android:layout_marginTop="5dip"
-                
-              style="@style/CardTitle"
-              android:textColor="@color/lp_blue"
-              android:textSize="16sp" 
-                android:background="@color/lp_grey"
-                android:padding="10dp"
-                android:layout_marginBottom="5dp"/> 
-         
-         <EditText android:id="@+id/last_name"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:hint="Last Name"
-                android:singleLine="true"
-                android:layout_marginTop="5dip"
-              style="@style/CardTitle"
-              android:textColor="@color/lp_blue"
-              android:textSize="16sp" 
-                android:background="@color/lp_grey"
-                android:padding="10dp"
-                android:layout_marginBottom="5dp"/>    
-                    
-           <EditText android:id="@+id/email"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:hint="Email"
-                android:singleLine="true"
-                android:layout_marginTop="5dip"
-                
-              style="@style/CardTitle"
-              android:textColor="@color/lp_blue"
-              android:textSize="16sp" 
-                android:background="@color/lp_grey"
-                android:padding="10dp"
-                android:layout_marginBottom="5dp"/>
-           <EditText android:id="@+id/phone_number"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:hint="Phone Number(Optional)"
-                android:singleLine="true"
-                android:layout_marginTop="5dip"
-                
-              style="@style/CardTitle"
-              android:textColor="@color/lp_blue"
-              android:textSize="16sp" 
-                android:background="@color/lp_grey"
-                android:padding="10dp"
-                android:layout_marginBottom="5dp"/>    
-         <EditText android:id="@+id/location"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:hint="Location"
-                android:singleLine="true"
-                android:layout_marginTop="5dip"
-                
-              style="@style/CardTitle"
-              android:textColor="@color/lp_blue"
-              android:textSize="16sp" 
-                android:background="@color/lp_grey"
-                android:padding="10dp"
-                android:layout_marginBottom="5dp"/>   
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <EditText
+                    android:id="@+id/first_name"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dip"
+                    android:background="@color/lp_grey"
+                    android:ems="10"
+                    android:hint="First Name (optional)"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/lp_blue" >
+
+                    <requestFocus />
+                </EditText>
+
+                <EditText
+                    android:id="@+id/last_name"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dip"
+                    android:background="@color/lp_grey"
+                    android:ems="10"
+                    android:hint="Last Name (optional)"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/lp_blue" />
+
+                <EditText
+                    android:id="@+id/phone_number"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dip"
+                    android:background="@color/lp_grey"
+                    android:ems="10"
+                    android:hint="Phone Number (optional)"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/lp_blue" />
+
+                <EditText
+                    android:id="@+id/location"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dip"
+                    android:background="@color/lp_grey"
+                    android:ems="10"
+                    android:hint="Location"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/lp_blue" />
+            </LinearLayout>
+   
           <!-- Register Button -->
-          <Button android:id="@+id/btnRegister"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dip"
-                android:background="@color/lp_red"
-                
-              style="@style/CardTitle"
-              android:textColor="@color/white"
-              android:textSize="16sp" 
-                android:text="Register"/>
+
           <!-- Link to Login Screen -->
 
           <TextView
@@ -165,8 +159,20 @@
               android:layout_gravity="center_horizontal"
               android:text=""
               android:textAppearance="?android:attr/textAppearanceSmall" />
- 
+ <Button android:id="@+id/btnRegister"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dip"
+                android:background="@color/lp_red"
+                
+              style="@style/CardTitle"
+              android:textColor="@color/white"
+              android:textSize="16sp" 
+                android:text="Register"/>
+          
         </LinearLayout>
         <!-- Registration Form Ends -->
   </RelativeLayout>
 </ScrollView>
+
+          

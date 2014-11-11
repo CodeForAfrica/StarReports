@@ -14,10 +14,13 @@ import org.codeforafrica.starreports.StoryMakerApp;
 import org.codeforafrica.starreports.api.APIFunctions;
 import org.codeforafrica.starreports.model.Auth;
 import org.codeforafrica.starreports.model.AuthTable;
+
 import android.app.Dialog;
+
 import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
+import org.holoeverywhere.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +37,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
  
@@ -50,6 +54,7 @@ public class LoginActivity extends BaseActivity implements Runnable
 	
 	String Vusername = "";
 	String Vpassword = "";
+	String Vcpassword = "";
 	String Vemail = "";
 	String Vfirst_name = "";
 	String Vlast_name = "";
@@ -57,6 +62,7 @@ public class LoginActivity extends BaseActivity implements Runnable
 	String Vphone_number = "";
 	
 	private boolean registering = false;
+	private boolean initialReg = true;
 	
 	// Connection detector class
     ConnectionDetector cd;
@@ -70,7 +76,6 @@ public class LoginActivity extends BaseActivity implements Runnable
         setContentView(R.layout.activity_login_facebook);
         
         viewLogo = (ImageView)findViewById(R.id.logo);
-        txtStatus = (TextView)findViewById(R.id.status);
         txtUser = (EditText)findViewById(R.id.login_username);
         txtPass = (EditText)findViewById(R.id.login_password);
         pBLogin = (ProgressBar)findViewById(R.id.pBLogin);
@@ -102,6 +107,9 @@ public class LoginActivity extends BaseActivity implements Runnable
 
 			@Override
 			public void onClick(View v) {
+		        
+				txtStatus = (TextView)findViewById(R.id.status);
+
 				//Intent fl = new Intent(getApplicationContext(), FacebookLogin.class);
 				//startActivity(fl);
 				pBLogin.setVisibility(View.VISIBLE);
@@ -121,6 +129,10 @@ public class LoginActivity extends BaseActivity implements Runnable
 			@Override
 			public void onClick(View v) {
 				
+				LinearLayout lBasic_info = (LinearLayout)dialog.findViewById(R.id.basic_info);
+				LinearLayout lMore_info = (LinearLayout)dialog.findViewById(R.id.more_info);
+				
+												
 				EditText username = (EditText) dialog.findViewById(R.id.registerUsername);
 				EditText rpassword = (EditText) dialog.findViewById(R.id.registerPassword);
 				EditText cPassword = (EditText) dialog.findViewById(R.id.confirmPassword);
@@ -129,21 +141,54 @@ public class LoginActivity extends BaseActivity implements Runnable
 				EditText last_name = (EditText) dialog.findViewById(R.id.last_name);
 				EditText location = (EditText) dialog.findViewById(R.id.location);
 				EditText phone_number = (EditText) dialog.findViewById(R.id.phone_number);
-				
+	    		
+				txtStatus = (TextView)dialog.findViewById(R.id.reg_error);
+				txtStatus.setText("-- 1 of 2 --");
 				//
-				Vusername = username.getText().toString();
-	        	Vpassword = rpassword.getText().toString();
-	    		Vemail = email.getText().toString();
-	    		Vfirst_name = first_name.getText().toString();
-	    		Vlast_name = last_name.getText().toString();
-	    		Vlocation = location.getText().toString();
-	    		Vphone_number = phone_number.getText().toString();
+				Vusername = "" + username.getText().toString();
+	        	Vpassword = "" + rpassword.getText().toString();
+	    		Vemail = "" + email.getText().toString();
+	    		Vfirst_name = "" + first_name.getText().toString();
+	    		Vlast_name = "" + last_name.getText().toString();
+	    		Vlocation = "" + location.getText().toString();
+	    		Vphone_number = "" + phone_number.getText().toString();
+	    		Vcpassword = "" + cPassword.getText().toString();
+	    		
+	    		
+	    		if((Vusername=="")||(Vpassword=="")||(Vemail=="")){
 	    			
-	    		registering = true;
-	    		
-	    		handleLogin();
-	    		
-	    		dialog.dismiss();
+	    			Toast.makeText(getApplicationContext(), "All fields are required!", Toast.LENGTH_LONG).show();
+
+	    		}else{
+	    			
+		    		if(!Vcpassword.equals(Vpassword)){
+		    			
+		    			Toast.makeText(getApplicationContext(), "Your passwords do not match!", Toast.LENGTH_LONG).show();
+		    		
+		    		}else{
+		    			
+		    			lBasic_info.setVisibility(View.GONE);
+		    			lMore_info.setVisibility(View.VISIBLE);
+		    			
+		    			if(initialReg == false){
+			    			
+			    			registering = true;
+				    		
+				    		handleLogin();
+				    		
+			    			initialReg = true;
+			    			
+				    		
+			    		}else{
+			    			
+			    			initialReg = false;
+
+			    		}
+		    			
+		    		}
+		    		
+		    		
+	    		}
 			}    	
         });
         dialog.show();

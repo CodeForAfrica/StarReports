@@ -29,8 +29,8 @@ public class UpdateActivity extends BaseActivity {
         // Set View to register.xml
         setContentView(R.layout.activity_update_profile);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        registerUsername = (EditText)findViewById(R.id.registerUsername);
+        getSupportActionBar().setTitle("Edit Profile");
+        
         first_name = (EditText)findViewById(R.id.first_name);
         last_name = (EditText)findViewById(R.id.last_name);
         email = (EditText)findViewById(R.id.email);

@@ -24,17 +24,6 @@
 
           <!-- Full Name Label -->
           <!--  Email Label -->
-          <EditText android:id="@+id/registerUsername"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dip"
-                android:singleLine="true"
-                android:hint="Your Username"
-                android:textColor="@color/lp_blue"
-                android:background="@color/lp_grey"
-                android:padding="10dp"
-                android:layout_marginBottom="5dp"
-                />
           <!-- Password Label --> 
                 
           <EditText android:id="@+id/first_name"
@@ -46,7 +35,7 @@
                 android:textColor="@color/lp_blue"
                 android:background="@color/lp_grey"
                 android:padding="10dp"
-                android:layout_marginBottom="5dp"/> 
+                android:layout_marginBottom="5dp"/>
          
          <EditText android:id="@+id/last_name"
                 android:layout_width="fill_parent"
@@ -57,7 +46,16 @@
                 android:textColor="@color/lp_blue"
                 android:background="@color/lp_grey"
                 android:padding="10dp"
-                android:layout_marginBottom="5dp"/>        
+                android:layout_marginBottom="5dp"/>
+
+         <View
+             android:id="@+id/view1"
+             android:layout_width="wrap_content"
+             android:layout_height="1dp"
+             android:background="@color/lp_grey"
+             android:layout_marginTop="10dp"
+             android:layout_marginBottom="10dp" />
+        
            <EditText android:id="@+id/email"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -78,6 +76,15 @@
                 android:background="@color/lp_grey"
                 android:padding="10dp"
                 android:layout_marginBottom="5dp"/>    
+                
+                <View
+             android:id="@+id/view2"
+             android:layout_width="wrap_content"
+             android:layout_height="1dp"
+             android:background="@color/lp_grey"
+             android:layout_marginTop="10dp"
+             android:layout_marginBottom="10dp" />
+                
          <EditText android:id="@+id/location"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -89,15 +96,6 @@
                 android:padding="10dp"
                 android:layout_marginBottom="5dp"/>   
           <!-- Register Button -->
-
-         <Button
-             android:id="@+id/btnRegister"
-             android:layout_width="fill_parent"
-             android:layout_height="wrap_content"
-             android:layout_marginTop="10dip"
-             android:background="@color/lp_red"
-             android:text="Update"
-             android:textColor="@color/white" />
 
           <!-- Link to Login Screen -->
 

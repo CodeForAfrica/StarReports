@@ -297,7 +297,7 @@ public void onUserInteraction()
 
 				@Override
 				public void onClick(View v) {
-					openSite("http://codeforafrica.org");
+					openURL("http://codeforafrica.org");
 				}
             	
             });
@@ -305,7 +305,7 @@ public void onUserInteraction()
 
 				@Override
 				public void onClick(View v) {
-					openSite("http://www.the-star.co.ke");
+					openURL("http://www.the-star.co.ke");
 				}
             	
             });
@@ -313,7 +313,7 @@ public void onUserInteraction()
 
 				@Override
 				public void onClick(View v) {
-					openSite("http://starreports.codeforafrica.net");
+					openURL("http://starreports.codeforafrica.net");
 				}
             	
             });
@@ -348,7 +348,7 @@ public void onUserInteraction()
         
 		return true;
 	}
-    public void openSite(String url){
+    public void openURL(String url){
     	
     	Intent i = new Intent(Intent.ACTION_VIEW);
     	i.setData(Uri.parse(url));
