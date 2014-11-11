@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 	 
 <item android:id="@+id/menu_sync_reports"
-          android:icon="@drawable/ic_action_swap"
+          android:icon="@drawable/ic_action_sync"
           android:title="Sync"
           android:showAsAction="always"
           /> 
 
 
 <item android:id="@+id/menu_new_form"
-          android:icon="@drawable/abs__ic_menu_moreoverflow_normal_holo_dark"
+          android:icon="@drawable/abs__ic_menu_moreoverflow_normal_holo_light"
           android:title="Menu"
           android:showAsAction="always"
           >
