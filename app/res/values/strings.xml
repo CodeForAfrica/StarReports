@@ -25,6 +25,10 @@
 	<string name="add_video">Add Video</string>
 	<string name="add_audio">Add Audio</string>
 	<string name="import_from_gallery">Import From Gallery</string>
+	<string name="view_website">Go to StarReports website</string>
+	<string name="built_by">Built by</string>
+	<string name="built_for">For</string>
+	<string name="the_star">The Star</string>
 	
 	<string name="view_gallery">Gallery</string>
 	<string name="description_field">Description</string>

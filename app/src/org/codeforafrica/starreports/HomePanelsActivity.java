@@ -103,7 +103,7 @@ public class HomePanelsActivity extends BaseActivity implements OnClickListener{
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#ffffff")));
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayShowHomeEnabled(false);
-        
+                
         checkForTor();
         //check if relevant folders exist
         

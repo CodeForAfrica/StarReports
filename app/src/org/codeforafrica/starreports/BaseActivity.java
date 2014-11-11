@@ -23,6 +23,7 @@ import android.app.ActivityManager.RunningServiceInfo;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -53,6 +54,7 @@ public class BaseActivity extends Activity {
 	//public SlidingMenu mSlidingMenu;
 	private static final String TAG=BaseActivity.class.getName();
     public Dialog dialog;
+    public Dialog dialog_about;
 
     /**
      * Gets reference to global Application
@@ -288,10 +290,34 @@ public void onUserInteraction()
         }
         if (item.getItemId() == R.id.about)
         {	
-        	   		
-        	Intent intent = new Intent(getBaseContext(), AboutActivity.class);
-	        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	        startActivity(intent);
+        	dialog_about = new Dialog(this);
+            dialog_about.setTitle("About StarReports");
+            dialog_about.setContentView(R.layout.dialog_about);
+            dialog_about.findViewById(R.id.imageView2).setOnClickListener(new View.OnClickListener(){
+
+				@Override
+				public void onClick(View v) {
+					openSite("http://codeforafrica.org");
+				}
+            	
+            });
+            dialog_about.findViewById(R.id.imageView3).setOnClickListener(new View.OnClickListener(){
+
+				@Override
+				public void onClick(View v) {
+					openSite("http://www.the-star.co.ke");
+				}
+            	
+            });
+            dialog_about.findViewById(R.id.rlWebsite).setOnClickListener(new View.OnClickListener(){
+
+				@Override
+				public void onClick(View v) {
+					openSite("http://starreports.codeforafrica.net");
+				}
+            	
+            });
+            dialog_about.show();
         }
         if (item.getItemId() == R.id.profile)
         {	
@@ -319,8 +345,16 @@ public void onUserInteraction()
 	        finish();
         }
         
+        
 		return true;
 	}
+    public void openSite(String url){
+    	
+    	Intent i = new Intent(Intent.ACTION_VIEW);
+    	i.setData(Uri.parse(url));
+    	startActivity(i);
+    	
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
     
