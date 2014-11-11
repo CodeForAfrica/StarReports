@@ -3,7 +3,9 @@
     android:id="@+id/standard_spinner_format"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
-    style="@android:style/TextAppearance.Medium"
-    android:textColor="@color/lp_grey"/>
+    android:padding="15dp"
+    style="@style/CardTitle"
+    android:textSize="18sp"
+    android:textColor="@color/black"
+/>
 

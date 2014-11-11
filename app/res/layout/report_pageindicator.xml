@@ -75,7 +75,6 @@
         android:id="@+id/add_title"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        style="@style/CardTitle"
         android:background="@drawable/background_black_border_full"        
         android:padding="10dp"
         android:textSize="20sp"
@@ -93,9 +92,10 @@
         android:gravity="top|left"
         android:layout_margin="3dp"
         android:padding="10dp"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:hint="Enter a compelling description"
-        style="@style/CardTitle" />
+        style="@style/CardTitle"
+        android:textColor="@color/black" />
     <Spinner
         android:id="@+id/add_category"
         android:layout_width="match_parent"
@@ -104,7 +104,8 @@
         android:padding="10dp"        
         style="@style/CardTitle" 
         android:background="@drawable/background_black_border_full"        
-        android:entries="@array/categories"/>    
+        android:entries="@array/categories"
+        android:textColor="@color/black"/>    
         
     <org.codeforafrica.starreports.location.PlacesAutoCompleteTextView
         android:id="@+id/atv_places"
@@ -115,7 +116,8 @@
         android:padding="10dp"
         style="@style/CardTitle"
         android:hint="@string/str_atv_places"
-        android:textSize="20sp" />  
+        android:textSize="18sp"
+        android:textColor="@color/black" />  
     <RelativeLayout 
 	     android:layout_width="match_parent"
         android:layout_height="fill_parent"
