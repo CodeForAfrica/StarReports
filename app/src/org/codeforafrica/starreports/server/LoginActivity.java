@@ -88,7 +88,7 @@ public class LoginActivity extends BaseActivity implements Runnable
         
         RelativeLayout lLayout = (RelativeLayout)findViewById(R.id.loginLayout);
         
-        lLayout.getBackground().setAlpha(120); 
+        //lLayout.getBackground().setAlpha(90); 
         
         Button btnRegister = (Button) findViewById(R.id.btnRegister);
         btnRegister.setOnClickListener(new OnClickListener ()
@@ -124,7 +124,7 @@ public class LoginActivity extends BaseActivity implements Runnable
     public void showRegistrationDialog(){
     	final Dialog dialog = new Dialog(this, R.style.DialogSlideAnim);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setTitle("Create new account");
+        dialog.setTitle("Registration");
     	dialog.setContentView(R.layout.activity_registration_dialog);
         dialog.findViewById(R.id.btnRegister).setOnClickListener(new View.OnClickListener(){
 			@Override

@@ -5,7 +5,6 @@
   android:layout_height="fill_parent"
   android:fillViewport="true"
   android:orientation="vertical"
-  android:background="@drawable/background_image" 
   >
 
   <RelativeLayout
