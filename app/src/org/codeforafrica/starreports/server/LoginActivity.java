@@ -1,6 +1,5 @@
 package org.codeforafrica.starreports.server;
 
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,12 +12,9 @@ import org.codeforafrica.starreports.HomePanelsActivity;
 import org.codeforafrica.starreports.R;
 import org.codeforafrica.starreports.StoryMakerApp;
 import org.codeforafrica.starreports.api.APIFunctions;
-import org.codeforafrica.starreports.api.SyncService;
-import org.codeforafrica.starreports.encryption.EncryptionService;
-import org.codeforafrica.starreports.export.Export2SDService;
 import org.codeforafrica.starreports.model.Auth;
 import org.codeforafrica.starreports.model.AuthTable;
-import org.holoeverywhere.app.Dialog;
+import android.app.Dialog;
 import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
@@ -33,17 +29,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
  
 public class LoginActivity extends BaseActivity implements Runnable 
 {
@@ -123,7 +115,6 @@ public class LoginActivity extends BaseActivity implements Runnable
     }
     public void showRegistrationDialog(){
     	final Dialog dialog = new Dialog(this, R.style.DialogSlideAnim);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setTitle("Registration");
     	dialog.setContentView(R.layout.activity_registration_dialog);
         dialog.findViewById(R.id.btnRegister).setOnClickListener(new View.OnClickListener(){
