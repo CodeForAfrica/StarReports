@@ -1,10 +1,8 @@
 package org.codeforafrica.starreports.facebook;
 
-import org.codeforafrica.starreports.AboutActivity;
 import org.codeforafrica.starreports.BaseActivity;
 import org.codeforafrica.starreports.HomePanelsActivity;
 import org.codeforafrica.starreports.R;
-import org.codeforafrica.starreports.HomePanelsActivity;
 import org.holoeverywhere.preference.PreferenceManager;
 import org.holoeverywhere.preference.SharedPreferences;
 
@@ -16,6 +14,7 @@ import android.os.Bundle;
 import android.widget.EditText;
  
 public class UpdateActivity extends BaseActivity {
+	
 	EditText registerUsername;
 	EditText first_name;
 	EditText last_name;
@@ -27,10 +26,12 @@ public class UpdateActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Set View to register.xml
+        
         setContentView(R.layout.activity_update_profile);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Edit Profile");
         
+        /*
         first_name = (EditText)findViewById(R.id.first_name);
         last_name = (EditText)findViewById(R.id.last_name);
         email = (EditText)findViewById(R.id.email);
@@ -38,7 +39,7 @@ public class UpdateActivity extends BaseActivity {
         location = (EditText)findViewById(R.id.location);
         
         setValues();
-        
+        */
     }
     public void setValues(){
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -51,6 +52,7 @@ public class UpdateActivity extends BaseActivity {
 
     	
     }
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -62,6 +64,7 @@ public class UpdateActivity extends BaseActivity {
 
         return true;
     }
+    
   @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

@@ -3,6 +3,8 @@ package org.codeforafrica.starreports.server;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import net.bican.wordpress.Category;
 
@@ -62,7 +64,7 @@ public class LoginActivity extends BaseActivity implements Runnable
 	String Vphone_number = "";
 	
 	private boolean registering = false;
-	private boolean initialReg = true;
+	private boolean updatingProfile = false;
 	
 	// Connection detector class
     ConnectionDetector cd;
@@ -139,7 +141,6 @@ public class LoginActivity extends BaseActivity implements Runnable
 				
 				lBasic_info = (LinearLayout)dialog_reg.findViewById(R.id.basic_info);
 				lMore_info = (LinearLayout)dialog_reg.findViewById(R.id.more_info);
-				
 												
 				EditText username = (EditText) dialog_reg.findViewById(R.id.registerUsername);
 				EditText rpassword = (EditText) dialog_reg.findViewById(R.id.registerPassword);
@@ -164,32 +165,35 @@ public class LoginActivity extends BaseActivity implements Runnable
 	    		
 	    		
 	    		if((Vusername=="")||(Vpassword=="")||(Vemail=="")){
-	    			
+		
+					txtStatus.setText("All fields are required!");
+
 	    			Toast.makeText(getApplicationContext(), "All fields are required!", Toast.LENGTH_LONG).show();
 
 	    		}else{
 	    			
-		    		if(!Vcpassword.equals(Vpassword)){
+	    			if(!isEmailValid(Vemail)){
 		    			
+	    				txtStatus.setText("Please provide a valid email address!");
+	    				
+	    				Toast.makeText(getApplicationContext(), "Please provide a valid email address!", Toast.LENGTH_LONG).show();
+
+	    			}else if(!Vcpassword.equals(Vpassword)){
+		    			
+	    				txtStatus.setText("Your passwords do not match!");
+	    				
 		    			Toast.makeText(getApplicationContext(), "Your passwords do not match!", Toast.LENGTH_LONG).show();
 		    		
 		    		}else{
 		    			
 		    					    			
-		    			if(initialReg == false){
+		    			if(updatingProfile == false){
 			    			
 			    			registering = true;
-				    		
-				    		handleLogin();
-				    		
-			    			initialReg = true;
-			    			
-				    		
-			    		}else{
-			    			
-			    			initialReg = false;
-
+				    						    		
 			    		}
+		    			
+		    				handleLogin();	
 		    			
 		    		}
 		    		
@@ -269,7 +273,30 @@ public class LoginActivity extends BaseActivity implements Runnable
             
         }else{
         	
-    	if(registering == true){
+    	if(updatingProfile==true){
+    		
+    		APIFunctions userFunction = new APIFunctions();
+    		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		       
+            String Vuser_id = settings.getString("user_id","0");
+            
+            JSONObject json = userFunction.updateUser(Vfirst_name, Vlast_name, Vlocation, Vphone_number, "", Vuser_id);
+				try {
+						String res = json.getString("result"); 
+						if(res.equals("OK")){
+							mHandler.sendEmptyMessage(0);
+						}else{
+							Message msgErr= mHandler.obtainMessage(1);
+	                        msgErr.getData().putString("err",json.getString("message"));
+	                        mHandler.sendMessage(msgErr);
+						}
+					
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+    		
+    	}else if(registering == true){
+    	
     		
     		APIFunctions userFunction = new APIFunctions();
             JSONObject json = userFunction.newUser(Vusername, Vpassword, Vemail);
@@ -277,6 +304,8 @@ public class LoginActivity extends BaseActivity implements Runnable
 						String res = json.getString("result"); 
 						if(res.equals("OK")){
 							mHandler.sendEmptyMessage(0);
+							
+							saveUserID(json.getString("user_id"));
 						}else{
 							Message msgErr= mHandler.obtainMessage(1);
 	                        msgErr.getData().putString("err",json.getString("message"));
@@ -341,10 +370,30 @@ public class LoginActivity extends BaseActivity implements Runnable
     	
     	Toast.makeText(this, "Login failed: " + err, Toast.LENGTH_LONG).show();
     }
-    
+    public static boolean isEmailValid(String email) {
+        boolean isValid = false;
+
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        CharSequence inputStr = email;
+
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(inputStr);
+        if (matcher.matches()) {
+            isValid = true;
+        }
+        return isValid;
+    }
     private void loginSuccess ()
     {	
-    	if(registering==true){
+    	if(updatingProfile==true){
+    		
+    		updatingProfile = false;
+    		
+    		Toast.makeText(getApplicationContext(), "Profile updated successfully!", Toast.LENGTH_LONG).show();
+    		
+    		dialog_reg.dismiss();
+    		
+    	}else if(registering==true){
     		
     		registering = false;
     		
@@ -353,9 +402,13 @@ public class LoginActivity extends BaseActivity implements Runnable
 			
 
 			dialog_reg.setTitle("Edit Profile");
+			
 			button_reg.setText("Update");
 			
         	txtStatus.setText("Registration successfull!");
+
+        	updatingProfile = true;
+
 
     	}else{
         	txtStatus.setText("Loading...");
@@ -373,7 +426,14 @@ public class LoginActivity extends BaseActivity implements Runnable
 	    	finish();
     	}
     }
-
+    private void saveUserID(String user_id){
+    	
+    	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		Editor editor = prefs.edit();
+		editor.putString("user_id", user_id);
+		editor.commit();
+		
+    }
     private void updateCategories(){
 	
     	SharedPreferences prefs = PreferenceManager

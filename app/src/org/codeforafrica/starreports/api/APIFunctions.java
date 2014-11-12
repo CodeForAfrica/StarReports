@@ -24,8 +24,8 @@ public class APIFunctions {
 	private JSONParser jsonParser;
 	private static String loginURL = "login.php";
 	private static String registerURL = DefaultsActivity.site_url + "/api/users/register/";
+	private static String updateURL = DefaultsActivity.site_url + "/api/users/editprofile/";
 
-	private static String updateURL = "update.php";
 	private static String reportURL = "article.php";
 	private static String objectURL = "attachment.php";
 	private static String postsURL = "http://192.168.1.41/storymaker/api/get_recent_posts/";
@@ -162,6 +162,23 @@ public class APIFunctions {
 		params.add(new BasicNameValuePair("tag", "register"));
 
 		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
+		// return json
+		return json;
+	}
+
+	public JSONObject updateUser(String vfirst_name, String vlast_name,
+			String vlocation, String vphone_number, String vaddress, String vuser_id) {
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("user_id", vuser_id));
+
+		params.add(new BasicNameValuePair("first_name", vfirst_name));
+		params.add(new BasicNameValuePair("last_name", vlast_name));
+		params.add(new BasicNameValuePair("location", vlocation));
+		params.add(new BasicNameValuePair("phone_number", vphone_number));
+		params.add(new BasicNameValuePair("address", vaddress));
+
+		JSONObject json = jsonParser.getJSONFromUrl(updateURL, params);
 		// return json
 		return json;
 	}
