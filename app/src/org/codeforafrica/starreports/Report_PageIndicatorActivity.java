@@ -18,6 +18,7 @@ import java.util.List;
 
 import javax.crypto.Cipher;
 
+import org.codeforafrica.starreports.assignments.AssignmentsActivity;
 import org.codeforafrica.starreports.encryption.Encryption;
 import org.codeforafrica.starreports.location.GPSTracker;
 import org.codeforafrica.starreports.location.PlaceJSONParser;
@@ -51,10 +52,13 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
@@ -79,6 +83,7 @@ public class Report_PageIndicatorActivity extends BaseActivity implements BaseSl
     ParserTask parserTask;
     
     EditText editTextTitle;
+    TextView assignmentInfo;
     EditText editTextDescription;
     Spinner spinnerCategories;
     private Dialog dialog;
@@ -95,7 +100,8 @@ public class Report_PageIndicatorActivity extends BaseActivity implements BaseSl
 	String description;
 	String location;
     int story_mode;
-    
+    String mapurl;
+
     ProgressDialog pDialog;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -116,13 +122,56 @@ public class Report_PageIndicatorActivity extends BaseActivity implements BaseSl
         menu.findItem(R.id.about).setVisible(false);
         menu.findItem(R.id.menu_sync_reports).setVisible(false);
         menu.findItem(R.id.menu_new_form).setVisible(false);
+        
+        //if assignment
+        
+        if((getIntent().hasExtra("assignmentTitle"))){
+        	mediaTypes = "" + getIntent().getStringExtra("mediaTypes");
 
+	        if(!(mediaTypes.contains("video"))){
+	    		menu.findItem(R.id.add_video).setVisible(false);
+	    	}
+	    	if(!(mediaTypes.contains("audio"))){
+	    		menu.findItem(R.id.add_audio).setVisible(false);
+	
+	    	}
+	    	if(!(mediaTypes.contains("image"))){
+	    		menu.findItem(R.id.add_picture).setVisible(false);
+	
+	    	}
+        }
+        
+        //if editing assignment
+        if(rid!=-1){ 
+        	Report r = Report.get(this, rid);            
+            if(!r.getAssignment().equals("0")){
+            	mediaTypes = r.getAssignmentMediaTypes();
+            	if(!(mediaTypes.contains("video"))){
+    	    		menu.findItem(R.id.add_video).setVisible(false);
+    	    	}
+    	    	if(!(mediaTypes.contains("audio"))){
+    	    		menu.findItem(R.id.add_audio).setVisible(false);
+    	
+    	    	}
+    	    	if(!(mediaTypes.contains("image"))){
+    	    		menu.findItem(R.id.add_picture).setVisible(false);
+    	
+    	    	}
+            }
+        }
         return true;
     }
 	@Override
     public void finish() {
         super.finish();
-        Intent i = new Intent(getBaseContext(), HomePanelsActivity.class);
+        Intent i = null;
+        
+        if(getIntent().hasExtra("assignmentTitle")){
+        	i = new Intent(getBaseContext(), AssignmentsActivity.class);
+        }else{
+        	i = new Intent(getBaseContext(), HomePanelsActivity.class);
+        } 
+        
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
@@ -180,7 +229,7 @@ private void initIntroActivityList ()
      //gallery slideshow
      gallerySlider = (SliderLayout)findViewById(R.id.slider);  
      
-     
+     mapurl = DefaultsActivity.site_url.replace("/wp", "");
      web = (WebView) findViewById(R.id.webView);
 	 //WebSettings webSettings = myWebView.getSettings();
 	 //webSettings.setJavaScriptEnabled(true);
@@ -198,7 +247,6 @@ private void initIntroActivityList ()
             	
                 latitude = gpsT.getLatitude(); 
                 longitude = gpsT.getLongitude(); 
-                String mapurl = DefaultsActivity.site_url.replace("/wp", "");
                 
                 web.loadUrl(mapurl + "/webview_map.php?lat="+latitude+"&long="+longitude);
             
@@ -230,6 +278,16 @@ private void initIntroActivityList ()
                 }
             });
             
+            atvPlaces.setOnItemClickListener(new OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View arg1, int pos,
+                        long id) {
+                	
+                      web.loadUrl(mapurl + "/webview_map.php?address=" + atvPlaces.getText().toString());
+
+                }
+            });
             
           //txtNewStoryDesc = (TextView)findViewById(R.id.txtNewStoryDesc);
             editTextTitle = (EditText)findViewById(R.id.add_title);
@@ -238,6 +296,8 @@ private void initIntroActivityList ()
             setCategories();
             
             editTextDescription = (EditText)findViewById(R.id.add_description);
+            
+            assignmentInfo = (TextView)findViewById(R.id.assignmentInfo);
             
             initializeReport();
 }
@@ -264,17 +324,11 @@ public void initializeReport(){
         
         if(!r.getAssignment().equals("0")){
         	assignmentID = Integer.parseInt(r.getAssignment());
+        	
         	mediaTypes = r.getAssignmentMediaTypes();
         	        	
-        	//disable buttons not included
-			if(!(mediaTypes.contains("video"))){
-			}
-			if(!(mediaTypes.contains("audio"))){
-
-			}
-			if(!(mediaTypes.contains("image"))){
-
-			}
+        	
+			
 
         }
         new_report = false;
@@ -283,12 +337,30 @@ public void initializeReport(){
     }else{
     	    	
     	setLocation();
-    	
+
     	getSupportActionBar().setTitle("Add Report");
-    	
+
     	loadSlider(null);
     	
     }
+    
+    if(getIntent().hasExtra("assignmentTitle")){
+		
+		String assignmentTitle = "" + getIntent().getStringExtra("assignmentTitle");
+		
+		assignmentInfo.setVisibility(View.VISIBLE);
+		
+    	assignmentInfo.setText("Assignment: " + assignmentTitle);
+    	
+    	mediaTypes = "" + getIntent().getStringExtra("mediaTypes");
+    	
+    	hide_none_required_buttons();
+	}
+}
+
+public void hide_none_required_buttons(){
+	//disable buttons not included
+	
 }
 public void loadSlider(Report r){
 	int totalClips =  0;
@@ -344,7 +416,9 @@ private void constructSlider2(HashMap<String, File> file_maps) {
     gallerySlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
     gallerySlider.setCustomAnimation(new DescriptionAnimation());
     gallerySlider.setDuration(4000);
-	
+    if(file_maps.size()<2){
+    	gallerySlider.stopAutoCycle();
+    }
 }
 public void constructSlider(HashMap<String,Integer> file_maps){
 
@@ -406,7 +480,7 @@ private void launchProject(String title, int pIssue, int pSector, String pEntity
     	report = new Report (this, 0, title, String.valueOf(pSector), String.valueOf(pIssue), pEntity, pDesc, pLocation, "0", currentdate, "0", "0", "0", "");
     	if(getIntent().hasExtra("assignmentID")){
         	report.setAssignment(String.valueOf(getIntent().getIntExtra("assignmentID", 0)));
-        	report.setAssignmentMediaTypes(mediaTypes);
+        	report.setAssignmentMediaTypes(getIntent().getStringExtra("mediaTypes"));
         }
     	
     }else{
@@ -801,7 +875,7 @@ public void setCategories(){
             String data = "";
  
             // Obtain browser key from https://code.google.com/apis/console
-            String key = "key=AIzaSyBkJAmtq5SDyK3nAWrmjoHiOLYWXUXw-Uk";
+            String key = "key=" + DefaultsActivity.G_API_Key;
  
             String input="";
  
@@ -860,7 +934,7 @@ public void setCategories(){
  
             try{
                 jObject = new JSONObject(jsonData[0]);
- 
+                
                 // Getting the parsed data as a List construct
                 places = placeJsonParser.parse(jObject);
  

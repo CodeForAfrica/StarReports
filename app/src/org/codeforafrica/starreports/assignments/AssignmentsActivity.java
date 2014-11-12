@@ -94,6 +94,7 @@ public class AssignmentsActivity extends BaseActivity{
 		    public void createCards() throws JSONException{
 		        final int[] assignmentID = new int[posts.size()];
 		        final String[] _mediaTypes = new String[posts.size()];
+		        final String[] assignmentTitles = new String[posts.size()];
 		        
 		    	for(int i = 0; i<posts.size(); i++){
 		    		final int s = i;
@@ -102,6 +103,7 @@ public class AssignmentsActivity extends BaseActivity{
 		    		String excerpt = post.getDescription();
 		    		String date = post.getDateCreated().toString();
 		    		assignmentID[i] = post.getPostid();
+		    		assignmentTitles[s] = title;
 		    		
 		    		String bounty = "";
 		    		String location = "";
@@ -154,6 +156,7 @@ public class AssignmentsActivity extends BaseActivity{
 							Intent intent = new Intent(AssignmentsActivity.this, Report_PageIndicatorActivity.class);
 							intent.putExtra("mediaTypes", _mediaTypes[s]);
 							intent.putExtra("assignmentID", assignmentID[s]);
+							intent.putExtra("assignmentTitle", assignmentTitles[s]);
 							startActivity(intent);
 						}
 						

@@ -11,6 +11,15 @@
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/assignmentInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:paddingLeft="5dp" />
+
    <RelativeLayout
         android:layout_width="match_parent" 
         android:id="@+id/pager2"
@@ -101,9 +110,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="3dp"
-        android:padding="10dp"        
+        android:padding="5dp"        
         style="@style/CardTitle" 
-        android:background="@drawable/background_black_border_full"        
+        android:background="@android:drawable/btn_dropdown"     
         android:entries="@array/categories"
         android:textColor="@color/black"/>    
         
