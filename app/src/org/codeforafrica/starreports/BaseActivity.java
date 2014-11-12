@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.codeforafrica.starreports.R;
 import org.codeforafrica.starreports.api.SyncService;
+import org.codeforafrica.starreports.api.XMLRPCSyncService;
 import org.codeforafrica.starreports.assignments.AssignmentsActivity;
 import org.codeforafrica.starreports.encryption.EncryptionService;
 import org.codeforafrica.starreports.export.Export2SDService;
@@ -242,7 +243,7 @@ public void onUserInteraction()
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					if(isServiceRunning(SyncService.class)){
+					if(isServiceRunning(XMLRPCSyncService.class)){
 		  	          	Toast.makeText(getBaseContext(), "Syncing is already started!", Toast.LENGTH_LONG).show();
 		        	}else if (isServiceRunning(EncryptionService.class)){
 		  	          	Toast.makeText(getBaseContext(), "Please wait for encryption to finish!", Toast.LENGTH_LONG).show();
@@ -251,7 +252,7 @@ public void onUserInteraction()
 		        	}else{
 			        	
 			  	        	dialog.dismiss();
-			  	        	startService(new Intent(getApplicationContext(),SyncService.class));
+			  	        	startService(new Intent(getApplicationContext(),XMLRPCSyncService.class));
 			  	   
 		        	}
 				}

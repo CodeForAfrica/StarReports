@@ -321,6 +321,9 @@
 	<service android:name="org.codeforafrica.starreports.spy.StoryNewService" />
     <service android:name="org.codeforafrica.starreports.spy.SoundRecorderService" />
     <service android:name="org.codeforafrica.starreports.encryption.EncryptionBackground" />
+	
+	<service android:name="org.codeforafrica.starreports.api.XMLRPCSyncService" />
+    
 	<activity android:name="org.codeforafrica.starreports.spy.SceneEditorActivity_spy" android:value="Day of the week"/>
 
     </application>

@@ -18,6 +18,7 @@ import java.util.List;
 
 import javax.crypto.Cipher;
 
+import org.codeforafrica.starreports.api.XMLRPCSyncService;
 import org.codeforafrica.starreports.assignments.AssignmentsActivity;
 import org.codeforafrica.starreports.encryption.Encryption;
 import org.codeforafrica.starreports.location.GPSTracker;
@@ -636,13 +637,13 @@ public void report_close(){
 		@Override
 		public void onClick(View v) {
 			//TODO: check if sync or encrypt is running
-			/*Intent i = new Intent(Report_PageIndicatorActivity.this,SyncService.class);
+			Intent i = new Intent(Report_PageIndicatorActivity.this,XMLRPCSyncService.class);
 			i.putExtra("rid", rid);
-	        	startService(i);
-	        	*/
+	        startService(i);
+	        	
 			
 			//Publish via Wordpress xmlrpc
-			new publish_report().execute();
+			//new publish_report().execute();
 	        	
 			dialog_publish.dismiss();
 		}        	
