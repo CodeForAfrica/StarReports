@@ -24,6 +24,7 @@ public class APIFunctions {
 	private JSONParser jsonParser;
 	private static String loginURL = "login.php";
 	private static String registerURL = DefaultsActivity.site_url + "/api/users/register/";
+
 	private static String updateURL = "update.php";
 	private static String reportURL = "article.php";
 	private static String objectURL = "attachment.php";
@@ -145,6 +146,19 @@ public class APIFunctions {
 		params.add(new BasicNameValuePair("lastname", last_name));
 		params.add(new BasicNameValuePair("location", location));
 		params.add(new BasicNameValuePair("phone_number", phone_number));
+		params.add(new BasicNameValuePair("tag", "register"));
+
+		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
+		// return json
+		return json;
+	}
+	public JSONObject newUser(String username, String password, String email){
+		Log.d("passed", "passed" + email + username + password);
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("username", username));
+		params.add(new BasicNameValuePair("password", password));
+		params.add(new BasicNameValuePair("email", email));
 		params.add(new BasicNameValuePair("tag", "register"));
 
 		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);

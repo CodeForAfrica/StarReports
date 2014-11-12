@@ -229,12 +229,13 @@ private void initIntroActivityList ()
      //gallery slideshow
      gallerySlider = (SliderLayout)findViewById(R.id.slider);  
      
-     mapurl = DefaultsActivity.site_url.replace("/wp", "");
+     mapurl = DefaultsActivity.map_url;
+     
      web = (WebView) findViewById(R.id.webView);
 	 //WebSettings webSettings = myWebView.getSettings();
 	 //webSettings.setJavaScriptEnabled(true);
 	 
-	 	pB = (ProgressBar) findViewById(R.id.pBLoadWebView);
+	 pB = (ProgressBar) findViewById(R.id.pBLoadWebView);
 		
 		web.setWebViewClient(new myWebClient());
 		web.getSettings().setJavaScriptEnabled(true);
@@ -248,7 +249,7 @@ private void initIntroActivityList ()
                 latitude = gpsT.getLatitude(); 
                 longitude = gpsT.getLongitude(); 
                 
-                web.loadUrl(mapurl + "/webview_map.php?lat="+latitude+"&long="+longitude);
+                web.loadUrl(mapurl + "?lat="+latitude+"&long="+longitude);
             
             }else{  
                 gpsT.showSettingsAlert(); 
@@ -289,7 +290,7 @@ private void initIntroActivityList ()
                 }
             });
             
-          //txtNewStoryDesc = (TextView)findViewById(R.id.txtNewStoryDesc);
+            //txtNewStoryDesc = (TextView)findViewById(R.id.txtNewStoryDesc);
             editTextTitle = (EditText)findViewById(R.id.add_title);
             
             spinnerCategories = (Spinner)findViewById(R.id.add_category);  

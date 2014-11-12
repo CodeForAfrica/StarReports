@@ -56,7 +56,8 @@
                     android:hint="Password"
                     android:padding="10dp"
                     android:singleLine="true"
-                    android:textColor="@color/lp_blue" />
+                    android:textColor="@color/lp_blue"
+                    android:password="true" />
 
                 <EditText
                     android:id="@+id/confirmPassword"
@@ -69,7 +70,8 @@
                     android:hint="Confirm password"
                     android:padding="10dp"
                     android:singleLine="true"
-                    android:textColor="@color/lp_blue" />
+                    android:textColor="@color/lp_blue"
+                    android:password="true" />
 
                 <EditText
                     android:id="@+id/email"
@@ -159,7 +161,8 @@
               android:layout_gravity="center_horizontal"
               android:text=""
               android:textAppearance="?android:attr/textAppearanceSmall" />
- <Button android:id="@+id/btnRegister"
+		
+          <Button android:id="@+id/btnRegister"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dip"

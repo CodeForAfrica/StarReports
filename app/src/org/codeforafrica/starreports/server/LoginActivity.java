@@ -69,6 +69,12 @@ public class LoginActivity extends BaseActivity implements Runnable
     //flag for Internet connection status
     Boolean isInternetPresent = false;
     
+    
+    LinearLayout lBasic_info;
+	LinearLayout lMore_info;
+	Button button_reg;
+	Dialog dialog_reg;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,28 +128,30 @@ public class LoginActivity extends BaseActivity implements Runnable
         
     }
     public void showRegistrationDialog(){
-    	final Dialog dialog = new Dialog(this, R.style.DialogSlideAnim);
-        dialog.setTitle("Registration");
-    	dialog.setContentView(R.layout.activity_registration_dialog);
-        dialog.findViewById(R.id.btnRegister).setOnClickListener(new View.OnClickListener(){
+    	dialog_reg = new Dialog(this, R.style.DialogSlideAnim);
+    	dialog_reg.setTitle("Registration");
+    	dialog_reg.setContentView(R.layout.activity_registration_dialog);
+		button_reg = (Button)dialog_reg.findViewById(R.id.btnRegister);
+
+    	button_reg.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(View v) {
 				
-				LinearLayout lBasic_info = (LinearLayout)dialog.findViewById(R.id.basic_info);
-				LinearLayout lMore_info = (LinearLayout)dialog.findViewById(R.id.more_info);
+				lBasic_info = (LinearLayout)dialog_reg.findViewById(R.id.basic_info);
+				lMore_info = (LinearLayout)dialog_reg.findViewById(R.id.more_info);
 				
 												
-				EditText username = (EditText) dialog.findViewById(R.id.registerUsername);
-				EditText rpassword = (EditText) dialog.findViewById(R.id.registerPassword);
-				EditText cPassword = (EditText) dialog.findViewById(R.id.confirmPassword);
-				EditText email = (EditText) dialog.findViewById(R.id.email);
-				EditText first_name = (EditText) dialog.findViewById(R.id.first_name);
-				EditText last_name = (EditText) dialog.findViewById(R.id.last_name);
-				EditText location = (EditText) dialog.findViewById(R.id.location);
-				EditText phone_number = (EditText) dialog.findViewById(R.id.phone_number);
-	    		
-				txtStatus = (TextView)dialog.findViewById(R.id.reg_error);
-				txtStatus.setText("-- 1 of 2 --");
+				EditText username = (EditText) dialog_reg.findViewById(R.id.registerUsername);
+				EditText rpassword = (EditText) dialog_reg.findViewById(R.id.registerPassword);
+				EditText cPassword = (EditText) dialog_reg.findViewById(R.id.confirmPassword);
+				EditText email = (EditText) dialog_reg.findViewById(R.id.email);
+				EditText first_name = (EditText) dialog_reg.findViewById(R.id.first_name);
+				EditText last_name = (EditText) dialog_reg.findViewById(R.id.last_name);
+				EditText location = (EditText) dialog_reg.findViewById(R.id.location);
+				EditText phone_number = (EditText) dialog_reg.findViewById(R.id.phone_number);
+	    						
+				txtStatus = (TextView)dialog_reg.findViewById(R.id.reg_error);
+				
 				//
 				Vusername = "" + username.getText().toString();
 	        	Vpassword = "" + rpassword.getText().toString();
@@ -167,9 +175,7 @@ public class LoginActivity extends BaseActivity implements Runnable
 		    		
 		    		}else{
 		    			
-		    			lBasic_info.setVisibility(View.GONE);
-		    			lMore_info.setVisibility(View.VISIBLE);
-		    			
+		    					    			
 		    			if(initialReg == false){
 			    			
 			    			registering = true;
@@ -191,7 +197,7 @@ public class LoginActivity extends BaseActivity implements Runnable
 	    		}
 			}    	
         });
-        dialog.show();
+    	dialog_reg.show();
     }
 
     
@@ -266,14 +272,14 @@ public class LoginActivity extends BaseActivity implements Runnable
     	if(registering == true){
     		
     		APIFunctions userFunction = new APIFunctions();
-            JSONObject json = userFunction.registerUser(Vusername, Vpassword, Vemail, Vfirst_name, Vlast_name, Vlocation, Vphone_number);
+            JSONObject json = userFunction.newUser(Vusername, Vpassword, Vemail);
 				try {
-						String res = json.getString("status"); 
-						if(res.equals("ok")){
+						String res = json.getString("result"); 
+						if(res.equals("OK")){
 							mHandler.sendEmptyMessage(0);
 						}else{
 							Message msgErr= mHandler.obtainMessage(1);
-	                        msgErr.getData().putString("err",json.getString("error"));
+	                        msgErr.getData().putString("err",json.getString("message"));
 	                        mHandler.sendMessage(msgErr);
 						}
 					
@@ -332,7 +338,8 @@ public class LoginActivity extends BaseActivity implements Runnable
     private void loginFailed (String err)
     {
     	txtStatus.setText(err);
-    	//Toast.makeText(this, "Login failed: " + err, Toast.LENGTH_LONG).show();
+    	
+    	Toast.makeText(this, "Login failed: " + err, Toast.LENGTH_LONG).show();
     }
     
     private void loginSuccess ()
@@ -340,7 +347,15 @@ public class LoginActivity extends BaseActivity implements Runnable
     	if(registering==true){
     		
     		registering = false;
-        	txtStatus.setText("Registration successfull, you can log in now!");
+    		
+    		lBasic_info.setVisibility(View.GONE);
+			lMore_info.setVisibility(View.VISIBLE);
+			
+
+			dialog_reg.setTitle("Edit Profile");
+			button_reg.setText("Update");
+			
+        	txtStatus.setText("Registration successfull!");
 
     	}else{
         	txtStatus.setText("Loading...");
