@@ -195,6 +195,23 @@ public class XMLRPCSyncService extends Service {
 						 		String bmp = Media.getThumbnailUrl(getApplicationContext(),media,project);
 		            			if (bmp != null)
 		            				thumbnail = bmp;
+		            			
+		            			//Re-encrypt
+		    			 		Cipher cipher;
+		    					try {
+		    						cipher = Encryption.createCipher(Cipher.ENCRYPT_MODE);
+		    						Encryption.applyCipher(file, file+"_", cipher);
+		    					}catch (Exception e) {
+		    						// TODO Auto-generated catch block
+		    						Log.e("Encryption error", e.getLocalizedMessage());
+		    						e.printStackTrace();
+		    					}
+		    					//Then delete original file
+		    					File oldfile = new File(file);
+		    					oldfile.delete();
+		    					//Then remove _ on encrypted file
+		    					File newfile = new File(file+"_");
+		    					newfile.renameTo(new File(file));
 					 		}
 				 		}
 				 	}
@@ -209,6 +226,8 @@ public class XMLRPCSyncService extends Service {
 				 	
 				 	postId = sm.post2(report.getTitle(), pDescription, null, null, null, null, null, null, structA, thumbnail);
 					urlPost = sm.getPostUrl(postId);
+					
+					
 					
 				} catch (MalformedURLException e) {
 					// TODO Auto-generated catch block

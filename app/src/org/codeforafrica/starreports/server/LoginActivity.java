@@ -14,6 +14,7 @@ import org.codeforafrica.starreports.HomePanelsActivity;
 import org.codeforafrica.starreports.R;
 import org.codeforafrica.starreports.StoryMakerApp;
 import org.codeforafrica.starreports.api.APIFunctions;
+import org.codeforafrica.starreports.location.GPSTracker;
 import org.codeforafrica.starreports.model.Auth;
 import org.codeforafrica.starreports.model.AuthTable;
 
@@ -60,9 +61,12 @@ public class LoginActivity extends BaseActivity implements Runnable
 	String Vemail = "";
 	String Vfirst_name = "";
 	String Vlast_name = "";
-	String Vlocation = "";
 	String Vphone_number = "";
 	
+	private GPSTracker gpsT; 
+	private boolean noGPS = false;
+	private String fineLocation;
+    
 	private boolean registering = false;
 	private boolean updatingProfile = false;
 	
@@ -117,11 +121,17 @@ public class LoginActivity extends BaseActivity implements Runnable
 			public void onClick(View v) {
 		        
 				txtStatus = (TextView)findViewById(R.id.status);
-
-				//Intent fl = new Intent(getApplicationContext(), FacebookLogin.class);
-				//startActivity(fl);
-				pBLogin.setVisibility(View.VISIBLE);
-				handleLogin ();
+				
+				if(((""+txtPass.getText().toString())=="")||((""+txtUser.getText().toString())=="")){
+					
+					Toast.makeText(getApplicationContext(), "All fields are required!", Toast.LENGTH_LONG).show();
+				
+				}else{
+				
+					pBLogin.setVisibility(View.VISIBLE);
+					handleLogin ();
+				
+				}
 				
 			}
         	
@@ -159,7 +169,6 @@ public class LoginActivity extends BaseActivity implements Runnable
 	    		Vemail = "" + email.getText().toString();
 	    		Vfirst_name = "" + first_name.getText().toString();
 	    		Vlast_name = "" + last_name.getText().toString();
-	    		Vlocation = "" + location.getText().toString();
 	    		Vphone_number = "" + phone_number.getText().toString();
 	    		Vcpassword = "" + cPassword.getText().toString();
 	    		
@@ -275,25 +284,42 @@ public class LoginActivity extends BaseActivity implements Runnable
         	
     	if(updatingProfile==true){
     		
-    		APIFunctions userFunction = new APIFunctions();
-    		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		       
-            String Vuser_id = settings.getString("user_id","0");
-            
-            JSONObject json = userFunction.updateUser(Vfirst_name, Vlast_name, Vlocation, Vphone_number, "", Vuser_id);
-				try {
-						String res = json.getString("result"); 
-						if(res.equals("OK")){
-							mHandler.sendEmptyMessage(0);
-						}else{
-							Message msgErr= mHandler.obtainMessage(1);
-	                        msgErr.getData().putString("err",json.getString("message"));
-	                        mHandler.sendMessage(msgErr);
-						}
-					
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
+    		//get user location
+    		gpsT = new GPSTracker(LoginActivity.this);
+    		// check if GPS enabled 
+            if(gpsT.canGetLocation()){ 
+            	txtStatus.setText("");
+            	
+                fineLocation = gpsT.getLatitude() + ", " + gpsT.getLongitude();
+                
+                APIFunctions userFunction = new APIFunctions();
+        		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+    		       
+                String Vuser_id = settings.getString("user_id","0");
+                
+                JSONObject json = userFunction.updateUser(Vfirst_name, Vlast_name, fineLocation, Vphone_number, "", Vuser_id);
+    				try {
+    						String res = json.getString("result"); 
+    						if(res.equals("OK")){
+    							mHandler.sendEmptyMessage(0);
+    						}else{
+    							Message msgErr= mHandler.obtainMessage(1);
+    	                        msgErr.getData().putString("err",json.getString("message"));
+    	                        mHandler.sendMessage(msgErr);
+    						}
+    					
+    				} catch (JSONException e) {
+    					e.printStackTrace();
+    				}
+    				
+            }else{
+            	noGPS = true;
+            	Message msgErr= mHandler.obtainMessage(1);
+                msgErr.getData().putString("err","loc");
+                mHandler.sendMessage(msgErr);
+            } 
+    		
+    		
     		
     	}else if(registering == true){
     	
@@ -341,6 +367,8 @@ public class LoginActivity extends BaseActivity implements Runnable
         }
     }
     
+    
+    
     private Handler mHandler = new Handler ()
     {
 
@@ -366,9 +394,16 @@ public class LoginActivity extends BaseActivity implements Runnable
     
     private void loginFailed (String err)
     {
-    	txtStatus.setText(err);
+    	if(noGPS==true && updatingProfile==true){
+    		
+    		txtStatus.setText("Trouble finding location!");
+    		gpsT.showSettingsAlert();	
     	
-    	Toast.makeText(this, "Login failed: " + err, Toast.LENGTH_LONG).show();
+    	}else{
+    		txtStatus.setText(err);
+    	
+    		Toast.makeText(this, "Login failed: " + err, Toast.LENGTH_LONG).show();
+    	}
     }
     public static boolean isEmailValid(String email) {
         boolean isValid = false;
@@ -401,7 +436,7 @@ public class LoginActivity extends BaseActivity implements Runnable
 			lMore_info.setVisibility(View.VISIBLE);
 			
 
-			dialog_reg.setTitle("Edit Profile");
+			dialog_reg.setTitle("Additional information");
 			
 			button_reg.setText("Update");
 			

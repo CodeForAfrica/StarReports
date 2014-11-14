@@ -135,19 +135,6 @@
                     android:padding="10dp"
                     android:singleLine="true"
                     android:textColor="@color/lp_blue" />
-
-                <EditText
-                    android:id="@+id/location"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dip"
-                    android:background="@color/lp_grey"
-                    android:ems="10"
-                    android:hint="Location"
-                    android:padding="10dp"
-                    android:singleLine="true"
-                    android:textColor="@color/lp_blue" />
             </LinearLayout>
    
           <!-- Register Button -->
