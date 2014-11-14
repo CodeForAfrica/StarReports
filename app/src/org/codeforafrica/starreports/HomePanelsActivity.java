@@ -13,12 +13,11 @@ import java.util.Date;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
-import org.codeforafrica.starreports.api.SyncService;
+import org.codeforafrica.starreports.api.XMLRPCSyncService;
 import org.codeforafrica.starreports.assignments.AssignmentsActivity;
 import org.codeforafrica.starreports.encryption.EncryptionBackground;
 import org.codeforafrica.starreports.encryption.EncryptionService;
 import org.codeforafrica.starreports.export.Export2SDService;
-import org.codeforafrica.starreports.facebook.FacebookLogin;
 import org.codeforafrica.starreports.model.Lesson;
 import org.codeforafrica.starreports.model.Project;
 import org.codeforafrica.starreports.server.LoginActivity;
@@ -196,7 +195,7 @@ public class HomePanelsActivity extends BaseActivity implements OnClickListener{
         	//check if service is already running
         	//check if encryption is running
         	//check if export is running
-        	if(isServiceRunning(SyncService.class)){
+        	if(isServiceRunning(XMLRPCSyncService.class)){
   	          	Toast.makeText(getBaseContext(), "Syncing is already started!", Toast.LENGTH_LONG).show();
         	}else if (isServiceRunning(EncryptionService.class)){
   	          	Toast.makeText(getBaseContext(), "Please wait for encryption to finish!", Toast.LENGTH_LONG).show();
@@ -208,7 +207,7 @@ public class HomePanelsActivity extends BaseActivity implements OnClickListener{
 	  	          	Toast.makeText(getBaseContext(), "You have no connection!", Toast.LENGTH_LONG).show();
 	  	        }else{
 	  	        	dialog.dismiss();
-	  	        	startService(new Intent(HomePanelsActivity.this,SyncService.class));
+	  	        	startService(new Intent(HomePanelsActivity.this,XMLRPCSyncService.class));
 	  	        }   
         	}
         	//Intent i = new Intent(getApplicationContext(),SyncActivity.class);
@@ -233,7 +232,7 @@ public class HomePanelsActivity extends BaseActivity implements OnClickListener{
   	          	Toast.makeText(getBaseContext(), "Export to SD is already started!", Toast.LENGTH_LONG).show();
         	}else if (isServiceRunning(EncryptionService.class)){
   	          	Toast.makeText(getBaseContext(), "Please wait for encryption to finish!", Toast.LENGTH_LONG).show();
-        	}else if(isServiceRunning(SyncService.class)){
+        	}else if(isServiceRunning(XMLRPCSyncService.class)){
   	          	Toast.makeText(getBaseContext(), "Please wait for sync to finish!", Toast.LENGTH_LONG).show();
         	}else{
         		Intent eS = new Intent(HomePanelsActivity.this,Export2SDService.class);

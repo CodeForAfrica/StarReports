@@ -8,7 +8,7 @@ import java.io.OutputStreamWriter;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
-import org.codeforafrica.starreports.api.SyncService;
+import org.codeforafrica.starreports.api.XMLRPCSyncService;
 import org.codeforafrica.starreports.encryption.EncryptionService;
 import org.codeforafrica.starreports.export.Export2SDService;
 import org.codeforafrica.starreports.lessons.LessonManager;
@@ -125,7 +125,7 @@ public class StoryMakerApp extends Application {
 	             if(idle > period)
 	             {
 	            	//check if there's a service running. 
-	            	if((!isServiceRunning(SyncService.class))&&(!isServiceRunning(VideoTutorialsService.class))&&(!isServiceRunning(EncryptionService.class))&&(!isServiceRunning(Export2SDService.class)))
+	            	if((!isServiceRunning(XMLRPCSyncService.class))&&(!isServiceRunning(VideoTutorialsService.class))&&(!isServiceRunning(EncryptionService.class))&&(!isServiceRunning(Export2SDService.class)))
 	            	{ 
 	                idle=0;
 	                stop=true;

@@ -297,7 +297,7 @@ public class LoginActivity extends BaseActivity implements Runnable
     		       
                 String Vuser_id = settings.getString("user_id","0");
                 
-                JSONObject json = userFunction.updateUser(Vfirst_name, Vlast_name, fineLocation, Vphone_number, "", Vuser_id);
+                JSONObject json = userFunction.updateUser(null, Vfirst_name, Vlast_name, fineLocation, Vphone_number, "", Vuser_id);
     				try {
     						String res = json.getString("result"); 
     						if(res.equals("OK")){
@@ -396,13 +396,13 @@ public class LoginActivity extends BaseActivity implements Runnable
     {
     	if(noGPS==true && updatingProfile==true){
     		
-    		txtStatus.setText("Trouble finding location!");
+    		txtStatus.setText("");
     		gpsT.showSettingsAlert();	
     	
     	}else{
     		txtStatus.setText(err);
     	
-    		Toast.makeText(this, "Login failed: " + err, Toast.LENGTH_LONG).show();
+    		Toast.makeText(this, "Failed: " + err, Toast.LENGTH_LONG).show();
     	}
     }
     public static boolean isEmailValid(String email) {

@@ -1,15 +1,10 @@
 package org.codeforafrica.starreports;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
-
 import org.codeforafrica.starreports.R;
-import org.codeforafrica.starreports.api.SyncService;
 import org.codeforafrica.starreports.api.XMLRPCSyncService;
-import org.codeforafrica.starreports.assignments.AssignmentsActivity;
 import org.codeforafrica.starreports.encryption.EncryptionService;
 import org.codeforafrica.starreports.export.Export2SDService;
-import org.codeforafrica.starreports.facebook.FacebookLogin;
 import org.codeforafrica.starreports.facebook.UpdateActivity;
 import org.codeforafrica.starreports.server.LoginActivity;
 import org.holoeverywhere.app.Activity;
@@ -21,18 +16,14 @@ import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.Dialog;
 import android.app.ActivityManager.RunningServiceInfo;
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageButton;
 import android.content.SharedPreferences.Editor;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -43,8 +34,6 @@ import android.widget.ImageView;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-
-import android.widget.SearchView;
 
 import com.facebook.Session;
 //import com.google.analytics.tracking.android.EasyTracker;
@@ -278,7 +267,7 @@ public void onUserInteraction()
 		  	          	Toast.makeText(getBaseContext(), "Export to SD is already started!", Toast.LENGTH_LONG).show();
 		        	}else if (isServiceRunning(EncryptionService.class)){
 		  	          	Toast.makeText(getBaseContext(), "Please wait for encryption to finish!", Toast.LENGTH_LONG).show();
-		        	}else if(isServiceRunning(SyncService.class)){
+		        	}else if(isServiceRunning(XMLRPCSyncService.class)){
 		  	          	Toast.makeText(getBaseContext(), "Please wait for sync to finish!", Toast.LENGTH_LONG).show();
 		        	}else{
 		        		Intent eS = new Intent(getApplicationContext(),Export2SDService.class);

@@ -10,10 +10,10 @@ import java.util.Locale;
 import java.util.StringTokenizer;
 
 import org.codeforafrica.starreports.R;
-import org.codeforafrica.starreports.facebook.FacebookLogin;
 import org.codeforafrica.starreports.location.GPSTracker;
 import org.codeforafrica.starreports.model.Media;
 import org.codeforafrica.starreports.model.Project;
+import org.codeforafrica.starreports.server.LoginActivity;
 import org.codeforafrica.starreports.server.OAuthAccessTokenActivity;
 import org.codeforafrica.starreports.server.ServerManager;
 import org.codeforafrica.starreports.server.YouTubeSubmit;
@@ -410,7 +410,7 @@ public class PublishFragment extends Fragment {
         }
     }
     private void showLogin() {
-        mActivity.startActivity(new Intent(mActivity, FacebookLogin.class));
+        mActivity.startActivity(new Intent(mActivity, LoginActivity.class));
     }
 
     private String setUploadAccount() {
