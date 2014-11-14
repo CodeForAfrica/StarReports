@@ -498,6 +498,8 @@ private void launchProject(String title, int pIssue, int pSector, String pEntity
             
     report.save();
     
+    new_report = false;
+    
     rid = report.getId();
             
     if(update == false){
@@ -570,10 +572,10 @@ public void showSaveAlert(){
 public boolean something_changed_db(){
 	Report report = Report.get(this, rid);
 	
-	if((editTextTitle.getText().toString().equals(report.getTitle()))&&
+	if(((""+editTextTitle.getText().toString()).equals(report.getTitle()))&&
 			(spinnerCategories.getSelectedItemPosition()==Integer.parseInt(report.getSector()))&&
-			(atvPlaces.equals(report.getLocation()))&&
-			(editTextDescription.getText().toString().equals(report.getDescription())))
+			((""+atvPlaces.getText().toString()).equals(report.getLocation()))&&
+			((""+editTextDescription.getText().toString()).equals(report.getDescription())))
 			{
 		return false;
 	}else{
@@ -581,12 +583,11 @@ public boolean something_changed_db(){
 	}
 }
 public boolean something_changed(){
-		if((editTextTitle.getText().toString().equals(""))&&
+		if((""+editTextTitle.getText().toString()).equals("")&&
 			(spinnerCategories.getSelectedItemPosition()==0)&&
-			(atvPlaces.getText().toString().equals(""))&&
-			(editTextDescription.getText().toString().equals(""))
-			){
-		//nothing changed; ignore location change
+			((""+atvPlaces.getText().toString()).equals(""))&&
+			(((""+editTextDescription.getText()).toString()).equals("")
+			)){
 		
 		return false;
 	}else{

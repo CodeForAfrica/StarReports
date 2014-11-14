@@ -273,6 +273,7 @@ public class UpdateActivity extends BaseActivity {
             	Intent i = new Intent(UpdateActivity.this, HomePanelsActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             	startActivity(i);
+            	break;
             case R.id.menu_save:
             	if(isInternetPresent){
             		//get user location
@@ -286,7 +287,7 @@ public class UpdateActivity extends BaseActivity {
                 }else{
                 	Toast.makeText(getApplicationContext(), "Check your connection!", Toast.LENGTH_LONG).show();
                 }	
-            return true;
+            	break;
         }
         return super.onOptionsItemSelected(item);
     }

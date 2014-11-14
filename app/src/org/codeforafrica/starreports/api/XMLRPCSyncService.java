@@ -7,6 +7,7 @@ import java.util.Timer;
 
 import javax.crypto.Cipher;
 
+import org.codeforafrica.starreports.AppConstants;
 import org.codeforafrica.starreports.ConnectionDetector;
 import org.codeforafrica.starreports.HomePanelsActivity;
 import org.codeforafrica.starreports.Report_PageIndicatorActivity;
@@ -99,7 +100,7 @@ public class XMLRPCSyncService extends Service {
     	 Notification notification = new Notification(R.drawable.ic_menu_upload, text, System.currentTimeMillis());
     	 PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
     	                new Intent(this, HomePanelsActivity.class), 0);
-    	notification.setLatestEventInfo(this, "StarReports: Sync",
+    	notification.setLatestEventInfo(this, AppConstants.TAG+": Sync",
     	      text, contentIntent);
     	NotificationManager nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 		nm.notify("service started", 0, notification);
@@ -121,7 +122,7 @@ public class XMLRPCSyncService extends Service {
 	    		 
 	    	   if(mListReports.get(i)!=null){
 	    		
-	    		   report = mListReports.get(i);
+	    		report = mListReports.get(i);
 	        	
 	        	ServerManager sm = StoryMakerApp.getServerManager();
 	            //sm.setContext(getBaseContext());
@@ -226,8 +227,8 @@ public class XMLRPCSyncService extends Service {
 				 	
 				 	postId = sm.post2(report.getTitle(), pDescription, null, null, null, null, null, null, structA, thumbnail);
 					urlPost = sm.getPostUrl(postId);
-					
-					
+					report.setServerId(postId);
+					report.save();
 					
 				} catch (MalformedURLException e) {
 					// TODO Auto-generated catch block
