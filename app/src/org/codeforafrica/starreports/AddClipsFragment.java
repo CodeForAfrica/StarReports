@@ -3,6 +3,7 @@ package org.codeforafrica.starreports;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import org.codeforafrica.starreports.R;
@@ -40,7 +41,6 @@ import android.view.ViewGroup;
  */
 @SuppressLint("ValidFragment")
 public class AddClipsFragment extends Fragment {
-	
     private final static String TAG = "AddClipsFragment";
     public ViewPager mAddClipsViewPager;
     View mView = null;
@@ -207,14 +207,14 @@ public class AddClipsFragment extends Fragment {
 
             ArrayList<Media> lMedia = mActivity.mMPM.mScene.getMediaAsList();
             Media media = null;
-            
+
             if (lMedia.size() > i)
             {
                 media = lMedia.get(i);
                 //add to queue for encryption if not added
                 try {
-					if(media!=null){
-						addToQ(media);
+                		if(media!=null){
+                			addToQ(media);
 						}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -237,10 +237,9 @@ public class AddClipsFragment extends Fragment {
             return POSITION_NONE;
         }
     }
+    
     public void addToQ(Media media) throws JSONException{
-    	
-    	
-    	
+	
     	//create and store thumbnails in hidden folder on sd
     	
     	File thumbDir = new File(Environment.getExternalStorageDirectory() + "/" + AppConstants.TAG + "/.thumbs");
@@ -248,7 +247,10 @@ public class AddClipsFragment extends Fragment {
     		thumbDir.mkdirs();
     	}
     	
-    	File thisThumb = new File(thumbDir.getAbsolutePath() + "/" + media.getId()+".jpg");
+    	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+    	String mt = dateFormat.format(media.getCreatedAt());
+    	
+    	File thisThumb = new File(thumbDir.getAbsolutePath() + "/" + mt+".jpg");
     	
     	//if thumbnail does not exist
     	if(!thisThumb.exists()){
@@ -263,7 +265,7 @@ public class AddClipsFragment extends Fragment {
         	bitThumb = BitmapFactory.decodeFile(media.getPath());
         }
         	try{
-        		filename = thumbDir.getAbsolutePath() + "/" + media.getId()+".jpg";
+        		filename = thumbDir.getAbsolutePath() + "/" + mt+".jpg";
         		FileOutputStream out = new FileOutputStream(filename);
         		bitThumb.compress(Bitmap.CompressFormat.JPEG, 30, out);
         		out.close();
@@ -308,8 +310,6 @@ public class AddClipsFragment extends Fragment {
 		        editor.commit();
 	        }
         }
-        }
+       }
     }
-
-
 }

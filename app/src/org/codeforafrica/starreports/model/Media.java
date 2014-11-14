@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -487,8 +488,17 @@ public class Media extends Model {
     	if(!thumbDir.exists()){
     		thumbDir.mkdirs();
     	}
-        File fileThumb = new File(thumbDir + "/" + media.getId()+".jpg");
-
+       
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+            	String mt = dateFormat.format(media.getCreatedAt());
+            	
+               File fileThumb = new File(thumbDir + "/" + mt+".jpg");
+               
+                if(!fileThumb.exists()){
+                	//To cater for old versions
+                	fileThumb = new File(thumbDir + "/" + media.getId()+".jpg");
+                }
+                
         if (media.getMimeType() == null)
         {
             return null;
