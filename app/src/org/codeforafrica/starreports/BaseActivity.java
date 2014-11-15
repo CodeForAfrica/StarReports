@@ -1,6 +1,7 @@
 package org.codeforafrica.starreports;
 import java.io.IOException;
 import java.io.InputStream;
+
 import org.codeforafrica.starreports.R;
 import org.codeforafrica.starreports.api.XMLRPCSyncService;
 import org.codeforafrica.starreports.encryption.EncryptionService;
@@ -28,13 +29,13 @@ import android.content.SharedPreferences.Editor;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.ColorFilter;
 import android.graphics.PixelFormat;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-
 import com.facebook.Session;
 //import com.google.analytics.tracking.android.EasyTracker;
 
@@ -215,8 +216,6 @@ public void onUserInteraction()
         getSupportMenuInflater().inflate(R.menu.activity_actionbar_menu, menu);
  
         return super.onCreateOptionsMenu(menu);
-        
-        //return true;
     }
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
