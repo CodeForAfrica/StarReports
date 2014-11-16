@@ -20,7 +20,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import org.codeforafrica.starreports.R;
+import org.codeforafrica.ziwaphi.R;
 
 import android.content.Context;
 import android.graphics.Rect;

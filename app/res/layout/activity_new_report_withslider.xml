@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res/org.codeforafrica.starreports.org"
+    xmlns:app="http://schemas.android.com/apk/res/org.codeforafrica.ziwaphi.org"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="0dp"
@@ -240,7 +240,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="2dp"
           android:text="GPS" />
-	  <org.codeforafrica.starreports.location.PlacesAutoCompleteTextView
+	  <org.codeforafrica.ziwaphi.location.PlacesAutoCompleteTextView
         android:id="@+id/atv_places"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

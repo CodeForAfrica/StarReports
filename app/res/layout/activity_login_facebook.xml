@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/lp_blue"
     android:fillViewport="true">
 
 <LinearLayout
@@ -46,8 +45,7 @@
               android:layout_gravity="center_horizontal"
               android:text="@string/strapline" 
               style="@style/CardTitle"
-              android:textSize="22sp"
-              android:textColor="@color/white"/>
+              android:textSize="22sp"/>
           
           <LinearLayout
             android:id="@+id/lyt_login"
@@ -66,7 +64,7 @@
               android:layout_height="wrap_content"
               android:layout_marginBottom="10dip"
               android:layout_marginTop="5dip"
-              android:background="@color/lp_grey"
+        android:background="@drawable/background_black_border_full"  
               android:hint="username"
               android:padding="5dp"
               android:singleLine="true"
@@ -80,7 +78,8 @@
             android:id="@+id/lyt_pass"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@color/lp_grey"
+            
+        android:background="@drawable/background_black_border_full"  
             android:layout_marginBottom="5dp">
 
           <EditText
@@ -175,7 +174,6 @@
               android:background="@color/transparent"
               android:gravity="center"
               android:text="No account? Register here"
-              android:textColor="@color/white"
               android:textSize="20sp"
               android:padding="5dp" />
  </RelativeLayout>

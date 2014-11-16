@@ -19,8 +19,8 @@ package net.micode.soundrecorder;
 import java.io.File;
 import java.io.IOException;
 
-import org.codeforafrica.starreports.AppConstants;
-import org.codeforafrica.starreports.R;
+import org.codeforafrica.ziwaphi.R;
+import org.codeforafrica.ziwaphi.AppConstants;
 
 import android.app.KeyguardManager;
 import android.app.Notification;
@@ -40,338 +40,351 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.preference.PreferenceManager;
 
-public class RecorderService extends Service implements MediaRecorder.OnErrorListener {
+public class RecorderService extends Service implements
+		MediaRecorder.OnErrorListener {
 
-    public final static String ACTION_NAME = "action_type";
+	public final static String ACTION_NAME = "action_type";
 
-    public final static int ACTION_INVALID = 0;
+	public final static int ACTION_INVALID = 0;
 
-    public final static int ACTION_START_RECORDING = 1;
+	public final static int ACTION_START_RECORDING = 1;
 
-    public final static int ACTION_STOP_RECORDING = 2;
+	public final static int ACTION_STOP_RECORDING = 2;
 
-    public final static int ACTION_ENABLE_MONITOR_REMAIN_TIME = 3;
+	public final static int ACTION_ENABLE_MONITOR_REMAIN_TIME = 3;
 
-    public final static int ACTION_DISABLE_MONITOR_REMAIN_TIME = 4;
+	public final static int ACTION_DISABLE_MONITOR_REMAIN_TIME = 4;
 
-    public final static String ACTION_PARAM_FORMAT = "format";
+	public final static String ACTION_PARAM_FORMAT = "format";
 
-    public final static String ACTION_PARAM_PATH = "path";
+	public final static String ACTION_PARAM_PATH = "path";
 
-    public final static String ACTION_PARAM_HIGH_QUALITY = "high_quality";
+	public final static String ACTION_PARAM_HIGH_QUALITY = "high_quality";
 
-    public final static String ACTION_PARAM_MAX_FILE_SIZE = "max_file_size";
+	public final static String ACTION_PARAM_MAX_FILE_SIZE = "max_file_size";
 
-    public final static String RECORDER_SERVICE_BROADCAST_NAME = "com.android.soundrecorder.broadcast";
+	public final static String RECORDER_SERVICE_BROADCAST_NAME = "com.android.soundrecorder.broadcast";
 
-    public final static String RECORDER_SERVICE_BROADCAST_STATE = "is_recording";
+	public final static String RECORDER_SERVICE_BROADCAST_STATE = "is_recording";
 
-    public final static String RECORDER_SERVICE_BROADCAST_ERROR = "error_code";
+	public final static String RECORDER_SERVICE_BROADCAST_ERROR = "error_code";
 
-    public final static int NOTIFICATION_ID = 62343234;
+	public final static int NOTIFICATION_ID = 62343234;
 
-    private static MediaRecorder mRecorder = null;
+	private static MediaRecorder mRecorder = null;
 
-    private static String mFilePath = null;
+	private static String mFilePath = null;
 
-    private static long mStartTime = 0;
+	private static long mStartTime = 0;
 
-    private RemainingTimeCalculator mRemainingTimeCalculator;
+	private RemainingTimeCalculator mRemainingTimeCalculator;
 
-    private NotificationManager mNotifiManager;
+	private NotificationManager mNotifiManager;
 
-    private Notification mLowStorageNotification;
+	private Notification mLowStorageNotification;
 
-    private WakeLock mWakeLock;
+	private WakeLock mWakeLock;
 
-    private KeyguardManager mKeyguardManager;
+	private KeyguardManager mKeyguardManager;
 
-    private final Handler mHandler = new Handler();
+	private final Handler mHandler = new Handler();
 
-    private Runnable mUpdateRemainingTime = new Runnable() {
-        public void run() {
-            if (mRecorder != null && mNeedUpdateRemainingTime) {
-                updateRemainingTime();
-            }
-        }
-    };
+	private Runnable mUpdateRemainingTime = new Runnable() {
+		public void run() {
+			if (mRecorder != null && mNeedUpdateRemainingTime) {
+				updateRemainingTime();
+			}
+		}
+	};
 
-    private boolean mNeedUpdateRemainingTime;
-    private int mAudioSampleRate = -1;
-    
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        mRecorder = null;
-        mLowStorageNotification = null;
-        mRemainingTimeCalculator = new RemainingTimeCalculator();
-        mNeedUpdateRemainingTime = false;
-        mNotifiManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "SoundRecorder");
-        mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-        
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        mAudioSampleRate = Integer.parseInt(settings.getString("p_audio_samplerate", AppConstants.DEFAULT_AUDIO_SAMPLE_RATE));
-        
-    }
+	private boolean mNeedUpdateRemainingTime;
+	private int mAudioSampleRate = -1;
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Bundle bundle = intent.getExtras();
-        if (bundle != null && bundle.containsKey(ACTION_NAME)) {
-            switch (bundle.getInt(ACTION_NAME, ACTION_INVALID)) {
-                case ACTION_START_RECORDING:
-                    localStartRecording(bundle.getInt(ACTION_PARAM_FORMAT),
-                            bundle.getString(ACTION_PARAM_PATH),
-                            bundle.getBoolean(ACTION_PARAM_HIGH_QUALITY),
-                            bundle.getLong(ACTION_PARAM_MAX_FILE_SIZE));
-                    break;
-                case ACTION_STOP_RECORDING:
-                    localStopRecording();
-                    break;
-                case ACTION_ENABLE_MONITOR_REMAIN_TIME:
-                    if (mRecorder != null) {
-                        mNeedUpdateRemainingTime = true;
-                        mHandler.post(mUpdateRemainingTime);
-                    }
-                    break;
-                case ACTION_DISABLE_MONITOR_REMAIN_TIME:
-                    mNeedUpdateRemainingTime = false;
-                    if (mRecorder != null) {
-                        showRecordingNotification();
-                    }
-                    break;
-                default:
-                    break;
-            }
-            return START_STICKY;
-        }
-        return super.onStartCommand(intent, flags, startId);
-    }
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		mRecorder = null;
+		mLowStorageNotification = null;
+		mRemainingTimeCalculator = new RemainingTimeCalculator();
+		mNeedUpdateRemainingTime = false;
+		mNotifiManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+				"SoundRecorder");
+		mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
 
-    @Override
-    public void onDestroy() {
-        if (mWakeLock.isHeld()) {
-            mWakeLock.release();
-        }
-        super.onDestroy();
-    }
+		SharedPreferences settings = PreferenceManager
+				.getDefaultSharedPreferences(getApplicationContext());
+		mAudioSampleRate = Integer.parseInt(settings.getString(
+				"p_audio_samplerate", AppConstants.DEFAULT_AUDIO_SAMPLE_RATE));
 
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
+	}
 
-    @Override
-    public void onLowMemory() {
-        localStopRecording();
-        super.onLowMemory();
-    }
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		Bundle bundle = intent.getExtras();
+		if (bundle != null && bundle.containsKey(ACTION_NAME)) {
+			switch (bundle.getInt(ACTION_NAME, ACTION_INVALID)) {
+			case ACTION_START_RECORDING:
+				localStartRecording(bundle.getInt(ACTION_PARAM_FORMAT),
+						bundle.getString(ACTION_PARAM_PATH),
+						bundle.getBoolean(ACTION_PARAM_HIGH_QUALITY),
+						bundle.getLong(ACTION_PARAM_MAX_FILE_SIZE));
+				break;
+			case ACTION_STOP_RECORDING:
+				localStopRecording();
+				break;
+			case ACTION_ENABLE_MONITOR_REMAIN_TIME:
+				if (mRecorder != null) {
+					mNeedUpdateRemainingTime = true;
+					mHandler.post(mUpdateRemainingTime);
+				}
+				break;
+			case ACTION_DISABLE_MONITOR_REMAIN_TIME:
+				mNeedUpdateRemainingTime = false;
+				if (mRecorder != null) {
+					showRecordingNotification();
+				}
+				break;
+			default:
+				break;
+			}
+			return START_STICKY;
+		}
+		return super.onStartCommand(intent, flags, startId);
+	}
 
-    private void localStartRecording(int outputfileformat, String path, boolean highQuality,
-            long maxFileSize) {
-        if (mRecorder == null) {
-            mRemainingTimeCalculator.reset();
-            if (maxFileSize != -1) {
-                mRemainingTimeCalculator.setFileSizeLimit(new File(path), maxFileSize);
-            }
+	@Override
+	public void onDestroy() {
+		if (mWakeLock.isHeld()) {
+			mWakeLock.release();
+		}
+		super.onDestroy();
+	}
 
-            mRecorder = new MediaRecorder();
-            mRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
-            
-            if (outputfileformat == MediaRecorder.OutputFormat.THREE_GPP) {
-                mRemainingTimeCalculator.setBitRate(SoundRecorder.BITRATE_3GPP);
-              //
-                mRecorder.setAudioChannels(1);
-                mRecorder.setAudioSamplingRate(mAudioSampleRate);
-                mRecorder.setAudioEncodingBitRate(SoundRecorder.BITRATE_3GPP);
-                mRecorder.setOutputFormat(outputfileformat);
-                mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-            } else {
-                mRemainingTimeCalculator.setBitRate(SoundRecorder.BITRATE_AMR);
-                mRecorder.setAudioSamplingRate(highQuality ? 16000 : 8000);
-                
-                mRecorder.setOutputFormat(outputfileformat);
-                mRecorder.setAudioEncoder(highQuality ? MediaRecorder.AudioEncoder.AMR_WB
-                        : MediaRecorder.AudioEncoder.AMR_NB);
-            }
-            
-            
-            mRecorder.setOutputFile(path);
-            mRecorder.setOnErrorListener(this);
+	@Override
+	public IBinder onBind(Intent intent) {
+		return null;
+	}
 
-            // Handle IOException
-            try {
-                mRecorder.prepare();
-            } catch (IOException exception) {
-                sendErrorBroadcast(Recorder.INTERNAL_ERROR);
-                mRecorder.reset();
-                mRecorder.release();
-                mRecorder = null;
-                return;
-            }
-            // Handle RuntimeException if the recording couldn't start
-            try {
-                mRecorder.start();
-            } catch (RuntimeException exception) {
-                AudioManager audioMngr = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-                boolean isInCall = (audioMngr.getMode() == AudioManager.MODE_IN_CALL);
-                if (isInCall) {
-                    sendErrorBroadcast(Recorder.IN_CALL_RECORD_ERROR);
-                } else {
-                    sendErrorBroadcast(Recorder.INTERNAL_ERROR);
-                }
-                mRecorder.reset();
-                mRecorder.release();
-                mRecorder = null;
-                return;
-            }
-            mFilePath = path;
-            mStartTime = System.currentTimeMillis();
-            mWakeLock.acquire();
-            mNeedUpdateRemainingTime = false;
-            sendStateBroadcast();
-            showRecordingNotification();
-        }
-    }
+	@Override
+	public void onLowMemory() {
+		localStopRecording();
+		super.onLowMemory();
+	}
 
-    private void localStopRecording() {
-        if (mRecorder != null) {
-            mNeedUpdateRemainingTime = false;
-            try {
-                mRecorder.stop();
-            } catch (RuntimeException e) {
-            }
-            mRecorder.release();
-            mRecorder = null;
+	private void localStartRecording(int outputfileformat, String path,
+			boolean highQuality, long maxFileSize) {
+		if (mRecorder == null) {
+			mRemainingTimeCalculator.reset();
+			if (maxFileSize != -1) {
+				mRemainingTimeCalculator.setFileSizeLimit(new File(path),
+						maxFileSize);
+			}
 
-            sendStateBroadcast();
-            showStoppedNotification();
-        }
-        stopSelf();
-    }
+			mRecorder = new MediaRecorder();
+			mRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
 
-    private void showRecordingNotification() {
-        Notification notification = new Notification(R.drawable.stat_sys_call_record,
-                getString(R.string.notification_recording), System.currentTimeMillis());
-        notification.flags = Notification.FLAG_ONGOING_EVENT;
-        PendingIntent pendingIntent;
-        pendingIntent = PendingIntent
-                .getActivity(this, 0, new Intent(this, SoundRecorder.class), 0);
+			if (outputfileformat == MediaRecorder.OutputFormat.THREE_GPP) {
+				mRemainingTimeCalculator.setBitRate(SoundRecorder.BITRATE_3GPP);
+				//
+				mRecorder.setAudioChannels(1);
+				mRecorder.setAudioSamplingRate(mAudioSampleRate);
+				mRecorder.setAudioEncodingBitRate(SoundRecorder.BITRATE_3GPP);
+				mRecorder.setOutputFormat(outputfileformat);
+				mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+			} else {
+				mRemainingTimeCalculator.setBitRate(SoundRecorder.BITRATE_AMR);
+				mRecorder.setAudioSamplingRate(highQuality ? 16000 : 8000);
 
-        notification.setLatestEventInfo(this, getString(R.string.app_name),
-                getString(R.string.notification_recording), pendingIntent);
+				mRecorder.setOutputFormat(outputfileformat);
+				mRecorder
+						.setAudioEncoder(highQuality ? MediaRecorder.AudioEncoder.AMR_WB
+								: MediaRecorder.AudioEncoder.AMR_NB);
+			}
 
-        startForeground(NOTIFICATION_ID, notification);
-    }
+			mRecorder.setOutputFile(path);
+			mRecorder.setOnErrorListener(this);
 
-    private void showLowStorageNotification(int minutes) {
-        if (mKeyguardManager.inKeyguardRestrictedInputMode()) {
-            // it's not necessary to show this notification in lock-screen
-            return;
-        }
+			// Handle IOException
+			try {
+				mRecorder.prepare();
+			} catch (IOException exception) {
+				sendErrorBroadcast(Recorder.INTERNAL_ERROR);
+				mRecorder.reset();
+				mRecorder.release();
+				mRecorder = null;
+				return;
+			}
+			// Handle RuntimeException if the recording couldn't start
+			try {
+				mRecorder.start();
+			} catch (RuntimeException exception) {
+				AudioManager audioMngr = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+				boolean isInCall = (audioMngr.getMode() == AudioManager.MODE_IN_CALL);
+				if (isInCall) {
+					sendErrorBroadcast(Recorder.IN_CALL_RECORD_ERROR);
+				} else {
+					sendErrorBroadcast(Recorder.INTERNAL_ERROR);
+				}
+				mRecorder.reset();
+				mRecorder.release();
+				mRecorder = null;
+				return;
+			}
+			mFilePath = path;
+			mStartTime = System.currentTimeMillis();
+			mWakeLock.acquire();
+			mNeedUpdateRemainingTime = false;
+			sendStateBroadcast();
+			showRecordingNotification();
+		}
+	}
 
-        if (mLowStorageNotification == null) {
-            mLowStorageNotification = new Notification(R.drawable.stat_sys_call_record_full,
-                    getString(R.string.notification_recording), System.currentTimeMillis());
-            mLowStorageNotification.flags = Notification.FLAG_ONGOING_EVENT;
-        }
+	private void localStopRecording() {
+		if (mRecorder != null) {
+			mNeedUpdateRemainingTime = false;
+			try {
+				mRecorder.stop();
+			} catch (RuntimeException e) {
+			}
+			mRecorder.release();
+			mRecorder = null;
 
-        PendingIntent pendingIntent;
-        pendingIntent = PendingIntent
-                .getActivity(this, 0, new Intent(this, SoundRecorder.class), 0);
+			sendStateBroadcast();
+			showStoppedNotification();
+		}
+		stopSelf();
+	}
 
-        mLowStorageNotification.setLatestEventInfo(this, getString(R.string.app_name),
-                getString(R.string.notification_warning, minutes), pendingIntent);
-        startForeground(NOTIFICATION_ID, mLowStorageNotification);
-    }
+	private void showRecordingNotification() {
+		Notification notification = new Notification(
+				R.drawable.stat_sys_call_record,
+				getString(R.string.notification_recording),
+				System.currentTimeMillis());
+		notification.flags = Notification.FLAG_ONGOING_EVENT;
+		PendingIntent pendingIntent;
+		pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this,
+				SoundRecorder.class), 0);
 
-    private void showStoppedNotification() {
-        stopForeground(true);
-        mLowStorageNotification = null;
+		notification.setLatestEventInfo(this, getString(R.string.app_name),
+				getString(R.string.notification_recording), pendingIntent);
 
-        Notification notification = new Notification(R.drawable.stat_sys_call_record,
-                getString(R.string.notification_stopped), System.currentTimeMillis());
-        notification.flags = Notification.FLAG_AUTO_CANCEL;
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setType("audio/*");
-        intent.setDataAndType(Uri.fromFile(new File(mFilePath)), "audio/*");
+		startForeground(NOTIFICATION_ID, notification);
+	}
 
-        PendingIntent pendingIntent;
-        pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+	private void showLowStorageNotification(int minutes) {
+		if (mKeyguardManager.inKeyguardRestrictedInputMode()) {
+			// it's not necessary to show this notification in lock-screen
+			return;
+		}
 
-        notification.setLatestEventInfo(this, getString(R.string.app_name),
-                getString(R.string.notification_stopped), pendingIntent);
-        mNotifiManager.notify(NOTIFICATION_ID, notification);
-    }
+		if (mLowStorageNotification == null) {
+			mLowStorageNotification = new Notification(
+					R.drawable.stat_sys_call_record_full,
+					getString(R.string.notification_recording),
+					System.currentTimeMillis());
+			mLowStorageNotification.flags = Notification.FLAG_ONGOING_EVENT;
+		}
 
-    private void sendStateBroadcast() {
-        Intent intent = new Intent(RECORDER_SERVICE_BROADCAST_NAME);
-        intent.putExtra(RECORDER_SERVICE_BROADCAST_STATE, mRecorder != null);
-        sendBroadcast(intent);
-    }
+		PendingIntent pendingIntent;
+		pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this,
+				SoundRecorder.class), 0);
 
-    private void sendErrorBroadcast(int error) {
-        Intent intent = new Intent(RECORDER_SERVICE_BROADCAST_NAME);
-        intent.putExtra(RECORDER_SERVICE_BROADCAST_ERROR, error);
-        sendBroadcast(intent);
-    }
+		mLowStorageNotification.setLatestEventInfo(this,
+				getString(R.string.app_name),
+				getString(R.string.notification_warning, minutes),
+				pendingIntent);
+		startForeground(NOTIFICATION_ID, mLowStorageNotification);
+	}
 
-    private void updateRemainingTime() {
-        long t = mRemainingTimeCalculator.timeRemaining();
-        if (t <= 0) {
-            localStopRecording();
-            return;
-        } else if (t <= 1800
-                && mRemainingTimeCalculator.currentLowerLimit() != RemainingTimeCalculator.FILE_SIZE_LIMIT) {
-            // less than half one hour
-            showLowStorageNotification((int) Math.ceil(t / 60.0));
-        }
+	private void showStoppedNotification() {
+		stopForeground(true);
+		mLowStorageNotification = null;
 
-        if (mRecorder != null && mNeedUpdateRemainingTime) {
-            mHandler.postDelayed(mUpdateRemainingTime, 500);
-        }
-    }
+		Notification notification = new Notification(
+				R.drawable.stat_sys_call_record,
+				getString(R.string.notification_stopped),
+				System.currentTimeMillis());
+		notification.flags = Notification.FLAG_AUTO_CANCEL;
+		Intent intent = new Intent(Intent.ACTION_VIEW);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.setType("audio/*");
+		intent.setDataAndType(Uri.fromFile(new File(mFilePath)), "audio/*");
 
-    public static boolean isRecording() {
-        return mRecorder != null;
-    }
+		PendingIntent pendingIntent;
+		pendingIntent = PendingIntent.getActivity(this, 0, intent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
 
-    public static String getFilePath() {
-        return mFilePath;
-    }
+		notification.setLatestEventInfo(this, getString(R.string.app_name),
+				getString(R.string.notification_stopped), pendingIntent);
+		mNotifiManager.notify(NOTIFICATION_ID, notification);
+	}
 
-    public static long getStartTime() {
-        return mStartTime;
-    }
+	private void sendStateBroadcast() {
+		Intent intent = new Intent(RECORDER_SERVICE_BROADCAST_NAME);
+		intent.putExtra(RECORDER_SERVICE_BROADCAST_STATE, mRecorder != null);
+		sendBroadcast(intent);
+	}
 
-    public static void startRecording(Context context, int outputfileformat, String path,
-            boolean highQuality, long maxFileSize) {
-        Intent intent = new Intent(context, RecorderService.class);
-        intent.putExtra(ACTION_NAME, ACTION_START_RECORDING);
-        intent.putExtra(ACTION_PARAM_FORMAT, outputfileformat);
-        intent.putExtra(ACTION_PARAM_PATH, path);
-        intent.putExtra(ACTION_PARAM_HIGH_QUALITY, highQuality);
-        intent.putExtra(ACTION_PARAM_MAX_FILE_SIZE, maxFileSize);
-        context.startService(intent);
-    }
+	private void sendErrorBroadcast(int error) {
+		Intent intent = new Intent(RECORDER_SERVICE_BROADCAST_NAME);
+		intent.putExtra(RECORDER_SERVICE_BROADCAST_ERROR, error);
+		sendBroadcast(intent);
+	}
 
-    public static void stopRecording(Context context) {
-        Intent intent = new Intent(context, RecorderService.class);
-        intent.putExtra(ACTION_NAME, ACTION_STOP_RECORDING);
-        context.startService(intent);
-    }
+	private void updateRemainingTime() {
+		long t = mRemainingTimeCalculator.timeRemaining();
+		if (t <= 0) {
+			localStopRecording();
+			return;
+		} else if (t <= 1800
+				&& mRemainingTimeCalculator.currentLowerLimit() != RemainingTimeCalculator.FILE_SIZE_LIMIT) {
+			// less than half one hour
+			showLowStorageNotification((int) Math.ceil(t / 60.0));
+		}
 
-    public static int getMaxAmplitude() {
-        return mRecorder == null ? 0 : mRecorder.getMaxAmplitude();
-    }
+		if (mRecorder != null && mNeedUpdateRemainingTime) {
+			mHandler.postDelayed(mUpdateRemainingTime, 500);
+		}
+	}
 
-    @Override
-    public void onError(MediaRecorder mr, int what, int extra) {
-        sendErrorBroadcast(Recorder.INTERNAL_ERROR);
-        localStopRecording();
-    }
+	public static boolean isRecording() {
+		return mRecorder != null;
+	}
+
+	public static String getFilePath() {
+		return mFilePath;
+	}
+
+	public static long getStartTime() {
+		return mStartTime;
+	}
+
+	public static void startRecording(Context context, int outputfileformat,
+			String path, boolean highQuality, long maxFileSize) {
+		Intent intent = new Intent(context, RecorderService.class);
+		intent.putExtra(ACTION_NAME, ACTION_START_RECORDING);
+		intent.putExtra(ACTION_PARAM_FORMAT, outputfileformat);
+		intent.putExtra(ACTION_PARAM_PATH, path);
+		intent.putExtra(ACTION_PARAM_HIGH_QUALITY, highQuality);
+		intent.putExtra(ACTION_PARAM_MAX_FILE_SIZE, maxFileSize);
+		context.startService(intent);
+	}
+
+	public static void stopRecording(Context context) {
+		Intent intent = new Intent(context, RecorderService.class);
+		intent.putExtra(ACTION_NAME, ACTION_STOP_RECORDING);
+		context.startService(intent);
+	}
+
+	public static int getMaxAmplitude() {
+		return mRecorder == null ? 0 : mRecorder.getMaxAmplitude();
+	}
+
+	@Override
+	public void onError(MediaRecorder mr, int what, int extra) {
+		sendErrorBroadcast(Recorder.INTERNAL_ERROR);
+		localStopRecording();
+	}
 }

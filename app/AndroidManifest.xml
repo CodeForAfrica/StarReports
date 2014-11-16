@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.codeforafrica.starreports"
+    package="org.codeforafrica.ziwaphi"
     android:installLocation="auto"
     android:versionCode="140"
     android:versionName="0.0.9-build120" >
@@ -46,7 +46,7 @@
         android:resizeable="true"   />
 
     <application
-        android:name="org.codeforafrica.starreports.StoryMakerApp"
+        android:name="org.codeforafrica.ziwaphi.StoryMakerApp"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:theme="@style/Theme.storymakerstyle"
@@ -73,7 +73,7 @@
             </intent-filter>
  			<meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomePanelsActivity" />
+                android:value=".ReportsFragmentsActivity" />
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -84,70 +84,61 @@
             android:label="Register New Account" >
         </activity>
         <activity
-            android:name="org.codeforafrica.starreports.ReportRemoteViewActivity"
+            android:name="org.codeforafrica.ziwaphi.ReportRemoteViewActivity"
             android:label="Report" >
         </activity>
         <activity
 
-            android:name="org.codeforafrica.starreports.HomePanelsActivity"
+            android:name="org.codeforafrica.ziwaphi.HomePanelsActivity"
 
             android:configChanges="locale"
             android:label="@string/app_name"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            
+             >
             <intent-filter android:label="@string/app_name" >
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity
-            android:name="org.codeforafrica.starreports.ReportsActivity"
-			android:configChanges="locale"
-            android:label="@string/my_reports"
-            android:launchMode="singleTop">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomePanelsActivity" />
-        </activity>
-        
-        <activity
-            android:name="org.codeforafrica.starreports.StoryNewActivity"
+            android:name="org.codeforafrica.ziwaphi.StoryNewActivity"
             android:label="@string/title_activity_new_story" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomePanelsActivity" />
+                android:value=".ReportsFragmentsActivity" />
         </activity>
         <activity
-            android:name="org.codeforafrica.starreports.old_ReportActivity"
+            android:name="org.codeforafrica.ziwaphi.old_ReportActivity"
             android:label="@string/title_activity_new_story" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomePanelsActivity" />
+                android:value=".ReportsFragmentsActivity" />
         </activity>
         <activity
-            android:name="org.codeforafrica.starreports.assignments.AssignmentsActivity"
+            android:name="org.codeforafrica.ziwaphi.assignments.AssignmentsActivity"
             android:label="@string/title_assignments" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomePanelsActivity" />
+                android:value=".ReportsFragmentsActivity" />
         </activity>
         <activity
-            android:name="org.codeforafrica.starreports.Report_PageIndicatorActivity"
+            android:name="org.codeforafrica.ziwaphi.Report_PageIndicatorActivity"
             android:label="New Report" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomePanelsActivity" />
+                android:value=".ReportsFragmentsActivity" />
         </activity>
         <activity
-            android:name="org.codeforafrica.starreports.ReportEditorActivity"
+            android:name="org.codeforafrica.ziwaphi.ReportEditorActivity"
             android:label="@string/title_activity_new_story" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomePanelsActivity" />
+                android:value=".ReportsFragmentsActivity" />
         </activity>
         
         <activity
-            android:name="org.codeforafrica.starreports.facebook.RegisterActivity"
+            android:name="org.codeforafrica.ziwaphi.facebook.RegisterActivity"
             android:label="New account" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -155,17 +146,17 @@
         </activity>
         
               <activity
-            android:name="org.codeforafrica.starreports.ProjectsActivity"
+            android:name="org.codeforafrica.ziwaphi.ProjectsActivity"
             android:configChanges="locale"
             android:label="@string/title_projects"
             android:launchMode="singleTop"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomePanelsActivity" />
+                android:value=".ReportsFragmentsActivity" />
         </activity>
         <activity
-            android:name="org.codeforafrica.starreports.LessonsActivity"
+            android:name="org.codeforafrica.ziwaphi.LessonsActivity"
             android:configChanges="locale"
             android:label="@string/title_activity_lessons"
             android:launchMode="singleTop"
@@ -173,11 +164,11 @@
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomePanelsActivity" />
+                android:value=".ReportsFragmentsActivity" />
         </activity>
 
         <activity
-            android:name="org.codeforafrica.starreports.StoryTemplateChooserActivity"
+            android:name="org.codeforafrica.ziwaphi.StoryTemplateChooserActivity"
             android:label="@string/title_activity_choose_template"
             >
             <meta-data
@@ -185,7 +176,7 @@
                 android:value=".ProjectsActivity" />
         </activity>
         <activity
-            android:name="org.codeforafrica.starreports.StoryTemplateActivity"
+            android:name="org.codeforafrica.ziwaphi.StoryTemplateActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_story_template" >
             <meta-data
@@ -193,7 +184,7 @@
                 android:value=".ProjectsActivity" />
         </activity>
         <activity
-            android:name="org.codeforafrica.starreports.SceneEditorActivity"
+            android:name="org.codeforafrica.ziwaphi.SceneEditorActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_scene_editor" >
             <meta-data
@@ -201,15 +192,15 @@
                 android:value=".ProjectsActivity" />
         </activity>
         <activity
-            android:name="org.codeforafrica.starreports.WelcomeActivity"
+            android:name="org.codeforafrica.ziwaphi.WelcomeActivity"
             android:label="@string/app_name"            
              >
         </activity>  
          <activity
-            android:name="org.codeforafrica.starreports.ProjectListActivity">
+            android:name="org.codeforafrica.ziwaphi.ProjectListActivity">
              <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomePanelsActivity" />
+                android:value=".ReportsFragmentsActivity" />
         </activity>
         <activity
             android:name=".lessons.LessonViewActivity"
@@ -226,8 +217,8 @@
             android:configChanges="orientation|keyboardHidden|screenSize" >   
             	      
         </activity>
-        <activity android:name="org.codeforafrica.starreports.MediaOutputPreferences" />
-        <activity android:name="org.codeforafrica.starreports.SimplePreferences" />
+        <activity android:name="org.codeforafrica.ziwaphi.MediaOutputPreferences" />
+        <activity android:name="org.codeforafrica.ziwaphi.SimplePreferences" />
         
         <activity android:name=".media.OverlayCameraActivity" 
              android:screenOrientation="landscape"
@@ -240,16 +231,16 @@
        
        
         <provider
-		    android:authorities="org.codeforafrica.starreports.db.LessonsProvider"
+		    android:authorities="org.codeforafrica.ziwaphi.db.LessonsProvider"
 		    android:multiprocess="true"
 		    android:exported="false"
-		    android:name="org.codeforafrica.starreports.db.LessonsProvider"></provider>
+		    android:name="org.codeforafrica.ziwaphi.db.LessonsProvider"></provider>
         
         <provider
-		    android:authorities="org.codeforafrica.starreports.db.ProjectsProvider"
+		    android:authorities="org.codeforafrica.ziwaphi.db.ProjectsProvider"
 		    android:multiprocess="true"
 		     android:exported="false"
-		    android:name="org.codeforafrica.starreports.db.ProjectsProvider"></provider>
+		    android:name="org.codeforafrica.ziwaphi.db.ProjectsProvider"></provider>
 
         <activity
             android:configChanges="keyboardHidden"
@@ -279,7 +270,7 @@
         
      <receiver
        android:icon="@drawable/logo"
-       android:label="starreports QuickStory"
+       android:label="ziwaphi QuickStory"
        android:name="QuickStoryWidgetProvider" >
        <intent-filter >
             <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -310,21 +301,18 @@
             />
     <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/app_id"/>
     <activity android:name="com.facebook.LoginActivity"/>
-    <activity android:name="org.codeforafrica.starreports.facebook.FacebookLogin"/>  
+    <activity android:name="org.codeforafrica.ziwaphi.facebook.FacebookLogin"/>  
 	<activity android:name="net.hockeyapp.android.UpdateActivity" />
 
-	<activity android:name="org.codeforafrica.starreports.facebook.UpdateActivity" android:value="Update Profile"/>
-	<activity android:name="org.codeforafrica.starreports.AboutActivity" android:label="About" />
-	<service android:name="org.codeforafrica.starreports.api.SyncService" />
-	<service android:name="org.codeforafrica.starreports.export.Export2SDService" />
-	<service android:name="org.codeforafrica.starreports.encryption.EncryptionService" />
-	<service android:name="org.codeforafrica.starreports.spy.StoryNewService" />
-    <service android:name="org.codeforafrica.starreports.spy.SoundRecorderService" />
-    <service android:name="org.codeforafrica.starreports.encryption.EncryptionBackground" />
-	
-	<service android:name="org.codeforafrica.starreports.api.XMLRPCSyncService" />
-    
-	<activity android:name="org.codeforafrica.starreports.spy.SceneEditorActivity_spy" android:value="Day of the week"/>
+	<activity android:name="org.codeforafrica.ziwaphi.facebook.UpdateActivity" android:value="Update Profile"/>
+	<activity android:name="org.codeforafrica.ziwaphi.AboutActivity" android:label="About" />
+	<service android:name="org.codeforafrica.ziwaphi.api.SyncService" />
+	<service android:name="org.codeforafrica.ziwaphi.export.Export2SDService" />
+	<service android:name="org.codeforafrica.ziwaphi.encryption.EncryptionService" />
+	<service android:name="org.codeforafrica.ziwaphi.spy.StoryNewService" />
+    <service android:name="org.codeforafrica.ziwaphi.spy.SoundRecorderService" />
+    <service android:name="org.codeforafrica.ziwaphi.encryption.EncryptionBackground" />
+	<activity android:name="org.codeforafrica.ziwaphi.spy.SceneEditorActivity_spy" android:value="Day of the week"/>
 
     </application>
 

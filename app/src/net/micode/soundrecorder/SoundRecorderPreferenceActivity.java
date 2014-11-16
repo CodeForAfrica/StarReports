@@ -16,7 +16,7 @@
 
 package net.micode.soundrecorder;
 
-import org.codeforafrica.starreports.R;
+import org.codeforafrica.ziwaphi.R;
 
 import android.content.Context;
 import android.content.SharedPreferences;

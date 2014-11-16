@@ -116,7 +116,7 @@
         android:entries="@array/categories"
         android:textColor="@color/black"/>    
         
-    <org.codeforafrica.starreports.location.PlacesAutoCompleteTextView
+    <org.codeforafrica.ziwaphi.location.PlacesAutoCompleteTextView
         android:id="@+id/atv_places"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

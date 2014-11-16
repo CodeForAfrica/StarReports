@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="app_name">StarReports</string>
+    <string name="app_name">ZIWAPHI</string>
     <string name="add_report">Add Report</string>
     <string name="my_reports">My Reports</string>
     <string name="app_id" translatable="false">500750433359090</string>
@@ -25,10 +25,10 @@
 	<string name="add_video">Add Video</string>
 	<string name="add_audio">Add Audio</string>
 	<string name="import_from_gallery">Import From Gallery</string>
-	<string name="view_website">Go to StarReports website</string>
+	<string name="view_website">Go to ZIWAPHI website</string>
 	<string name="built_by">Built by</string>
 	<string name="built_for">For</string>
-	<string name="the_star">The Star</string>
+	<string name="the_star">ZIWAPHI</string>
 	
 	<string name="view_gallery">Gallery</string>
 	<string name="description_field">Description</string>
@@ -46,7 +46,7 @@
     <string name="publish_dialog_alert">Do you wish to publish this now?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="about">StarReports is a simple and easy-to-use experience for users, minimising barriers to submitting media and providing an intuitive experience.</string>
+    <string name="about">ZIWAPHI is a simple and easy-to-use experience for users, minimising barriers to submitting media and providing an intuitive experience.</string>
     
     <!-- Report viewpage indicator -->
     <string name="report_add_title">Title</string>

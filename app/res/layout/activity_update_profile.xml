@@ -85,7 +85,7 @@
              android:layout_marginTop="10dp"
              android:layout_marginBottom="10dp" />
                 
-         <org.codeforafrica.starreports.location.PlacesAutoCompleteTextView
+         <org.codeforafrica.ziwaphi.location.PlacesAutoCompleteTextView
          		android:id="@+id/location"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

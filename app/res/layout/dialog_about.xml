@@ -97,6 +97,6 @@
         android:background="@color/lp_blue"
         android:paddingBottom="5dp"
         android:layout_marginTop="10dp"
-        android:src="@drawable/the_star" />
+        android:src="@drawable/brand_banner" />
 
 </RelativeLayout>
