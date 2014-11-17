@@ -131,7 +131,7 @@ public class UpdateActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View arg1, int pos,
                     long id) {
             	
-                  web.loadUrl(mapurl + "/webview_map.php?address=" + atvPlaces.getText().toString());
+                  web.loadUrl(mapurl + "?address=" + atvPlaces.getText().toString());
 
             }
         });
@@ -190,7 +190,7 @@ public class UpdateActivity extends BaseActivity {
 				        phone_number.setText("" + user.get("phone_number"));
 				        atvPlaces.setText("" + user.get("address"));
 		        
-				        web.loadUrl(mapurl + "/webview_map.php?address=" + atvPlaces.getText().toString());
+				        web.loadUrl(mapurl + "?address=" + atvPlaces.getText().toString());
 				        
 				} catch (JSONException e) {
 					e.printStackTrace();
