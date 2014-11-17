@@ -287,7 +287,7 @@ private void initIntroActivityList ()
                 public void onItemClick(AdapterView<?> parent, View arg1, int pos,
                         long id) {
                 	
-                      web.loadUrl(mapurl + "/webview_map.php?address=" + atvPlaces.getText().toString());
+                      web.loadUrl(mapurl + "?address=" + atvPlaces.getText().toString());
 
                 }
             });
