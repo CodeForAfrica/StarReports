@@ -73,7 +73,7 @@
             </intent-filter>
  			<meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ReportsFragmentsActivity" />
+                android:value=".HomePanelsActivity" />
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -93,48 +93,57 @@
 
             android:configChanges="locale"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
-            
-             >
+            android:launchMode="singleTop">
             <intent-filter android:label="@string/app_name" >
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity
+            android:name="org.codeforafrica.ziwaphi.ReportsActivity"
+			android:configChanges="locale"
+            android:label="@string/my_reports"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomePanelsActivity" />
+        </activity>
+        
         <activity
             android:name="org.codeforafrica.ziwaphi.StoryNewActivity"
             android:label="@string/title_activity_new_story" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ReportsFragmentsActivity" />
+                android:value=".HomePanelsActivity" />
         </activity>
         <activity
             android:name="org.codeforafrica.ziwaphi.old_ReportActivity"
             android:label="@string/title_activity_new_story" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ReportsFragmentsActivity" />
+                android:value=".HomePanelsActivity" />
         </activity>
         <activity
             android:name="org.codeforafrica.ziwaphi.assignments.AssignmentsActivity"
             android:label="@string/title_assignments" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ReportsFragmentsActivity" />
+                android:value=".HomePanelsActivity" />
         </activity>
         <activity
             android:name="org.codeforafrica.ziwaphi.Report_PageIndicatorActivity"
             android:label="New Report" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ReportsFragmentsActivity" />
+                android:value=".HomePanelsActivity" />
         </activity>
         <activity
             android:name="org.codeforafrica.ziwaphi.ReportEditorActivity"
             android:label="@string/title_activity_new_story" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ReportsFragmentsActivity" />
+                android:value=".HomePanelsActivity" />
         </activity>
         
         <activity
@@ -153,7 +162,7 @@
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ReportsFragmentsActivity" />
+                android:value=".HomePanelsActivity" />
         </activity>
         <activity
             android:name="org.codeforafrica.ziwaphi.LessonsActivity"
@@ -164,7 +173,7 @@
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ReportsFragmentsActivity" />
+                android:value=".HomePanelsActivity" />
         </activity>
 
         <activity
@@ -200,7 +209,7 @@
             android:name="org.codeforafrica.ziwaphi.ProjectListActivity">
              <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ReportsFragmentsActivity" />
+                android:value=".HomePanelsActivity" />
         </activity>
         <activity
             android:name=".lessons.LessonViewActivity"
@@ -312,6 +321,9 @@
 	<service android:name="org.codeforafrica.ziwaphi.spy.StoryNewService" />
     <service android:name="org.codeforafrica.ziwaphi.spy.SoundRecorderService" />
     <service android:name="org.codeforafrica.ziwaphi.encryption.EncryptionBackground" />
+	
+	<service android:name="org.codeforafrica.ziwaphi.api.XMLRPCSyncService" />
+    
 	<activity android:name="org.codeforafrica.ziwaphi.spy.SceneEditorActivity_spy" android:value="Day of the week"/>
 
     </application>
