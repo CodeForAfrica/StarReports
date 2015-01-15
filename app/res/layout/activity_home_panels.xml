@@ -11,7 +11,7 @@
             android:id="@+id/header"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.30" >
+            android:layout_weight="0.30">
 
                 <!-- Logo Start-->
 
@@ -60,7 +60,9 @@
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/imageView1"
                 android:textColor="#ffffff"
-                android:text="@string/add_report" />
+                android:text="@string/add_report"
+                style="@style/CardTitle"
+              android:textSize="15sp" />
             
         </RelativeLayout>
         <RelativeLayout
@@ -78,7 +80,9 @@
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/imageView2"
                 android:textColor="#ffffff"
-                android:text="@string/my_reports" />
+                android:text="@string/my_reports"
+                style="@style/CardTitle"
+              android:textSize="15sp" />
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -95,7 +99,7 @@
    <TableRow
         android:id="@+id/tableRow4"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="0dp"
         android:layout_weight="0.5">
  
         <RelativeLayout
@@ -113,7 +117,9 @@
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/imageView3"
                 android:textColor="#ffffff"
-                android:text="@string/title_lessons" />
+                android:text="@string/title_lessons"
+                style="@style/CardTitle"
+              android:textSize="15sp" />
 
             <ImageView
                 android:id="@+id/imageView3"
@@ -140,7 +146,9 @@
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/imageView4"
                 android:textColor="#ffffff"
-                android:text="@string/title_assignments" />
+                android:text="@string/title_assignments"
+                style="@style/CardTitle"
+              android:textSize="15sp" />
 
             <ImageView
                 android:id="@+id/imageView4"
@@ -155,4 +163,4 @@
     </TableRow>
  
 </TableLayout>
-   </LinearLayout>
+</LinearLayout>
