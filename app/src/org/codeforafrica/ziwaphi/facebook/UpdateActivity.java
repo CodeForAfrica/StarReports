@@ -184,11 +184,31 @@ public class UpdateActivity extends BaseActivity {
 	        protected void onPostExecute(JSONObject user){
 	        	
 	        	try {
-						first_name.setText("" + user.get("first_name"));
-						last_name.setText("" + user.get("last_name"));
-				        email.setText("" + user.get("email"));
-				        phone_number.setText("" + user.get("phone_number"));
-				        atvPlaces.setText("" + user.get("address"));
+	        		    String s_first_name = "" + user.get("first_name");
+	        		    if(s_first_name.equals("false") || s_first_name.equals("null"))
+	        		    	s_first_name = "";
+						
+						String s_last_name = "" + user.get("last_name");
+	        		    if(s_last_name.equals("false") || s_last_name.equals("null"))
+	        		    	s_last_name = "";
+						
+						String s_email = "" + user.get("email");
+	        		    if(s_email.equals("false") || s_email.equals("null"))
+	        		    	s_email = "";
+						
+						String s_phone_number = "" + user.get("phone_number");
+	        		    if(s_phone_number.equals("false") || s_phone_number.equals("null"))
+	        		    	s_phone_number = "";
+						
+						String s_address = "" + user.get("address");
+	        		    if(s_address.equals("false") || s_address.equals("null"))
+	        		    	s_address = "";
+	        		    
+						first_name.setText(s_first_name);
+						last_name.setText(s_last_name);
+				        email.setText(s_email);
+				        phone_number.setText(s_phone_number);
+				        atvPlaces.setText(s_address);
 		        
 				        web.loadUrl(mapurl + "/webview_map.php?address=" + atvPlaces.getText().toString());
 				        
