@@ -76,11 +76,17 @@ public class XMLRPCSyncService extends Service {
         
 	     //Bundle extras = intent.getExtras();
 	       if(intent.hasExtra("rid")){
+	    	   
 	    	   rid = extras.getInt("rid");
 	    	   mListReports.add(Report.get(getApplicationContext(), rid));
+	       
 	       }else{
+	    	
 	    	   mListReports = Report.getAllAsList(getApplicationContext());
+	       
 	       }
+	       
+	       
 	       
 	       new publish_report().execute();
 	       
@@ -117,12 +123,14 @@ public class XMLRPCSyncService extends Service {
 		        
 	        }
 	        protected String doInBackground(String... args) {
-	        	
+	      	        	
 	       for (int i = 0; i < mListReports.size(); i++) {
 	    		 
 	    	   if(mListReports.get(i)!=null){
 	    		
 	    		report = mListReports.get(i);
+	    		
+	    		int report_id = report.getId();
 	        	
 	        	ServerManager sm = StoryMakerApp.getServerManager();
 	            //sm.setContext(getBaseContext());
@@ -142,7 +150,7 @@ public class XMLRPCSyncService extends Service {
 					
 					//upload media
 					ArrayList<Project> mListProjects;
-					mListProjects = Project.getAllAsList(getApplicationContext(), rid);
+					mListProjects = Project.getAllAsList(getApplicationContext(), report_id);
 					String thumbnail= null;
 				 	for (int j = 0; j < mListProjects.size(); j++) {
 				 		Project project = mListProjects.get(j);
@@ -158,14 +166,12 @@ public class XMLRPCSyncService extends Service {
 						 	String ptype = media.getMimeType();
 						 	
 						 	String file = ppath;
-						 	
-						 	Log.d("encryption status:", "encryptionstatus" + media.getEncrypted());
-						 	
+						 							 	
 						 	//if encrypted, decrypt before upload
 						 	if(media.getEncrypted()!=0){
 						 	
 						 		Cipher cipher;
-								try {				
+								try{				
 									cipher = Encryption.createCipher(Cipher.DECRYPT_MODE);
 									Encryption.applyCipher(file, file+"_", cipher);
 								}catch (Exception e) {
@@ -222,7 +228,7 @@ public class XMLRPCSyncService extends Service {
 				 	if(thumbnail!=null){
 				 		thumbnail = sm.addThumbnail("image/jpeg", new File(thumbnail));
 				 	}
-				 	
+				 				 	
 				 	String pDescription = report.getDescription() + "==Media==\n\n" + sbBody.toString();
 				 	
 				 	postId = sm.post2(report.getTitle(), pDescription, null, null, null, null, null, null, structA, thumbnail);

@@ -379,8 +379,9 @@ public void loadSlider(Report r){
 		 	for (Media media: mediaList){
 	
 		 		if(media!=null){
-		 			
-		 			File thumb = new File(Environment.getExternalStorageDirectory() + "/" + AppConstants.TAG + "/.thumbs/" + media.getId() + ".jpg");
+		 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+		 	    	String mt = dateFormat.format(media.getCreatedAt());
+		 			File thumb = new File(Environment.getExternalStorageDirectory() + "/" + AppConstants.TAG + "/.thumbs/" + mt + ".jpg");
 		 			if(thumb.exists()){
 		 				
 		 				totalClips++;
