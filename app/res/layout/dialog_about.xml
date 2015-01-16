@@ -7,11 +7,12 @@
 
     <TextView
         android:id="@+id/tvAbout"
+        style="@style/CardTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/about"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-         />
+        android:textSize="18sp"
+        android:textColor="@color/black" />
 
     <View
         android:id="@+id/vAbout"
@@ -44,7 +45,9 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:text="@string/view_website"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+	        style="@style/CardText" 
+	        android:textSize="18sp"
+	        android:textColor="@color/black"/>
 
     </RelativeLayout>
 
@@ -65,7 +68,10 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:text="@string/built_for"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        style="@style/CardText" 
+	        android:textSize="18sp" 
+	        android:textColor="@color/black"/>
 
     <TextView
         android:id="@+id/tvBy"
@@ -74,7 +80,9 @@
         android:layout_below="@+id/vWebsite"
         android:layout_centerHorizontal="true"
         android:text="@string/built_by"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        style="@style/CardText" 
+	        android:textSize="18sp"
+	        android:textColor="@color/black" />
 
     <ImageView
         android:id="@+id/imageView2"

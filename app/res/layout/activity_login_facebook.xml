@@ -186,17 +186,7 @@
                  android:gravity="center"
                  android:textSize="16sp" />
  
-        </LinearLayout>
-          <com.facebook.widget.LoginButton
-        android:id="@+id/authButton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:padding="5dp"
-        android:visibility="gone"
-        />
-          
+        </LinearLayout>          
  
         </LinearLayout>
         <!-- Registration Form Ends -->

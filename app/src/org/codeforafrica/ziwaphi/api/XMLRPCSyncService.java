@@ -131,7 +131,8 @@ public class XMLRPCSyncService extends Service {
 	    		report = mListReports.get(i);
 	    		
 	    		int report_id = report.getId();
-	        	
+	    		
+	    		
 	        	ServerManager sm = StoryMakerApp.getServerManager();
 	            //sm.setContext(getBaseContext());
 
@@ -150,6 +151,7 @@ public class XMLRPCSyncService extends Service {
 					
 					//upload media
 					ArrayList<Project> mListProjects;
+										
 					mListProjects = Project.getAllAsList(getApplicationContext(), report_id);
 					String thumbnail= null;
 				 	for (int j = 0; j < mListProjects.size(); j++) {
@@ -160,6 +162,8 @@ public class XMLRPCSyncService extends Service {
 					 	for (Media media: mediaList){
 
 					 		if(media!=null){
+					 			
+					 		if(media.getObject()!=1){
 					 			
 					 			
 					 		String ppath = media.getPath();
@@ -187,6 +191,9 @@ public class XMLRPCSyncService extends Service {
 								newfile.renameTo(new File(file));
 						 	}	
 						 		String murl = sm.addMedia(ptype, new File(file));
+						 		
+						 		media.setObject_Id(1);
+						 		
 						 		//create link depending on media type
 						 		if(ptype.contains("image")){
 						 			murl = "<img width=\"100%\" src=\"" + murl + "\"/>";
@@ -220,8 +227,9 @@ public class XMLRPCSyncService extends Service {
 		    					File newfile = new File(file+"_");
 		    					newfile.renameTo(new File(file));
 					 		}
-				 		}
+					 	}
 				 	}
+				 }
 					
 				 	
 				 	//upload thumbnail
@@ -229,12 +237,18 @@ public class XMLRPCSyncService extends Service {
 				 		thumbnail = sm.addThumbnail("image/jpeg", new File(thumbnail));
 				 	}
 				 				 	
-				 	String pDescription = report.getDescription() + "==Media==\n\n" + sbBody.toString();
+				 	String pDescription = report.getDescription() + " " + sbBody.toString();
 				 	
-				 	postId = sm.post2(report.getTitle(), pDescription, null, null, null, null, null, null, structA, thumbnail);
-					urlPost = sm.getPostUrl(postId);
-					report.setServerId(postId);
-					report.save();
+				 	//check if report has server id
+		    		if(!report.getServerId().equals("0")){
+		    			//update report and upload media not already uploaded
+		    			
+		    		}else{
+					 	postId = sm.post2(report.getTitle(), pDescription, null, null, null, null, null, null, structA, thumbnail);
+						urlPost = sm.getPostUrl(postId);
+						report.setServerId(postId);
+						report.save();
+		    		}
 					
 				} catch (MalformedURLException e) {
 					// TODO Auto-generated catch block

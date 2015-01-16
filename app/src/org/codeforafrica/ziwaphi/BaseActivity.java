@@ -36,7 +36,6 @@ import android.widget.ImageView;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.facebook.Session;
 //import com.google.analytics.tracking.android.EasyTracker;
 
 @SuppressLint("NewApi")
@@ -317,9 +316,6 @@ public void onUserInteraction()
         }
         if (item.getItemId() == R.id.logout)
         {
-        	//logout facebook
-        	
-        	callFacebookLogout(getApplicationContext());
     			
         	//nullify user
         	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -359,25 +355,6 @@ public void onUserInteraction()
 		//initSlidingMenu();
 	}
 
-    public static void callFacebookLogout(Context context) {
-        Session session = Session.getActiveSession();
-        if (session != null) {
-
-            if (!session.isClosed()) {
-                session.closeAndClearTokenInformation();
-                //clear your preferences if saved
-            }
-        } else {
-
-            session = new Session(context);
-            Session.setActiveSession(session);
-
-            session.closeAndClearTokenInformation();
-                //clear your preferences if saved
-
-        }
-
-    }
     private boolean isServiceRunning(Class<?> cls) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {

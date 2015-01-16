@@ -300,7 +300,7 @@ public class UpdateActivity extends BaseActivity {
             		gpsT = new GPSTracker(UpdateActivity.this);
             		// check if GPS enabled 
                     if(gpsT.canGetLocation()){ 
-                    	new updateValues().execute();
+                    		new updateValues().execute();
                     }else{
                 		gpsT.showSettingsAlert();	
                     }
