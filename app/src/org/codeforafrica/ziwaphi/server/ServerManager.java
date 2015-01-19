@@ -354,17 +354,16 @@ public class ServerManager {
 
 		page.setCustom_fields(custom_fields);
 		
-		boolean publish = true; //let's push it out!
-		
+		boolean publish = false; //let's push it out!
 		
 		String postId;
 		
 		if(serverId!=0){
-			mWordpress.editPost(serverId, page, "draft");
+			mWordpress.editPost(serverId, page, publish);
 			postId = "" + serverId;
 			
 		}else{
-			postId = mWordpress.newPost(page, false);
+			postId = mWordpress.newPost(page, publish);
 
 		}
 				

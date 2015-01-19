@@ -139,7 +139,7 @@ interface MetaWebLogBridge {
    * @throws XmlRpcFault
    */
   Boolean editPost(Integer post_ID, String username, String password,
-      XmlRpcStruct post, String publish) throws XmlRpcFault;
+      XmlRpcStruct post, boolean publish) throws XmlRpcFault;
 
   /**
    * @param post_ID
@@ -464,7 +464,7 @@ public class Wordpress {
    *           Generic exception for xml-rpc operations
    */
   @SuppressWarnings("boxing")
-  public Boolean editPost(int post_ID, Page page, String publish)
+  public Boolean editPost(int post_ID, Page page, boolean publish)
       throws XmlRpcFault {
     XmlRpcStruct post = page.toXmlRpcStruct();
     return this.mw.editPost(post_ID, this.username, this.password, post,
