@@ -124,7 +124,7 @@ public class Report_PageIndicatorActivity extends BaseActivity implements BaseSl
         menu.findItem(R.id.about).setVisible(false);
         menu.findItem(R.id.menu_sync_reports).setVisible(false);
         menu.findItem(R.id.menu_new_form).setVisible(false);
-        
+        menu.findItem(R.id.import_from_gallery).setVisible(false);
         //if assignment
         
         if((getIntent().hasExtra("assignmentTitle"))){
