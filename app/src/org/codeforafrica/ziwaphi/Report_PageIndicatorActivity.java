@@ -754,9 +754,9 @@ class publish_report extends AsyncTask<String, String, String> {
 			 		thumbnail = sm.addThumbnail("image/jpeg", new File(thumbnail));
 			 	}
 			 	
-			 	String pDescription = description + "==Media==\n\n" + sbBody.toString();
+			 	String pDescription = description + " " + sbBody.toString();
 			 	
-			 	postId = sm.post2(title, pDescription, null, null, null, null, null, null, structA, thumbnail);
+			 	postId = sm.post2(title, pDescription, null, null, null, null, null, null, structA, thumbnail, 0);
 				urlPost = sm.getPostUrl(postId);
 				
 			} catch (MalformedURLException e) {

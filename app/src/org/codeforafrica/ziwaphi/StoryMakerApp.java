@@ -31,11 +31,14 @@ import android.util.Log;
 
 public class StoryMakerApp extends Application {
 	private static final String TAG=StoryMakerApp.class.getName();
-    private Waiter waiter;  //Thread which controls idle time
-	public void touch()
+    
+	private Waiter waiter;  //Thread which controls idle time
+	
+    public void touch()
     {
         waiter.touch();
     }
+    
 	
 	private static ServerManager mServerManager;
 	private static LessonManager mLessonManager;
@@ -80,9 +83,9 @@ public class StoryMakerApp extends Application {
 //		GoogleAnalytics.getInstance(this).setAppOptOut(optOut);
 		
 		initApp();
-		Log.d(TAG, "Starting application"+this.toString());
+		//Log.d(TAG, "Starting application"+this.toString());
         //waiter=new Waiter(300000); //15 mins
-        //waiter.start(); 
+       // waiter.start(); 
 	}
 	private boolean isServiceRunning(Class<?> cls) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
@@ -127,18 +130,18 @@ public class StoryMakerApp extends Application {
 	            	//check if there's a service running. 
 	            	if((!isServiceRunning(XMLRPCSyncService.class))&&(!isServiceRunning(VideoTutorialsService.class))&&(!isServiceRunning(EncryptionService.class))&&(!isServiceRunning(Export2SDService.class)))
 	            	{ 
-	                idle=0;
-	                stop=true;
-	                
-	                //nullify user
-	             	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-	         		Editor editor = prefs.edit();
-	         		editor.putString("logged_in", "0");
-	             	editor.commit();
-	             	
-	             	System.exit(0);
-	                // finish();
-	                 //do something here - e.g. call popup or so
+		                idle=0;
+		                stop=true;
+		                
+		                //nullify user
+		             	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		         		Editor editor = prefs.edit();
+		         		editor.putString("logged_in", "0");
+		             	editor.commit();
+		             	
+		             	System.exit(0);
+		                // finish();
+		                 //do something here - e.g. call popup or so
 	            	}
 	             }
 	         }

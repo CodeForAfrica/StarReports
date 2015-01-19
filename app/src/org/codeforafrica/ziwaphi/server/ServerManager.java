@@ -277,7 +277,7 @@ public class ServerManager {
 		
 		return postId;
 	}
-	public String post2 (String title, String body, String[] catstrings, String medium, String mediaService, String mediaGuid, String mimeType, File file, XmlRpcStruct Assignment, String thumbID) throws XmlRpcFault, MalformedURLException
+	public String post2 (String title, String body, String[] catstrings, String medium, String mediaService, String mediaGuid, String mimeType, File file, XmlRpcStruct Assignment, String thumbID, int serverId) throws XmlRpcFault, MalformedURLException
 	{
 		connect();
 		
@@ -288,6 +288,10 @@ public class ServerManager {
 		
 		Page page = new Page ();
 		page.setTitle(title);
+		
+		if(serverId!=0){
+			page.setPostid(serverId);
+		}
 		
 		if(thumbID !=null){
 			page.setThumbnail(thumbID);
@@ -351,8 +355,19 @@ public class ServerManager {
 		page.setCustom_fields(custom_fields);
 		
 		boolean publish = true; //let's push it out!
-		String postId = mWordpress.newPost(page, publish);
 		
+		
+		String postId;
+		
+		if(serverId!=0){
+			mWordpress.editPost(serverId, page, "draft");
+			postId = "" + serverId;
+			
+		}else{
+			postId = mWordpress.newPost(page, false);
+
+		}
+				
 		
 		return postId;
 	}
@@ -373,6 +388,13 @@ public class ServerManager {
 		intent.putExtra("url", url);
 		
 		mContext.startActivity(intent);
+	}
+
+	public void postEdit(String title, String pDescription, Object object,
+			Object object2, Object object3, Object object4, Object object5,
+			Object object6, XmlRpcStruct structA, String thumbnail) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

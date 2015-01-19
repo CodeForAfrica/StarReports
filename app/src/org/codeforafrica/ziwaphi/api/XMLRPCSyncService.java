@@ -239,13 +239,13 @@ public class XMLRPCSyncService extends Service {
 				 				 	
 				 	String pDescription = report.getDescription() + " " + sbBody.toString();
 				 	
-				 	//check if report has server id
-		    		if(!report.getServerId().equals("0")){
-		    			//update report and upload media not already uploaded
-		    			
-		    		}else{
-					 	postId = sm.post2(report.getTitle(), pDescription, null, null, null, null, null, null, structA, thumbnail);
-						urlPost = sm.getPostUrl(postId);
+				 	
+		    		//update report and upload media not already uploaded
+					postId = sm.post2(report.getTitle(), pDescription, null, null, null, null, null, null, structA, thumbnail, Integer.parseInt(report.getServerId()));
+
+					 	//check if report has server id
+			    	if(report.getServerId().equals("0")){
+			    		urlPost = sm.getPostUrl(postId);
 						report.setServerId(postId);
 						report.save();
 		    		}
