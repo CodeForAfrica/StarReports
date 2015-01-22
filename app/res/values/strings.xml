@@ -60,7 +60,7 @@
     <string name="report_add_category_desc">Add a suitable category</string>
     <string name="report_add_location_desc">Where was this story captured</string>
     <string name="report_add_contact_desc">Add contact information of your news source</string>
-    
+    <string name="stay_logged_in">Stay logged in?</string>
     <!-- Default categories -->
     <string-array name="categories">
         <item>Select Category</item>

@@ -116,6 +116,13 @@
 		</RelativeLayout>
           <!-- Login button -->
 
+		 <CheckBox
+		     android:id="@+id/stayLoggedIn"
+		     android:checked="true"
+		     android:layout_width="wrap_content"
+		     android:layout_height="wrap_content"
+		     android:text="@string/stay_logged_in"
+		     android:textColor="@color/white" />
           
 		<RelativeLayout
             android:id="@+id/lyt_btnLogin"
