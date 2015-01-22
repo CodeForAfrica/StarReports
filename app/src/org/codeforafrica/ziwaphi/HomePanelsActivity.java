@@ -100,7 +100,7 @@ public class HomePanelsActivity extends BaseActivity implements OnClickListener{
         // action bar stuff
        
          
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.red)));
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayShowHomeEnabled(false);
                 
@@ -120,7 +120,7 @@ public class HomePanelsActivity extends BaseActivity implements OnClickListener{
         
         setContentView(R.layout.activity_home_panels);
         initSlidingMenu();
-        */
+        
         load_new_report_click = (RelativeLayout)findViewById(R.id.load_new_report);
         load_new_report_click.setOnClickListener(new View.OnClickListener() {
 
@@ -130,7 +130,7 @@ public class HomePanelsActivity extends BaseActivity implements OnClickListener{
 				startActivity(i);
 			}
 		});
-        
+        */
         load_lessons_click = (RelativeLayout)findViewById(R.id.load_lessons);
         load_lessons_click.setOnClickListener(new View.OnClickListener() {
 			

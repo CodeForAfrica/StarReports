@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<color name="red">#d92126</color>
+
+<color name="metro_blue">#00ccff</color>
+<color name="metro_red">#e51400</color>
+<color name="metro_yellow">#f0a30a</color>
+<color name="metro_green">#60a917</color>    
+    
+<color name="red">#ed2124</color>
 <color name="soft_red">#d14236</color>
 <color name="green">#00ff00</color>
 <color name="blue">#0000ff</color>

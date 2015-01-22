@@ -153,7 +153,7 @@ public class StoryMakerApp extends Application {
 	             }
 	         }
 	         while(!stop);
-	         Log.d(TAG, "Finishing Waiter thread");
+	         //Log.d(TAG, "Finishing Waiter thread");
 	     }
 
 	     public synchronized void touch()
@@ -192,7 +192,7 @@ public class StoryMakerApp extends Application {
 		}
 		catch (Exception e)
 		{
-			Log.e(AppConstants.TAG,"error init app",e);
+			//Log.e(AppConstants.TAG,"error init app",e);
 		}
 	}
 		

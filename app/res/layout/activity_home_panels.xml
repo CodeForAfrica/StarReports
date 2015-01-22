@@ -3,75 +3,156 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fillViewport="true"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+     >
 
         <!--  Header  Starts-->
 
-        <RelativeLayout
-            android:id="@+id/header"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.30">
+     <RelativeLayout
+         android:id="@+id/header"
+         android:layout_width="fill_parent"
+         android:layout_height="0dp"
+         android:layout_weight="0.5"
+         android:background="@color/red">
 
-                <!-- Logo Start-->
+             <!-- Logo Start-->
 
-                <ImageView
-                    android:id="@+id/logo"
-                    android:layout_width="match_parent"
-                    android:layout_height="88dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/logo" />
+             <ImageView
+                 android:id="@+id/logo"
+                 android:layout_width="match_parent"
+                 android:layout_height="88dp"
+                 android:layout_alignParentLeft="true"
+                 android:layout_centerVertical="true"
+                 android:src="@drawable/logo" />
 
-            </RelativeLayout>
+          <TextView
+              android:id="@+id/textView1"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/logo"
+              android:layout_centerHorizontal="true"
+              android:text="@string/strapline"
+              android:textColor="@color/white"
+              android:textSize="22sp"
+              style="@style/CardTitle" />
+
+         </RelativeLayout>
+
+<LinearLayout
+    android:id="@+id/widget_layout"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="0.2">
+
+   <LinearLayout
+                         android:id="@+id/load_new_report"
+                         android:clickable="true"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical"
+                    android:background="@color/metro_green"
+                    android:gravity="center"
+                    android:layout_margin="5dp"
+                    >
+		            <ImageView
+		                android:id="@+id/ivButton1"
+		                android:layout_width="wrap_content"
+		                android:layout_height="20dp"
+		                android:layout_gravity="center"
+		                android:src="@drawable/camera" />
+					<TextView
+		                android:id="@+id/textView1"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_gravity="center"
+		                android:textColor="#ffffff"
+		                android:text="@string/add_picture"
+		                android:textSize="15sp"
+              			style="@style/CardTitle" />
+				</LinearLayout>
+    
+   <LinearLayout
+                         android:id="@+id/btnWidgetVideo"
+                    android:clickable="true"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical"
+                    android:background="@color/metro_yellow"
+                    android:gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    >
+				<ImageView
+	                android:id="@+id/ivButton2"
+	                android:layout_width="wrap_content"
+	                android:layout_height="20dp"
+	                 android:layout_gravity="center"
+	                android:src="@drawable/video" />
+				<TextView
+	                android:id="@+id/textView1"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                 android:layout_gravity="center"
+	                android:textColor="#ffffff"
+	                android:text="@string/add_video"
+	                android:textSize="15sp"
+              		style="@style/CardTitle" />
+				</LinearLayout>
+           
+              <LinearLayout
+                  android:id="@+id/btnWidgetAudio"  
+                  android:clickable="true"
+                  android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical"
+                    android:background="@color/metro_blue"
+                    android:gravity="center"
+                    android:layout_margin="5dp"
+                    >
+					<ImageView
+		                android:id="@+id/ivButton3"
+		                android:layout_width="wrap_content"
+		                android:layout_height="20dp"
+		                android:layout_gravity="center"
+		                android:src="@drawable/audio" />
+					<TextView
+		                android:id="@+id/textView1"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		               	android:layout_gravity="center"
+		                android:layout_below="@+id/ivButton3"
+		                android:textColor="#ffffff"
+		                android:text="@string/add_audio"
+		                android:textSize="15sp"
+              			style="@style/CardTitle" />
+				</LinearLayout>
+
+</LinearLayout> 
 <TableLayout
     android:id="@+id/tableLayout1"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="0dp"
     android:stretchColumns="*"
-    android:background="#ffffff" 
     android:layout_weight="0.4">
 
     <TableRow
         android:id="@+id/tableRow3"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="0dp"
         android:layout_weight="0.5" >
- 		<RelativeLayout
-            android:id="@+id/load_new_report"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.50"
-            android:background="@color/lp_red"
-            android:clickable="true" >
-
-            
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/icon_new_report" />
-			<TextView
-                android:id="@+id/textView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/imageView1"
-                android:textColor="#ffffff"
-                android:text="@string/add_report"
-                style="@style/CardTitle"
-              android:textSize="15sp" />
-            
-        </RelativeLayout>
         <RelativeLayout
             android:id="@+id/load_my_reports"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:background="@color/lp_blue"
-            android:clickable="true" >
+            android:background="@color/black"
+            android:clickable="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+             >
 
             <TextView
                 android:id="@+id/textView2"
@@ -80,17 +161,17 @@
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/imageView2"
                 android:textColor="#ffffff"
-                android:text="@string/my_reports"
+                android:text="@string/title_assignments"
                 style="@style/CardTitle"
               android:textSize="15sp" />
 
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/icon_reports" />
+                android:src="@drawable/ic_action_edit" />
 
         </RelativeLayout>
  
@@ -107,10 +188,44 @@
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_weight="0.50"
-            android:background="@color/lp_yellow"
-            android:clickable="true" >
+            android:background="@color/metro_yellow"
+            android:clickable="true"
+            android:layout_margin="5dp"
+             >
+<TextView
+                android:id="@+id/TextView01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/imageView4"
+                android:textColor="#ffffff"
+                android:text="@string/my_reports"
+                style="@style/CardTitle"
+              android:textSize="15sp" />
 
-            <TextView
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/icon_reports" />
+            
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/load_assignments"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.39"
+            android:background="@color/red" 
+            android:clickable="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            >
+<TextView
                 android:id="@+id/TextView02"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -124,39 +239,11 @@
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:src="@drawable/icon_help" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/load_assignments"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_weight="0.39"
-            android:background="@color/lp_green" 
-            android:clickable="true">
-
-            <TextView
-                android:id="@+id/TextView01"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/imageView4"
-                android:textColor="#ffffff"
-                android:text="@string/title_assignments"
-                style="@style/CardTitle"
-              android:textSize="15sp" />
-
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/ic_action_edit" />
+            
 
         </RelativeLayout>
 
