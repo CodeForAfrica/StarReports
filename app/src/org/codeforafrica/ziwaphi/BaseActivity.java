@@ -54,7 +54,7 @@ public StoryMakerApp getApp()
 {
     return (StoryMakerApp )this.getApplication();
 }
-/*
+
 @Override
 public void onUserInteraction()
 {
@@ -62,7 +62,7 @@ public void onUserInteraction()
     getApp().touch();
     Log.d(TAG, "User interaction to "+this.toString());
 }
-*/
+
 	@Override
 	public void onStart() {
 		super.onStart();

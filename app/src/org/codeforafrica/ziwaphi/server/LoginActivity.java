@@ -32,6 +32,7 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -79,6 +80,8 @@ public class LoginActivity extends BaseActivity implements Runnable
     
     LinearLayout lBasic_info;
 	LinearLayout lMore_info;
+	
+	LinearLayout builtby;
 	Button button_reg;
 	Dialog dialog_reg;
 	
@@ -95,6 +98,17 @@ public class LoginActivity extends BaseActivity implements Runnable
         pBLogin = (ProgressBar)findViewById(R.id.pBLogin);
         
         stayLoggedIn = (CheckBox)findViewById(R.id.stayLoggedIn);
+        
+        builtby = (LinearLayout)findViewById(R.id.built_by);
+        builtby.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(Intent.ACTION_VIEW);
+		    	i.setData(Uri.parse("http://codeforafrica.org"));
+		    	startActivity(i);
+			}
+		});
         
         getCreds();
         
