@@ -22,8 +22,6 @@
         <!-- Registration Form -->
         <LinearLayout
           android:id="@+id/regLayout"
-          
-     
           android:orientation="vertical"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -200,31 +198,28 @@
  
         </LinearLayout>
         <!-- Registration Form Ends -->
+		 <LinearLayout
+          android:id="@+id/other"
+          android:orientation="horizontal"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/regLayout"
+          android:padding="10dip"
+          android:gravity="center">
+          		<TextView
+                     android:id="@+id/textView2"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="@string/built_by"
+                     android:textColor="@color/white"
+                     android:textSize="15sp"
+                     style="@style/CardTitle" />
 
-        <LinearLayout
-            android:id="@+id/built_by_legend"
-            android:layout_alignParentBottom="true"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:padding="5dp"
-            android:gravity="center" >
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/built_by"
-                android:textSize="15sp"
-                android:textColor="@color/white" />
-
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="120dp"
-                android:layout_height="fill_parent"
-                android:src="@drawable/c4a" />
-
-        </LinearLayout>
-
+                 <ImageView
+                     android:id="@+id/imageView1"
+                     android:layout_width="60dp"
+                     android:layout_height="30dp"
+                     android:src="@drawable/c4a_white" /></LinearLayout>
   </RelativeLayout>
 
 </LinearLayout>
