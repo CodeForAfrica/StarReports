@@ -83,9 +83,10 @@ public class StoryMakerApp extends Application {
 //		GoogleAnalytics.getInstance(this).setAppOptOut(optOut);
 		
 		initApp();
+		
 		//Log.d(TAG, "Starting application"+this.toString());
-        //waiter=new Waiter(300000); //15 mins
-       // waiter.start(); 
+        waiter=new Waiter(300000); //15 mins
+        waiter.start(); 
 	}
 	private boolean isServiceRunning(Class<?> cls) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
@@ -116,14 +117,14 @@ public class StoryMakerApp extends Application {
 	         do
 	         {
 	             idle=System.currentTimeMillis()-lastUsed;
-	             Log.d(TAG, "Application is idle for "+idle +" ms");
+	             //Log.d(TAG, "Application is idle for "+idle +" ms");
 	             try
 	             {
 	                 Thread.sleep(5000); //check every 5 seconds
 	             }
 	             catch (InterruptedException e)
 	             {
-	                 Log.d(TAG, "Waiter interrupted!");
+	                 //Log.d(TAG, "Waiter interrupted!");
 	             }
 	             if(idle > period)
 	             {
@@ -135,13 +136,19 @@ public class StoryMakerApp extends Application {
 		                
 		                //nullify user
 		             	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		         		Editor editor = prefs.edit();
-		         		editor.putString("logged_in", "0");
-		             	editor.commit();
+		         		String stay_logged_in = prefs.getString("stay_logged_in", "0");
 		             	
-		             	System.exit(0);
-		                // finish();
-		                 //do something here - e.g. call popup or so
+		         		if(stay_logged_in.equals("0")){
+		         			
+		         			Editor editor = prefs.edit();
+			         		editor.putString("logged_in", "0");
+			             	editor.commit();
+			             	
+			             	System.exit(0);
+			                // finish();
+			                 //do something here - e.g. call popup or so
+		         		}
+		             	
 	            	}
 	             }
 	         }

@@ -24,6 +24,7 @@ import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
 import org.holoeverywhere.widget.Toast;
+import org.holoeverywhere.widget.CheckBox;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -81,6 +82,7 @@ public class LoginActivity extends BaseActivity implements Runnable
 	Button button_reg;
 	Dialog dialog_reg;
 	
+	CheckBox stayLoggedIn;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +93,9 @@ public class LoginActivity extends BaseActivity implements Runnable
         txtUser = (EditText)findViewById(R.id.login_username);
         txtPass = (EditText)findViewById(R.id.login_password);
         pBLogin = (ProgressBar)findViewById(R.id.pBLogin);
+        
+        stayLoggedIn = (CheckBox)findViewById(R.id.stayLoggedIn);
+        
         getCreds();
         
         getSupportActionBar().hide();
@@ -452,7 +457,13 @@ public class LoginActivity extends BaseActivity implements Runnable
 			SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 	        Editor editor = settings.edit();
 			editor.putString("logged_in", "1");
-			
+						
+			//stay logged in
+			if(stayLoggedIn.isChecked()){
+				editor.putString("stay_logged_in", "1");
+			}else{
+				editor.putString("stay_logged_in", "0");
+			}
 			editor.commit();
 	    			
 	    	updateCategories();
