@@ -46,7 +46,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
  
-public class LoginActivity extends BaseActivity implements Runnable 
+public class RegistrationActivity extends BaseActivity implements Runnable 
 {
 	
 	private ImageView viewLogo;
@@ -55,7 +55,7 @@ public class LoginActivity extends BaseActivity implements Runnable
 	private EditText txtPass;
 	List<Category> categories;
 	private boolean mPasswordVisible = false;
-	private ProgressBar pBLogin;
+	//private ProgressBar pBLogin;
 	
 	String Vusername = "";
 	String Vpassword = "";
@@ -83,111 +83,37 @@ public class LoginActivity extends BaseActivity implements Runnable
 	
 	LinearLayout builtby;
 	Button button_reg;
-	Dialog dialog_reg;
+	EditText username;
+	EditText rpassword;
+	EditText cPassword;
+	EditText email;
+	EditText first_name;
+	EditText last_name;
+	EditText location;
+	EditText phone_number;
 	
-	CheckBox stayLoggedIn;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // setting default screen to login.xml
-        setContentView(R.layout.activity_login_facebook);
+        setContentView(R.layout.activity_registration_full);
         
-        viewLogo = (ImageView)findViewById(R.id.logo);
-        txtUser = (EditText)findViewById(R.id.login_username);
-        txtPass = (EditText)findViewById(R.id.login_password);
-        pBLogin = (ProgressBar)findViewById(R.id.pBLogin);
-        
-        stayLoggedIn = (CheckBox)findViewById(R.id.stayLoggedIn);
-        
-        builtby = (LinearLayout)findViewById(R.id.built_by);
-        builtby.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Intent i = new Intent(Intent.ACTION_VIEW);
-		    	i.setData(Uri.parse("http://codeforafrica.org"));
-		    	startActivity(i);
-			}
-		});
-        
-        getCreds();
-        
-        getSupportActionBar().hide();
-        
-        RelativeLayout lLayout = (RelativeLayout)findViewById(R.id.loginLayout);
-        
-        //lLayout.getBackground().setAlpha(90); 
-        
-        Button btnRegister = (Button) findViewById(R.id.btnRegister);
-        btnRegister.setOnClickListener(new OnClickListener ()
-        {
-			public void onClick(View v) {
-				
-				//Intent i = new Intent(getApplicationContext(), RegistrationActivity.class);
-				//startActivity(i);
-				//finish();
-				
-				showRegistrationDialog();
-			}        	
-        });
-        initPasswordVisibilityButton((ImageView) findViewById(R.id.password_visibility), txtPass);
-
-        Button btnLogin = (Button) findViewById(R.id.btnLogin);
-        btnLogin.setOnClickListener(new OnClickListener ()
-        {
-
-			@Override
-			public void onClick(View v) {
-		        
-				txtStatus = (TextView)findViewById(R.id.status);
-				
-				if(((""+txtPass.getText().toString())=="")||((""+txtUser.getText().toString())=="")){
-					
-					Toast.makeText(getApplicationContext(), "All fields are required!", Toast.LENGTH_LONG).show();
-				
-				}else{
-				
-					pBLogin.setVisibility(View.VISIBLE);
-					handleLogin ();
-				
-				}
-				
-			}
-        	
-        });
-                
-        
-    }
-    public void showRegistrationDialog(){
-    	dialog_reg = new Dialog(this, R.style.DialogSlideAnim);
-		dialog_reg.setTitle("Registration (1 of 2)");
-    	dialog_reg.setContentView(R.layout.activity_registration_dialog);
-		button_reg = (Button)dialog_reg.findViewById(R.id.btnRegister);
+        button_reg = (Button)findViewById(R.id.btnRegister);
 		
-		button_reg.setText("Next");
+        username = (EditText) findViewById(R.id.registerUsername);
+		rpassword = (EditText) findViewById(R.id.registerPassword);
+		cPassword = (EditText) findViewById(R.id.confirmPassword);
+		email = (EditText) findViewById(R.id.email);
+		first_name = (EditText) findViewById(R.id.first_name);
+		last_name = (EditText) findViewById(R.id.last_name);
+		location = (EditText) findViewById(R.id.location);
+		phone_number = (EditText) findViewById(R.id.phone_number);
+		txtStatus = (TextView)findViewById(R.id.reg_error);
 		
     	button_reg.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				
-				//dialog_reg.setTitle("Registration (2 of 2)");
-				//button_reg.setText("Finish");
-				
-				lBasic_info = (LinearLayout)dialog_reg.findViewById(R.id.basic_info);
-				lMore_info = (LinearLayout)dialog_reg.findViewById(R.id.more_info);
-												
-				EditText username = (EditText) dialog_reg.findViewById(R.id.registerUsername);
-				EditText rpassword = (EditText) dialog_reg.findViewById(R.id.registerPassword);
-				EditText cPassword = (EditText) dialog_reg.findViewById(R.id.confirmPassword);
-				EditText email = (EditText) dialog_reg.findViewById(R.id.email);
-				EditText first_name = (EditText) dialog_reg.findViewById(R.id.first_name);
-				EditText last_name = (EditText) dialog_reg.findViewById(R.id.last_name);
-				EditText location = (EditText) dialog_reg.findViewById(R.id.location);
-				EditText phone_number = (EditText) dialog_reg.findViewById(R.id.phone_number);
-	    						
-				txtStatus = (TextView)dialog_reg.findViewById(R.id.reg_error);
-				
-				//
+													
 				Vusername = "" + username.getText().toString();
 	        	Vpassword = "" + rpassword.getText().toString();
 	    		Vemail = "" + email.getText().toString();
@@ -197,7 +123,7 @@ public class LoginActivity extends BaseActivity implements Runnable
 	    		Vcpassword = "" + cPassword.getText().toString();
 	    		
 	    		
-	    		if((Vusername=="")||(Vpassword=="")||(Vemail=="")){
+	    		if((Vusername=="")||(Vpassword=="")||(Vemail=="")||(Vfirst_name == "") || (Vlast_name == "") || (Vphone_number == "")){
 		
 					txtStatus.setText("All fields are required!");
 
@@ -219,48 +145,20 @@ public class LoginActivity extends BaseActivity implements Runnable
 		    		
 		    		}else{
 		    			
-		    					    			
-		    			if(updatingProfile == false){
-			    			
+		    			
 			    			registering = true;
-				    						    		
-			    		}else{
-			    			if((Vfirst_name == "") || (Vlast_name == "") || (Vphone_number == "")){
-			    				Toast.makeText(getApplicationContext(), "All fields are required!", Toast.LENGTH_LONG);
-			    			}
-			    		}
+				    		
 		    			
 		    				handleLogin();	
 		    			
 		    		}
 		    		
-		    		
 	    		}
-			}    	
-        });
-    	dialog_reg.show();
-    }
-
+	    		}
+			});
+    	}
     
-    protected void initPasswordVisibilityButton(final ImageView passwordVisibilityToggleView,
-            final EditText passwordEditText) {
-		passwordVisibilityToggleView.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mPasswordVisible = !mPasswordVisible;
-				if (mPasswordVisible) {
-					passwordVisibilityToggleView.setImageResource(R.drawable.dashicon_eye_open);
-					passwordVisibilityToggleView.setColorFilter(v.getContext().getResources().getColor(R.color.lp_blue));
-					passwordEditText.setTransformationMethod(null);
-				} else {
-					passwordVisibilityToggleView.setImageResource(R.drawable.dashicon_eye_closed);
-					passwordVisibilityToggleView.setColorFilter(v.getContext().getResources().getColor(R.color.lp_red));
-					passwordEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
-				}
-					passwordEditText.setSelection(passwordEditText.length());
-			}
-		});
-	}
+    
     private void handleLogin ()
     {
     	txtStatus.setText("Connecting to server...");
@@ -313,7 +211,7 @@ public class LoginActivity extends BaseActivity implements Runnable
     	if(updatingProfile==true){
     		
     		//get user location
-    		gpsT = new GPSTracker(LoginActivity.this);
+    		gpsT = new GPSTracker(RegistrationActivity.this);
     		// check if GPS enabled 
             if(gpsT.canGetLocation()){ 
             	txtStatus.setText("");
@@ -369,29 +267,7 @@ public class LoginActivity extends BaseActivity implements Runnable
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-    	}else{
-	    	String username = txtUser.getText().toString();
-	    	String password = txtPass.getText().toString();
-	
-	    	try {
-				StoryMakerApp.getServerManager().connect(username, password);
-	
-				// only store username/password for a successful login
-		    	saveCreds(username, password);
-		    	
-		    	categories = StoryMakerApp.getServerManager().getCategories();
-		    	Log.d("cats", "cats:"+categories.toString());
-				mHandler.sendEmptyMessage(0);
-		         
-			} catch (Exception e) {
-				
-				Message msgErr= mHandler.obtainMessage(1);
-				msgErr.getData().putString("err",e.getLocalizedMessage());
-				mHandler.sendMessage(msgErr);
-				Log.e(AppConstants.TAG,"login err",e);
-			}
-
-    		}
+    	}
         }
     }
     
@@ -402,7 +278,7 @@ public class LoginActivity extends BaseActivity implements Runnable
 
 		@Override
 		public void handleMessage(Message msg) {
-			pBLogin.setVisibility(View.INVISIBLE);
+			//pBLogin.setVisibility(View.INVISIBLE);
 			
 				
 			switch (msg.what)
@@ -452,46 +328,22 @@ public class LoginActivity extends BaseActivity implements Runnable
     		
     		updatingProfile = false;
     		
-    		Toast.makeText(getApplicationContext(), "Profile updated successfully!", Toast.LENGTH_LONG).show();
+    		Toast.makeText(getApplicationContext(), "Registration completed successfully!", Toast.LENGTH_LONG).show();
     		
-    		dialog_reg.dismiss();
+    		Intent intent = new Intent(this,HomePanelsActivity.class);
+	    	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    		startActivity(intent);
+	    	finish();
+	    	
     		
     	}else if(registering==true){
     		
     		registering = false;
     		
-    		lBasic_info.setVisibility(View.GONE);
-			lMore_info.setVisibility(View.VISIBLE);
 			
-
-			dialog_reg.setTitle("Registration (2 of 2)");
-			
-			button_reg.setText("Finish");
-			
-        	//txtStatus.setText("Registration successfull!");
-			txtStatus.setText("");
         	updatingProfile = true;
 
-    	}else{
-        	txtStatus.setText("Loading...");
-
-	    	//login successful
-			SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-	        Editor editor = settings.edit();
-			editor.putString("logged_in", "1");
-						
-			//stay logged in
-			if(stayLoggedIn.isChecked()){
-				editor.putString("stay_logged_in", "1");
-			}else{
-				editor.putString("stay_logged_in", "0");
-			}
-			editor.commit();
-	    			
-	    	updateCategories();
-	    	Intent intent = new Intent(this,HomePanelsActivity.class);
-	    	startActivity(intent);
-	    	finish();
+        	handleLogin();
     	}
     }
     private void saveUserID(String user_id){
@@ -502,22 +354,6 @@ public class LoginActivity extends BaseActivity implements Runnable
 		editor.commit();
 		
     }
-    private void updateCategories(){
-	
-    	SharedPreferences prefs = PreferenceManager
-		        .getDefaultSharedPreferences(getApplicationContext());
-		JSONArray catsList = new JSONArray();
-
-		for(int i=0;i<categories.size();i++){
-			Category cat = categories.get(i);
-
-			catsList.put(cat.getCategoryName());
-		}
-		
-		Editor editor = prefs.edit();
-		editor.putString("categories", catsList.toString());
-		
-		editor.commit();
-    }
+    
     
 }

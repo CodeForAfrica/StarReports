@@ -80,7 +80,7 @@
         </activity>
         <!-- Entry for RegisterActivity.class -->
         <activity
-            android:name=".server.RegisterActivity"
+            android:name=".server.RegistrationActivity"
             android:label="Register New Account" >
         </activity>
         <activity

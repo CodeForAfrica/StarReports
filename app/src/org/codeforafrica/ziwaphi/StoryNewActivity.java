@@ -12,6 +12,7 @@ import org.holoeverywhere.widget.LinearLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -45,6 +46,7 @@ public class StoryNewActivity extends BaseActivity {
         storymode = intent.getIntExtra("storymode", -1);
         importing = intent.getBooleanExtra("importing", false);
         quickstory = intent.getIntExtra("quickstory", 0);
+        boolean auto_capture = intent.getBooleanExtra("auto_capture", false);
 
         txtNewStoryDesc = (TextView)findViewById(R.id.txtNewStoryDesc);
         editTextStoryName = (EditText)findViewById(R.id.editTextStoryName);
@@ -113,7 +115,7 @@ public class StoryNewActivity extends BaseActivity {
         });
         
         
-        
+        /*
         if (intent.hasExtra("story_name") && intent.hasExtra("story_type"))
         {
         	String storyName = intent.getExtras().getString("story_name");
@@ -127,7 +129,7 @@ public class StoryNewActivity extends BaseActivity {
         	
         	launchSimpleStory(storyName, storyType, autoCapture, 0);
         	
-        }
+        }*/
     }
     
     private boolean formValid ()
@@ -209,13 +211,13 @@ public class StoryNewActivity extends BaseActivity {
       	
       	String title = "Captured at "+currentdate;
       	
-      	Report report = new Report (getApplicationContext(), 0, title, "0", "0", "", "", pLocation, "0", currentdate, "0", "0 ", "", "");
+      	Report report = new Report (getApplicationContext(), 0, title, "0", "0", "", "", pLocation, "0", currentdate, "0", "0 ", "0", "");
 
         report.save();
           
         rid = report.getId();
         
-       
+       Log.d("step1", "g:1" + rid);
           
         }
    
@@ -225,13 +227,16 @@ public class StoryNewActivity extends BaseActivity {
         
         if(rid == -1){
         	createReport();
+            Log.d("step2", "g:2" + rid);
+
         }
         
         Project project = new Project (getBaseContext(), clipCount);
         project.setTitle(pName);
         project.setReport_Id(rid);
         project.save();
-        
+       
+
         Scene scene = new Scene(this, clipCount);
         scene.setProjectIndex(0);
         scene.setProjectId(project.getId());

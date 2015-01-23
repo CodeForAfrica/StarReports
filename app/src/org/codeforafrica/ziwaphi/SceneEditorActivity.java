@@ -82,6 +82,7 @@ import com.actionbarsherlock.view.MenuItem;
  //       mStoryMode = getIntent().getIntExtra("story_mode", Project.STORY_TYPE_VIDEO);
 
         int pid = intent.getIntExtra("pid", -1); //project id
+        Log.d("step3", "g:5" + pid);
         quickstory = intent.getIntExtra("quickstory", 0);
         importing = intent.getBooleanExtra("importing", false);
         	
@@ -213,6 +214,7 @@ import com.actionbarsherlock.view.MenuItem;
 				    Intent i = new Intent(SceneEditorActivity.this, Report_PageIndicatorActivity.class);
 				    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				    i.putExtra("rid", reportid);
+				    
 				    startActivity(i);
 				    finish();
  					dialog.dismiss();

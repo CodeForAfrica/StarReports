@@ -45,7 +45,7 @@
     android:layout_weight="0.2">
 
    <LinearLayout
-                         android:id="@+id/load_new_report"
+                         android:id="@+id/add_picture"
                          android:clickable="true"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -73,7 +73,7 @@
 				</LinearLayout>
     
    <LinearLayout
-                         android:id="@+id/btnWidgetVideo"
+                         android:id="@+id/add_video"
                     android:clickable="true"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -102,7 +102,7 @@
 				</LinearLayout>
            
               <LinearLayout
-                  android:id="@+id/btnWidgetAudio"  
+                  android:id="@+id/add_audio"  
                   android:clickable="true"
                   android:layout_width="0dp"
                     android:layout_weight="1"
@@ -144,7 +144,7 @@
         android:layout_height="0dp"
         android:layout_weight="0.5" >
         <RelativeLayout
-            android:id="@+id/load_my_reports"
+            android:id="@+id/load_assignments"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
@@ -155,7 +155,7 @@
              >
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/assignmentsTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -184,7 +184,7 @@
         android:layout_weight="0.5">
  
         <RelativeLayout
-            android:id="@+id/load_lessons"
+            android:id="@+id/load_reports"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_weight="0.50"
@@ -215,7 +215,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/load_assignments"
+            android:id="@+id/load_lessons"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_weight="0.39"

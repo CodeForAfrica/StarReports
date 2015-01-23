@@ -8,9 +8,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import net.bican.wordpress.Page;
 import net.sqlcipher.database.SQLiteDatabase;
 
 import org.codeforafrica.ziwaphi.R;
@@ -24,18 +27,23 @@ import org.codeforafrica.ziwaphi.model.Project;
 import org.codeforafrica.ziwaphi.server.LoginActivity;
 import org.holoeverywhere.app.AlertDialog;
 import org.holoeverywhere.app.ProgressDialog;
+import org.holoeverywhere.widget.LinearLayout;
 import org.holoeverywhere.widget.Toast;
+import org.json.JSONException;
 
+import redstone.xmlrpc.XmlRpcFault;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -62,16 +70,22 @@ public class HomePanelsActivity extends BaseActivity implements OnClickListener{
     RelativeLayout load_lessons_click;
     RelativeLayout load_my_reports;
     RelativeLayout load_assignments;
+    TextView assignTV;
 
+    LinearLayout add_picture;
+    LinearLayout add_video;
+    LinearLayout add_audio;
     private Dialog dialog;
+    
+    List<Page> posts;
     
     //Connection detector class
     ConnectionDetector cd;
     //flag for Internet connection status
     Boolean isInternetPresent = false;
-    
+    String assignmentsCount;
    
-    
+    SharedPreferences prefs;
     @Override
     
     public void onCreate(Bundle savedInstanceState) {
@@ -81,7 +95,7 @@ public class HomePanelsActivity extends BaseActivity implements OnClickListener{
         cd = new ConnectionDetector(getApplicationContext());
 
     	//Get constants
-    	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+    	prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     	
     	SQLiteDatabase.loadLibs(this);
         try {
@@ -131,6 +145,55 @@ public class HomePanelsActivity extends BaseActivity implements OnClickListener{
 			}
 		});
         */
+	    
+	    assignTV = (TextView)findViewById(R.id.assignmentsTv);
+	    //set old value of assignments
+	    assignmentsCount = prefs.getString("assignmentsCount", "0");
+	    assignTV.setText(getResources().getString(R.string.title_assignments) + " (" + assignmentsCount + ")");
+	    
+	    
+	    new GetAssignments().execute();
+	    
+	    add_picture = (LinearLayout)findViewById(R.id.add_picture);
+	    add_picture.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intentStoryPhoto = new Intent(getApplicationContext(), StoryNewActivity.class);
+			      intentStoryPhoto.putExtra("story_name", "Quick Story");
+			      intentStoryPhoto.putExtra("storymode", 2);
+			      intentStoryPhoto.putExtra("auto_capture", true);
+			      intentStoryPhoto.putExtra("quickstory", 1);
+
+			      startActivity(intentStoryPhoto);
+			}
+		});
+	    add_video = (LinearLayout)findViewById(R.id.add_video);
+	    add_video.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intentStoryVideo = new Intent(getApplicationContext(), StoryNewActivity.class);
+			      intentStoryVideo.putExtra("story_name", "Quick Story");
+			      intentStoryVideo.putExtra("storymode", 0);
+			      intentStoryVideo.putExtra("auto_capture", true);
+			      intentStoryVideo.putExtra("quickstory", 1);
+			      startActivity(intentStoryVideo);
+			}
+		});
+	    add_audio = (LinearLayout)findViewById(R.id.add_audio);
+	    add_audio.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intentStoryAudio = new Intent(getApplicationContext(), StoryNewActivity.class);
+			      intentStoryAudio.putExtra("story_name", "Quick Story");
+			      intentStoryAudio.putExtra("storymode", 1);
+			      intentStoryAudio.putExtra("quickstory", 1);
+			      intentStoryAudio.putExtra("auto_capture", true);
+			      startActivity(intentStoryAudio);
+			}
+		});
         load_lessons_click = (RelativeLayout)findViewById(R.id.load_lessons);
         load_lessons_click.setOnClickListener(new View.OnClickListener() {
 			
@@ -141,7 +204,7 @@ public class HomePanelsActivity extends BaseActivity implements OnClickListener{
 				startActivity(i);
 			}
 		});
-        load_my_reports = (RelativeLayout)findViewById(R.id.load_my_reports);
+        load_my_reports = (RelativeLayout)findViewById(R.id.load_reports);
         load_my_reports.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -164,6 +227,42 @@ public class HomePanelsActivity extends BaseActivity implements OnClickListener{
 			}
 		});
         
+		}
+    class GetAssignments extends AsyncTask<String, String, String> {
+	   	 @Override
+	        protected void onPreExecute() {
+		   		super.onPreExecute();
+	        }
+	        protected String doInBackground(String... args) {
+	        	
+	        	
+	        	try {
+					 posts = StoryMakerApp.getServerManager().getRecentAssignments(10);
+					
+					
+					
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (XmlRpcFault e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	        	return null;
+	        }
+	        protected void onPostExecute(String file_url) {
+	        	
+	        	if(posts!=null){
+	        		assignmentsCount = "" + posts.size();
+	        		assignTV.setText(getResources().getString(R.string.title_assignments) + " (" + assignmentsCount + ")");
+	        	
+	        		//store new value in prefs
+	        		Editor editor = prefs.edit();
+	        		editor.putString("assignmentsCount", assignmentsCount);
+	        		editor.commit();
+	        	}
+	        	
+	        }
 		}
 
     private boolean isServiceRunning(Class<?> cls) {

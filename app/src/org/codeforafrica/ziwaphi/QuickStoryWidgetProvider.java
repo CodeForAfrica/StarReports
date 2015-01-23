@@ -48,7 +48,7 @@ public class QuickStoryWidgetProvider extends AppWidgetProvider {
       intentStoryPhoto.putExtra("story_name", "Quick Story");
       intentStoryPhoto.putExtra("storymode", 2);
       intentStoryPhoto.putExtra("auto_capture", true);
-      intentStoryAudio.putExtra("quickstory", 1);
+      intentStoryPhoto.putExtra("quickstory", 1);
 
       remoteViews.setOnClickPendingIntent(R.id.btnWidgetPhoto, PendingIntent.getActivity(context, intentStoryPhoto.hashCode(), intentStoryPhoto, 0));
       
@@ -57,7 +57,7 @@ public class QuickStoryWidgetProvider extends AppWidgetProvider {
       intentStoryVideo.putExtra("story_name", "Quick Story");
       intentStoryVideo.putExtra("storymode", 0);
       intentStoryVideo.putExtra("auto_capture", true);
-      intentStoryAudio.putExtra("quickstory", 1);
+      intentStoryVideo.putExtra("quickstory", 1);
 
       remoteViews.setOnClickPendingIntent(R.id.btnWidgetVideo, PendingIntent.getActivity(context, intentStoryVideo.hashCode(), intentStoryVideo, 0));
       
