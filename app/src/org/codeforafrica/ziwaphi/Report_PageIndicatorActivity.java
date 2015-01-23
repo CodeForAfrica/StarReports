@@ -323,7 +323,8 @@ public void initializeReport(){
         spinnerCategories.setSelection(Integer.parseInt(category));
        
         editTextDescription.setText(description);
-        atvPlaces.setText(location);
+        if(!location.equals("0, 0"))
+        	atvPlaces.setText(location);
         
         if(!r.getAssignment().equals("0")){
         	assignmentID = Integer.parseInt(r.getAssignment());

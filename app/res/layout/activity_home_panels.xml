@@ -13,7 +13,8 @@
          android:layout_width="fill_parent"
          android:layout_height="0dp"
          android:layout_weight="0.5"
-         android:background="@color/red">
+         android:background="@color/red"
+         >
 
              <!-- Logo Start-->
 
@@ -30,11 +31,22 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_below="@+id/logo"
+              android:text="@string/strapline_1"
+              android:textSize="20sp"
+              style="@style/CardTitleThick"
               android:layout_centerHorizontal="true"
-              android:text="@string/strapline"
-              android:textColor="@color/white"
-              android:textSize="22sp"
-              style="@style/CardTitle" />
+              android:textColor="@color/white" />
+
+          <TextView
+              android:id="@+id/textView2"
+              style="@style/CardTitleThick"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/textView1"
+              android:text="@string/strapline_2"
+              android:textSize="20sp"
+              android:layout_centerHorizontal="true"
+              android:textColor="@color/white" />
 
          </RelativeLayout>
 

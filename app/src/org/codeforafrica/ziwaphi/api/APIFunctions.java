@@ -25,6 +25,7 @@ public class APIFunctions {
 	private static String registerURL = DefaultsActivity.site_url + "/api/users/register/";
 	private static String updateURL = DefaultsActivity.site_url + "/api/users/editprofile/";
 	private static String userURL = DefaultsActivity.site_url + "/api/users/user/";
+	
 	// constructor
 	public APIFunctions(){
 		jsonParser = new JSONParser();
@@ -48,7 +49,7 @@ public class APIFunctions {
 		// return json
 		return json;
 	}
-	public JSONObject newUser(String username, String password, String email){
+	public JSONObject newUser(String username, String password, String email, String operatorName, String deviceId, String serialNumber){
 		Log.d("passed", "passed" + email + username + password);
 		// Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -56,6 +57,9 @@ public class APIFunctions {
 		params.add(new BasicNameValuePair("password", password));
 		params.add(new BasicNameValuePair("email", email));
 		params.add(new BasicNameValuePair("tag", "register"));
+		params.add(new BasicNameValuePair("operatorName", operatorName));
+		params.add(new BasicNameValuePair("deviceId", deviceId));
+		params.add(new BasicNameValuePair("serialNumber", serialNumber));
 
 		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
 		// return json

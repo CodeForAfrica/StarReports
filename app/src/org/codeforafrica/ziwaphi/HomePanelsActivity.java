@@ -150,10 +150,7 @@ public class HomePanelsActivity extends BaseActivity implements OnClickListener{
 	    //set old value of assignments
 	    assignmentsCount = prefs.getString("assignmentsCount", "0");
 	    assignTV.setText(getResources().getString(R.string.title_assignments) + " (" + assignmentsCount + ")");
-	    
-	    
-	    new GetAssignments().execute();
-	    
+	    	    
 	    add_picture = (LinearLayout)findViewById(R.id.add_picture);
 	    add_picture.setOnClickListener(new View.OnClickListener() {
 			
@@ -238,7 +235,6 @@ public class HomePanelsActivity extends BaseActivity implements OnClickListener{
 	        	
 	        	try {
 					 posts = StoryMakerApp.getServerManager().getRecentAssignments(10);
-					
 					
 					
 				} catch (MalformedURLException e) {
@@ -431,6 +427,8 @@ public class HomePanelsActivity extends BaseActivity implements OnClickListener{
         	Intent intent = new Intent(this,LoginActivity.class);
         	startActivity(intent);
         	finish();
+        }else{
+        	new GetAssignments().execute();
         }
     }
     

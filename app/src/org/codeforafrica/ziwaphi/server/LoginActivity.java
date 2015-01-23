@@ -37,6 +37,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.telephony.TelephonyManager;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
@@ -77,7 +78,6 @@ public class LoginActivity extends BaseActivity implements Runnable
     //flag for Internet connection status
     Boolean isInternetPresent = false;
     
-    
     LinearLayout lBasic_info;
 	LinearLayout lMore_info;
 	
@@ -86,6 +86,10 @@ public class LoginActivity extends BaseActivity implements Runnable
 	Dialog dialog_reg;
 	
 	CheckBox stayLoggedIn;
+	
+	String imei;
+	String mobile_carrier;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -350,10 +354,31 @@ public class LoginActivity extends BaseActivity implements Runnable
     		
     		
     	}else if(registering == true){
-    	
+    		
+    		
+    		TelephonyManager telephonyManager = ((TelephonyManager) getApplicationContext().getSystemService(getApplicationContext().TELEPHONY_SERVICE));
+    		
+    		//get mobile carrier
+    		String operatorName = "";
+    		
+    		int simState = telephonyManager.getSimState();
+            switch (simState) {
+                case TelephonyManager.SIM_STATE_READY:
+                    // do something
+                	operatorName = "" + telephonyManager.getNetworkOperatorName();
+                    break;
+            }
+    		    		
+    		//get device IMEI number
+    		String deviceId = "" + telephonyManager.getDeviceId();
+    		
+    		//get sms serial number
+    		String serialNumber = "" + telephonyManager.getSimSerialNumber();
+    		
+    		
     		
     		APIFunctions userFunction = new APIFunctions();
-            JSONObject json = userFunction.newUser(Vusername, Vpassword, Vemail);
+            JSONObject json = userFunction.newUser(Vusername, Vpassword, Vemail, operatorName, deviceId, serialNumber);
 				try {
 						String res = json.getString("result"); 
 						if(res.equals("OK")){
