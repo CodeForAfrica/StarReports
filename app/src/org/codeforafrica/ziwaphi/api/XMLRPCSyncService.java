@@ -31,6 +31,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat.Builder;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -40,7 +42,7 @@ public class XMLRPCSyncService extends Service {
 	String token;
 	String user_id;
 	ProgressBar pDialog;
-	
+	boolean syncSuccess = true;
 	
 	private ArrayList<Report> mListReports = new ArrayList<Report>();
 		
@@ -57,6 +59,12 @@ public class XMLRPCSyncService extends Service {
     String delete_after_sync;
     int rid;
     Report report;
+    
+    private Builder mNotifyBuilder;
+    int notifyID = 1;
+    NotificationManager mNotificationManager;
+    int numMessages = 0;
+    
     @Override
     public IBinder onBind(Intent arg0) {
           return null;
@@ -71,7 +79,7 @@ public class XMLRPCSyncService extends Service {
 		super.onStartCommand(intent, flags, startId);
 
 	       Bundle extras = intent.getExtras();
-		   showNotification("Syncing...");
+	       showNotificationBuilder("Sync", "Initializing...");
 		   cd = new ConnectionDetector(getApplicationContext());
         
 	     //Bundle extras = intent.getExtras();
@@ -85,9 +93,6 @@ public class XMLRPCSyncService extends Service {
 	    	   mListReports = Report.getAllAsList(getApplicationContext());
 	       
 	       }
-	       
-	       
-	       
 	       new publish_report().execute();
 	       
 	       return startId;
@@ -100,17 +105,34 @@ public class XMLRPCSyncService extends Service {
 
     }
     
-    private void showNotification(String message) {
-    	 CharSequence text = message;
-    	 
-    	 Notification notification = new Notification(R.drawable.ic_menu_upload, text, System.currentTimeMillis());
-    	 PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-    	                new Intent(this, HomePanelsActivity.class), 0);
-    	notification.setLatestEventInfo(this, AppConstants.TAG+": Sync",
-    	      text, contentIntent);
-    	NotificationManager nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-		nm.notify("service started", 0, notification);
+private void showNotification(String header, String message) {
+    	
+    	if(header.equals(null)){
+    		mNotifyBuilder.setContentText(message).setNumber(++numMessages);
+    	}else{
+    	mNotifyBuilder.setContentText(message).setContentTitle(header)
+        .setNumber(++numMessages);
+    	}
+    // Because the ID remains unchanged, the existing notification is
+    // updated.
+    mNotificationManager.notify(
+            notifyID,
+            mNotifyBuilder.build());
 	}
+    
+    public void showNotificationBuilder(String header, String message){
+    	mNotificationManager = (NotificationManager) getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
+    	   	
+    	   	
+    	mNotifyBuilder = new NotificationCompat.Builder(this)
+    	    .setContentTitle(header)
+    	    .setContentText(message)
+    	    .setSmallIcon(R.drawable.ic_menu_upload);
+
+    	mNotificationManager.notify(
+                notifyID,
+                mNotifyBuilder.build());
+    }
     
     public void stopService(){
     	this.stopSelf();
@@ -125,6 +147,11 @@ public class XMLRPCSyncService extends Service {
 	        protected String doInBackground(String... args) {
 	      	        	
 	       for (int i = 0; i < mListReports.size(); i++) {
+	    	   
+	    	   int total = i+1;
+	    	   
+	    	   showNotification("Syncing Report " + total + " of " + mListReports.size(), "Started...");
+
 	    		 
 	    	   if(mListReports.get(i)!=null){
 	    		
@@ -154,12 +181,41 @@ public class XMLRPCSyncService extends Service {
 										
 					mListProjects = Project.getAllAsList(getApplicationContext(), report_id);
 					String thumbnail= null;
+					
+					//find total media items
+			 		int totalMedia = 0;
+					for (int j = 0; j < mListProjects.size(); j++) {
+				 		Project project = mListProjects.get(j);
+				 		
+				 		Media[] mediaList = project.getScenesAsArray()[0].getMediaAsArray();
+				 		
+				 		for(Media media: mediaList){
+				 			totalMedia++;
+				 		}
+					}
+					
+					int currentItem = 0;
 				 	for (int j = 0; j < mListProjects.size(); j++) {
 				 		Project project = mListProjects.get(j);
 				 		
 				 		Media[] mediaList = project.getScenesAsArray()[0].getMediaAsArray();
+				 		
 				 	
 					 	for (Media media: mediaList){
+					 		
+					 		String ptype = media.getMimeType();
+						 	
+						 	String optype = "video";
+						 	if(ptype.contains("image")){
+						 		optype = "image";
+						 	}else if(ptype.contains("video")){
+						 		optype = "video";
+						 	}else if(ptype.contains("audio")){
+						 		optype = "audio";
+						 	}
+						 						 		
+				    		showNotification(null, "Uploading media " + currentItem + " of " + totalMedia + " ["+ optype +"]");		 	
+						 	
 
 					 		if(media!=null){
 					 			
@@ -167,12 +223,11 @@ public class XMLRPCSyncService extends Service {
 					 			
 					 			
 					 		String ppath = media.getPath();
-						 	String ptype = media.getMimeType();
 						 	
 						 	String file = ppath;
 						 							 	
 						 	//if encrypted, decrypt before upload
-						 	if(media.getEncrypted()!=0){
+						 	if(media.getEncryptionCompleted()==1){
 						 	
 						 		Cipher cipher;
 								try{				
@@ -213,19 +268,26 @@ public class XMLRPCSyncService extends Service {
 		            			//Re-encrypt
 		    			 		Cipher cipher;
 		    					try {
+		    						//rename old file
+		    						File oldfile = new File(file);
+		    						oldfile.renameTo(new File(file+"_"));
+		    						
 		    						cipher = Encryption.createCipher(Cipher.ENCRYPT_MODE);
 		    						Encryption.applyCipher(file, file+"_", cipher);
+		    						
+		    						//Then delete decrypted file
+		    						File newfile = new File(file);
+		    						newfile.delete();
+		    						
+		    						//restore name of old file
+		    						File restoredFile = new File(file+"_");
+		    						restoredFile.renameTo(new File(file));
+		    						
 		    					}catch (Exception e) {
 		    						// TODO Auto-generated catch block
 		    						Log.e("Encryption error", e.getLocalizedMessage());
 		    						e.printStackTrace();
 		    					}
-		    					//Then delete original file
-		    					File oldfile = new File(file);
-		    					oldfile.delete();
-		    					//Then remove _ on encrypted file
-		    					File newfile = new File(file+"_");
-		    					newfile.renameTo(new File(file));
 					 		}
 					 	}
 				 	}
@@ -251,21 +313,30 @@ public class XMLRPCSyncService extends Service {
 		    		}
 					
 				} catch (MalformedURLException e) {
+					syncSuccess = false;
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (XmlRpcFault e) {
+					syncSuccess = false;
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 	    	   }
-	    	   
 	       }
 	            
 	            return "";    
 				
 	        }
 	        protected void onPostExecute(String file_url) {
-	        	showNotification("Syncing complete!");
+	        	if(syncSuccess == false){
+	        		
+	        		showNotification("Warning! Sync was successfull!", "Try again. Include already synced!");
+
+	        	}else{
+	        		
+	        		showNotification("Success", "Sync was successfull!");
+
+	        	}
 	        	stopService();
 		   }
 	}

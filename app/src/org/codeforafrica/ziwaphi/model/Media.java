@@ -42,7 +42,9 @@ public class Media extends Model {
     protected Date updatedAt; // long stored in database as 8-bit int
     protected int object_id;
     public final static int IMAGE_SAMPLE_SIZE = 4;
-    public int encrypted;
+    protected int encryption_started;
+    protected int encryption_completed;
+    protected int thumbnail_generated;
     /**
      * Create a new, blank record via the Content Provider interface
      * 
@@ -83,7 +85,7 @@ public class Media extends Model {
      * @param encrypted
      */
     public Media(Context context, int id, String path, String mimeType, String clipType, int clipIndex,
-            int sceneId, float trimStart, float trimEnd, float duration, Date createdAt, Date updatedAt, int encrypted) {
+            int sceneId, float trimStart, float trimEnd, float duration, Date createdAt, Date updatedAt, int encryption_started, int encryption_completed, int thumbnail_generated) {
         super(context);
         this.context = context;
         this.id = id;
@@ -97,7 +99,9 @@ public class Media extends Model {
         this.duration = duration;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.encrypted = encrypted;
+        this.encryption_started = encryption_started;
+        this.encryption_completed = encryption_completed;
+        this.thumbnail_generated = thumbnail_generated;
     }
     
     /**
@@ -120,8 +124,8 @@ public class Media extends Model {
      * @param updatedAt
      */
     public Media(SQLiteDatabase db, Context context, int id, String path, String mimeType, String clipType, int clipIndex,
-            int sceneId, float trimStart, float trimEnd, float duration, Date createdAt, Date updatedAt, int encrypted) {
-        this(context, id, path, mimeType, clipType, clipIndex, sceneId, trimStart, trimEnd, duration, createdAt, updatedAt, encrypted);
+            int sceneId, float trimStart, float trimEnd, float duration, Date createdAt, Date updatedAt, int encryption_started, int encryption_completed, int thumbnail_generated) {
+        this(context, id, path, mimeType, clipType, clipIndex, sceneId, trimStart, trimEnd, duration, createdAt, updatedAt, encryption_started, encryption_completed, thumbnail_generated);
         this.mDB = db;
     }
 
@@ -157,8 +161,12 @@ public class Media extends Model {
                         new Date(cursor.getLong(cursor.getColumnIndex(StoryMakerDB.Schema.Media.COL_CREATED_AT))) : null),
                 (!cursor.isNull(cursor.getColumnIndex(StoryMakerDB.Schema.Media.COL_UPDATED_AT)) ?
                         new Date(cursor.getLong(cursor.getColumnIndex(StoryMakerDB.Schema.Media.COL_UPDATED_AT))) : null),
-                cursor.getInt(cursor
-                       .getColumnIndex(StoryMakerDB.Schema.Media.COL_ENCRYPTED)));
+                 cursor.getInt(cursor
+                                .getColumnIndex(StoryMakerDB.Schema.Media.COL_ENCRYPTION_STARTED)),
+                        cursor.getInt(cursor
+                                 .getColumnIndex(StoryMakerDB.Schema.Media.COL_ENCRYPTION_COMPLETED)),
+        	             cursor.getInt(cursor
+        	                     .getColumnIndex(StoryMakerDB.Schema.Media.COL_THUMBNAIL_GENERATED)));
     }
 
     /**
@@ -227,6 +235,31 @@ public class Media extends Model {
         return getTrimmedEndTime() - getTrimmedStartTime();
     }
     
+    /**
+     * @return thumbnail_generated
+     */
+    public int getThumbnail_generated() {
+        return thumbnail_generated;
+    }
+    
+    /**
+     * set thumbnail_generated
+     */
+    public void setThumbnail_generated(int thumbnail_generated) {
+        this.thumbnail_generated = thumbnail_generated;
+    }
+    public void setEncryptionStarted(int _encryption_started) {
+        this.encryption_started = _encryption_started;
+    }
+    public int getEncryptionStarted() {
+        return encryption_started;
+    }
+    public void setEncryptionCompleted(int _encryption_completed) {
+        this.encryption_completed = _encryption_completed;
+    }
+    public int getEncryptionCompleted() {
+        return encryption_completed;
+    }
     protected ContentValues getValues() {
         ContentValues values = new ContentValues();
         values.put(StoryMakerDB.Schema.Media.COL_PATH, path);
@@ -245,7 +278,9 @@ public class Media extends Model {
         }
         // store dates as longs(8-bit ints)
         // can't put null in values set, so only add entry if non-null
-        values.put(StoryMakerDB.Schema.Media.COL_ENCRYPTED, encrypted);
+        values.put(StoryMakerDB.Schema.Media.COL_ENCRYPTION_STARTED, encryption_started);
+        values.put(StoryMakerDB.Schema.Media.COL_ENCRYPTION_COMPLETED, encryption_completed);
+        values.put(StoryMakerDB.Schema.Media.COL_THUMBNAIL_GENERATED, thumbnail_generated);
         return values;
     }
     
@@ -467,18 +502,27 @@ public class Media extends Model {
         this.updatedAt = updatedAt;
     }
     
-    /**
-     * @return encrypted
-     */
-    public int getEncrypted() {
-        return encrypted;
+    public static Cursor getUnEncryptedAsCursor(Context context) {
+    	String selection = StoryMakerDB.Schema.Media.COL_ENCRYPTION_STARTED + "=?" + " AND " + StoryMakerDB.Schema.Media.COL_ENCRYPTION_COMPLETED + "=?" + " AND " + StoryMakerDB.Schema.Media.COL_THUMBNAIL_GENERATED + "=?";
+    	int encStarted = 0;
+    	int encCompleted = 0;
+    	int thumbGenerated = 1;
+        String[] selectionArgs = new String[] { "" + encStarted, "" + encCompleted, "" + thumbGenerated};
+        return context.getContentResolver().query(
+                ProjectsProvider.MEDIA_CONTENT_URI, null, selection,
+                selectionArgs, null);
     }
-
-    /**
-     * @param set encrypted
-     */
-    public void setEncrypted(int encrypted) {
-        this.encrypted = encrypted;
+    
+    public static ArrayList<Media> getUnEncrypted(Context context) {
+    	Cursor cursor = getUnEncryptedAsCursor(context);
+        ArrayList<Media> medias = new ArrayList<Media>();
+        if (cursor.moveToFirst()) {
+            do {
+                medias.add(new Media(context, cursor));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return medias;
     }
     public static String getThumbnailUrl(Context context, Media media, Project project){
     	if (media == null)
@@ -518,13 +562,12 @@ public class Media extends Model {
     	File thumbDir = new File(Environment.getExternalStorageDirectory() + "/" +AppConstants.TAG + "/.thumbs");
     	if(!thumbDir.exists()){
     		thumbDir.mkdirs();
-    	}
-    	
+    	}    	
     	
     	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
     	String mt = dateFormat.format(media.getCreatedAt());
     	
-       File fileThumb = new File(thumbDir + "/" + mt+".jpg");
+        File fileThumb = new File(thumbDir + "/" + mt+".jpg");
        
         if(!fileThumb.exists()){
         	//To cater for old versions
@@ -537,7 +580,6 @@ public class Media extends Model {
         }
         else if (media.getMimeType().startsWith("video"))
         {
-            
            // if (fileThumb.exists())
            // {
 

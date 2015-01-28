@@ -65,8 +65,7 @@ public class ReportsActivity extends BaseActivity implements OnClickListener{
 	private ArrayList<Report> mListReports;
 	private ReportArrayAdapter aaReports;
 	ProgressDialog pDialog;
-	getThumbnail get_thumbnail=null;
-
+	
     private Dialog dialog;
     
     //Connection detector class
@@ -93,13 +92,7 @@ public class ReportsActivity extends BaseActivity implements OnClickListener{
 
         // action bar stuff
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-         
-        //getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFFFFF")));
-        //getSupportActionBar().setTitle("View Reports");
 
-        //TextView title2 = (TextView) getWindow().getDecorView().findViewById(getResources().getIdentifier("action_bar_title", "id", "android"));
-        //title2.setTextColor(getResources().getColor(R.color.soft_purple));
-        
        //init CardView
 		mCardView = (CardUI) findViewById(R.id.cardsview);
 		mCardView.setSwipeable(false);
@@ -115,31 +108,6 @@ public class ReportsActivity extends BaseActivity implements OnClickListener{
 	    	DeleteRecursive(mThumbsDir);
 	    }
 	    
-       
-        
-        //Toast.makeText(getApplicationContext(), "Thumbnails might take a while to display", Toast.LENGTH_LONG).show();
-        
-        int delay = 3000; // delay for 1 sec. 
-		int period = 3000; // repeat every 10 sec. 
-		final Timer timer = new Timer(); 
-		timer.scheduleAtFixedRate(new TimerTask(){ 
-		        public void run() 
-		        { 
-		        	if(checkTasks()<1){
-		        		Handler refresh = new Handler(Looper.getMainLooper());
-						refresh.post(new Runnable() {
-						    public void run()
-						    {
-		        			  //pDialog.dismiss();
-		        			  timer.cancel();
-		        			  //finish();
-		        		      //Toast.makeText(getApplicationContext(), "Something", Toast.LENGTH_SHORT).show();    
-		        		   }
-		        		}); 
-		             }
-		        } 
-		    }, delay, period); 
-				
 		refreshReports();
     }
     private boolean isServiceRunning(Class<?> cls) {
@@ -232,23 +200,7 @@ public class ReportsActivity extends BaseActivity implements OnClickListener{
         fileOrDirectory.delete();
     }
     
-    public int checkTasks(){
-		int tasks = 0;
-		if((get_thumbnail!=null)){
-			if(get_thumbnail.getStatus() == AsyncTask.Status.RUNNING){
-				tasks++;
-			}
-		}
-		
-		if(tasks==0){
-	        File mThumbsDir = new File(Environment.getExternalStorageDirectory(), AppConstants.TAG+"/decrypts");
-
-			DeleteRecursive(mThumbsDir);
-		}
-		
-		Log.d("Tasks", String.valueOf(tasks));
-		return tasks;
-	}
+   
     
     class showList extends AsyncTask<String, String, String> {
 		@Override
@@ -570,6 +522,7 @@ public class ReportsActivity extends BaseActivity implements OnClickListener{
 	            			break;
 	            		}
 	            }
+	            
 	            int vids =0;
 	            int pics =0;
 	            int auds =0;
@@ -612,73 +565,5 @@ public class ReportsActivity extends BaseActivity implements OnClickListener{
         
     }
  
-    private static class GetThumbnailParams {
-    	Context context;
-    	Media media;
-    	Project project;
-    	ImageView ivIcon;
-	    
-	    GetThumbnailParams(Context context, Media media, Project project,ImageView ivIcon) {
-	        this.context = context;
-	        this.media = media;
-	        this.project = project;
-	        this.ivIcon = ivIcon;
-	    }
-	}
-    class getThumbnail extends AsyncTask<GetThumbnailParams, String, String> {
-
-		@Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-			
-        }
-		
-        protected String doInBackground(GetThumbnailParams... params) {
-        	Context context = params[0].context;
-        	final Media media = params[0].media;
-        	final Project project = params[0].project;
-        	final ImageView ivIcon = params[0].ivIcon;
-        	//
-     	   final Bitmap bmp = Media.getThumbnail(ReportsActivity.this,media,project);
-     	   
-            ReportsActivity.this.runOnUiThread(new Runnable() 
-                  {
-                       public void run() 
-                       {
-                    	   
-               				if (bmp != null)
-               					ivIcon.setImageBitmap(bmp);
-               				
-               				/*
-               				String file = Environment.getExternalStorageDirectory()+"/"+AppConstants.TAG+"/thumbs/"+media.getId()+".jpg";
-
-            		 		Cipher cipher;
-            				try{
-            					cipher = Encryption.createCipher(Cipher.ENCRYPT_MODE);
-            					Encryption.applyCipher(file, file+"_", cipher);
-            				}catch (Exception e) {
-            					// TODO Auto-generated catch block
-            					Log.e("Encryption error", e.getLocalizedMessage());
-            					e.printStackTrace();
-            				}
-            				//Then delete original file
-            				File oldfile = new File(file);
-            				oldfile.delete();
-            				
-            				//Then remove _ on encrypted file
-            				File newfile = new File(file+"_");
-            				newfile.renameTo(new File(file));
-            				*/
-               				
-                       	  }
-                       });
-            
-        	return null;
-        }
-       
-        protected void onPostExecute(String ppath) {
-            
-        }
-	}
 
 }

@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.codeforafrica.ziwaphi"
     android:installLocation="auto"
-    android:versionCode="144"
-    android:versionName="0.0.9-build124" >
+    android:versionCode="147"
+    android:versionName="0.0.9-build127" >
     
     <uses-sdk
         android:minSdkVersion="10"

@@ -370,44 +370,10 @@ public class PublishFragment extends Fragment {
 		       } catch (Exception e) {
 		               e.printStackTrace();
 		}
-        
-        //Add to Queue
-        
-        //First read all we have
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivity.getApplicationContext());
-        JSONArray jsonArray2 = null;
-        try {
-            jsonArray2 = new JSONArray(prefs.getString("eQ", "[]"));
-            
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        if(media!=null){
-	        String media_id = String.valueOf(media.getId());
-	        
-	        boolean isAdded = false; 
-	        
-	        //Check if media is already encrypted
-	        if(media.getEncrypted()==0){
-	        	//Check if value is already added 
-	        	
-	        	//TODO: find faster way to do this
-	        	for (int i = 0; i < jsonArray2.length(); i++) {
-	                if(jsonArray2.getString(i).equals(media_id)){
-	                	isAdded = true;
-	                }
-	           }
-	        }
-	        Editor editor = prefs.edit();
-	        if(isAdded==false){
-		        //Then add new value
-		        jsonArray2.put(media_id);
-		        editor.putString("eQ", jsonArray2.toString());
-		        
-	        }
-	        System.out.println(jsonArray2.toString());
-	        editor.commit();
-        }
+        	
+        	media.setThumbnail_generated(1);
+        	
+        	media.save();
     }
     private void showLogin() {
         mActivity.startActivity(new Intent(mActivity, LoginActivity.class));

@@ -10,8 +10,8 @@ import android.util.Log;
 
 public class StoryMakerDB extends SQLiteOpenHelper {
     private static final String TAG = "Ziwaphi";
-    private static final int DB_VERSION = 10;
-    private static final String DB_NAME = "sm.db4";
+    private static final int DB_VERSION = 11;
+    private static final String DB_NAME = "sm.db6";
     private Context mContext;
     
     public StoryMakerDB(Context context) {
@@ -213,7 +213,9 @@ public class StoryMakerDB extends SQLiteOpenHelper {
             public static final String COL_CREATED_AT = "created_at";
             public static final String COL_UPDATED_AT = "updated_at";
             public static final String COL_OBJECT_ID = "object_id";
-            public static final String COL_ENCRYPTED = "encrypted";
+            public static final String COL_ENCRYPTION_STARTED = "encryption_started";
+            public static final String COL_ENCRYPTION_COMPLETED = "encryption_completed";
+            public static final String COL_THUMBNAIL_GENERATED = "thumbnail_generated";
             
 	    	private static final String CREATE_TABLE_MEDIA = "create table " + NAME + " ("
 	    			+ ID + " integer primary key autoincrement, "
@@ -228,7 +230,9 @@ public class StoryMakerDB extends SQLiteOpenHelper {
                     + COL_CREATED_AT + " integer,"
                     + COL_UPDATED_AT + " integer," 
                     + COL_OBJECT_ID + " integer,"                    
-                    + COL_ENCRYPTED + " integer default 0"                    
+                    + COL_ENCRYPTION_STARTED + " integer DEFAULT 0,"
+                    + COL_ENCRYPTION_COMPLETED + " integer DEFAULT 0,"
+                    + COL_THUMBNAIL_GENERATED + " integer DEFAULT 0"
 	    			+ "); ";
 	    			
             

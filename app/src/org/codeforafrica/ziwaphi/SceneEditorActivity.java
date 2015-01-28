@@ -82,7 +82,7 @@ import com.actionbarsherlock.view.MenuItem;
  //       mStoryMode = getIntent().getIntExtra("story_mode", Project.STORY_TYPE_VIDEO);
 
         int pid = intent.getIntExtra("pid", -1); //project id
-        Log.d("step3", "g:5" + pid);
+        
         quickstory = intent.getIntExtra("quickstory", 0);
         importing = intent.getBooleanExtra("importing", false);
         	
@@ -685,7 +685,6 @@ import com.actionbarsherlock.view.MenuItem;
             	try
             	{
             		mMPM.handleResponse(intent, mCapturePath);
-            		
             		refreshClipPager();
             	}
             	catch (IOException e)
@@ -693,10 +692,6 @@ import com.actionbarsherlock.view.MenuItem;
             		Log.e(AppConstants.TAG,"error handling capture response: " + mCapturePath,e);
             	}
             }
-
         }
     }
-
-    
-    
 }

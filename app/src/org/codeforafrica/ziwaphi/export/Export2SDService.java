@@ -4,9 +4,13 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.channels.FileChannel;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,18 +20,17 @@ import java.util.zip.ZipOutputStream;
 import javax.crypto.Cipher;
 
 import org.codeforafrica.ziwaphi.AppConstants;
-import org.codeforafrica.ziwaphi.HomePanelsActivity;
 import org.codeforafrica.ziwaphi.encryption.Encryption;
 import org.codeforafrica.ziwaphi.model.Media;
 import org.codeforafrica.ziwaphi.model.Project;
 import org.codeforafrica.ziwaphi.model.Report;
-
-import com.google.common.io.Files;
+import org.holoeverywhere.widget.Toast;
 
 import android.R;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -37,6 +40,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat.Builder;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
@@ -52,36 +57,59 @@ public class Export2SDService extends Service {
 	SharedPreferences pref;
 	String zipName;
 	public File newFolder;
+	
+	private Builder mNotifyBuilder;
+    int notifyID = 3;
+    NotificationManager mNotificationManager;
+    int numMessages = 0;
+    
 	@Override
     public void onCreate() {
           super.onCreate();
           
 	}
 	@Override
-	public int onStartCommand(Intent intent, int flags, int startId){
-		super.onStartCommand(intent, flags, startId);
-
-		//@Override
-		//public void onStart(Intent intent, int startId) {
-		//super.onStart(intent, startId);
+	  public void onStart(Intent intent, int startId) {
+	      super.onStart(intent, startId);
 	       Bundle extras = intent.getExtras(); 
 	       eI = extras.getString("includeExported");
-	       showNotification("Exporting to SD...");
+	       
+	       showNotificationBuilder("Export to SD", "Initializing...");
 	       
 	        pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-	      	delete_after_export = pref.getString("delete_after_export","0");
+	      	delete_after_export = pref.getString("delete_after_export",null);
 	      	new export2SD().execute();
-	      	
-			return startId;
 	}
-	private void showNotification(String message) {
-   	 CharSequence text = message;
-   	 Notification notification = new Notification(R.drawable.ic_menu_send, text, System.currentTimeMillis());
-   	 PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, HomePanelsActivity.class), 0);
-   	 notification.setLatestEventInfo(this, "LP: Export to SD", text, contentIntent);
-   	NotificationManager nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-		nm.notify("service started", 1, notification);
-		}
+
+	private void showNotification(String header, String message) {
+    	
+		if(header.equals(null)){
+    		mNotifyBuilder.setContentText(message).setNumber(++numMessages);
+    	}else{
+    	mNotifyBuilder.setContentText(message).setContentTitle(header)
+        .setNumber(++numMessages);
+    	}
+	    // Because the ID remains unchanged, the existing notification is
+	    // updated.
+	    mNotificationManager.notify(
+	            notifyID,
+	            mNotifyBuilder.build());
+	}
+    
+    public void showNotificationBuilder(String header, String message){
+    	mNotificationManager = (NotificationManager) getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
+    	   	
+    	   	
+    	mNotifyBuilder = new NotificationCompat.Builder(this)
+    	    .setContentTitle(header)
+    	    .setContentText(message)
+    	    .setSmallIcon(R.drawable.ic_menu_send);
+    	
+    	mNotificationManager.notify(
+                notifyID,
+                mNotifyBuilder.build());
+
+    }
 	@Override
 	public IBinder onBind(Intent intent) {
 		// TODO Auto-generated method stub
@@ -115,13 +143,13 @@ public class Export2SDService extends Service {
 		 	
             reportscount = mListReports.size();
 
-			zipName = "timby"+userid+"-"+String.valueOf(reportscount)+"-"+timestamp;
+			zipName = "ziwaphi"+userid+"-"+String.valueOf(reportscount)+"-"+timestamp;
 			//create folder and transfer all content here
 			newFolder = new File(Environment.getExternalStorageDirectory(), zipName);
 			newFolder.mkdirs();
 						
 			ext = String.valueOf(Environment.getExternalStorageDirectory());
-		 	//ext += "/"+AppConstants.TAG;
+		 	ext += "/"+AppConstants.TAG;
 		 	
 			//Begin "XML" file
 		 	data += "<?xml version='1.0' encoding='UTF-8'?>\n";
@@ -133,6 +161,9 @@ public class Export2SDService extends Service {
 			 for (int i = 0; i < reportscount; i++) {
 				 	//check if report actually exists
 				 	if(mListReports.get(i)!=null){
+				 		
+				 		int current = i + 1;
+				 		showNotification("Export: Report " + current + " of " + mListReports.size(), "Started...");
 					 	
 					 	data += "<report>\n";
 					 	
@@ -171,30 +202,38 @@ public class Export2SDService extends Service {
 					 	mListProjects = Project.getAllAsList(getApplicationContext(), report.getId());
 					 	for (int j = 0; j < mListProjects.size(); j++) {
 					 		Project project = mListProjects.get(j);
+						 	data += "<object>\n";
+						 	data += "<object_id>"+project.getId()+"</object_id>\n";
+						 	data += "<object_title>"+project.getTitle()+"</object_title>\n";
 						 	
-						 	
-						 	Log.d("I'm here", "I'm here - 1");
 						 	Media[] mediaList = project.getScenesAsArray()[0].getMediaAsArray();
 						 	for (Media media: mediaList){
-						 		
+
 						 		if(media!=null){
-							 		data += "<object>\n";
-								 	data += "<object_id>"+media.getId()+"</object_id>\n";
-								 	data += "<object_title>"+project.getTitle()+"</object_title>\n";
+						 			String ptype = media.getMimeType();
+								 	
+								 	String optype = "video";
+								 	if(ptype.contains("image")){
+								 		optype = "image";
+								 	}else if(ptype.contains("video")){
+								 		optype = "video";
+								 	}else if(ptype.contains("audio")){
+								 		optype = "audio";
+								 	}
+								 	
+						 			int total = j + 1;
+						    		showNotification(null, "Adding media " + total + " of " + mListProjects.size() + " ["+ optype +"]");		 	
 								 	
 							 		String path = media.getPath();
-								 	Log.d("I'm here", "I'm here " + path);
 	
 							 		String file = path;
 							 		
-							 		String filename = (new File(path)).getName();
 							 		
-									String outfile = rFolder.getPath().toString()+ "/" +filename;
+							 		path = path.replace(ext, "");
+									String outfile = newFolder.getPath().toString()+path;
 									
-									Log.d("out, in", "out:" + outfile + " in: " + file);
-									
-							 		//Decrypt file if encrypted
-									if(media.getEncrypted()!=0){
+									if(media.getEncryptionCompleted()==1){
+										//Decrypt file
 								 		Cipher cipher;
 										try {
 											cipher = Encryption.createCipher(Cipher.DECRYPT_MODE);
@@ -205,21 +244,25 @@ public class Export2SDService extends Service {
 											e.printStackTrace();
 										}
 									}else{
-										//copy file to new destination
+										//copy file to zip location
 										try {
-											Files.copy(new File(file), new File(outfile));
+											
+											Log.d("i/o", "i: " + file + " o: " + outfile);
+											
+											copyFileUsingFileChannels(new File(file), new File(outfile));
 										} catch (IOException e) {
 											// TODO Auto-generated catch block
 											e.printStackTrace();
 										}
 									}
-								 	data += "<object_media>"+String.valueOf(report.getId())+"/"+filename+"</object_media>\n";
+							 		
+										
+								 	data += "<object_media>"+path+"</object_media>\n";
 									//}
 							 		data += "<object_type>"+media.getMimeType()+"</object_type>\n";
-							 		data += "</object>\n";
-						 		}
+							 	}
+								data += "</object>\n";
 						 	}
-							
 					 	}
 					 	data += "</report_objects>\n";
 					 	data += "</report>\n";
@@ -230,12 +273,14 @@ public class Export2SDService extends Service {
 			 
 			 writeToFile(data);
 			 
+			 
+			 
 			 	
 			//Now create new zip
 			zipFileAtPath(newFolder.getAbsolutePath(), String.valueOf(getSD())+"/"+zipName+".zip");
 			
 			//encrypt zip file
-	    	String encrypt_zip_files = prefs.getString("encrypt_zip_files","0");
+	    	String encrypt_zip_files = prefs.getString("encrypt_zip_files",null);
 	    	if(encrypt_zip_files.equals("1")){
 	    		
 	    		String file = String.valueOf(getSD())+"/"+zipName+".zip";
@@ -266,7 +311,8 @@ public class Export2SDService extends Service {
 		}
 			
 	protected void onPostExecute(String file_url) {
-			showNotification("Exported Successfully!");
+			showNotification("Export to SD", "Exported Successfully!");
+			
 			if(delete_after_export.equals("1")){
 				deleteReports();
 			}
@@ -300,6 +346,8 @@ public class Export2SDService extends Service {
       }
 	 
 	public void writeToFile(final String fileContents) {
+ 		showNotification("Export to SD", "Attaching reports XML file...");
+
 		try {
 	            FileWriter out = new FileWriter(new File(newFolder, "/db.xml"));
 	            out.write(fileContents);
@@ -309,8 +357,11 @@ public class Export2SDService extends Service {
         	}
 
     }
+	
 
 	public boolean zipFileAtPath(String sourcePath, String toLocation) {
+ 		showNotification("Export to SD", "Zipping export...");
+
 	    // ArrayList<String> contentList = new ArrayList<String>();
 	    File sourceFile = new File(sourcePath);
 	    try {
@@ -387,5 +438,23 @@ public class Export2SDService extends Service {
 		}
 		
 		return extStorage;
+	}
+	 
+	private static void copyFileUsingFileChannels(File source, File dest)
+			throws IOException {
+		FileChannel inputChannel = null;
+		FileChannel outputChannel = null;
+		try {
+			inputChannel = new FileInputStream(source).getChannel();
+			outputChannel = new FileOutputStream(dest).getChannel();
+			outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
+		} finally {
+			if(inputChannel!=null){
+				inputChannel.close();
+				outputChannel.close();
+			}else{
+				Log.d("nullinput", "nullinput" + source.getAbsolutePath().toString());
+			}
+		}
 	}
 }

@@ -20,14 +20,14 @@ public class QuickStoryWidgetProvider extends AppWidgetProvider {
     // Get all ids
     ComponentName thisWidget = new ComponentName(context,
     		QuickStoryWidgetProvider.class);
+    
     int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
+    
     for (int widgetId : allWidgetIds) {
 
       RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
           R.layout.widget_quickstory_layout);
-      // Set the text
-      //remoteViews.setTextViewText(R.id.update, String.valueOf(number));
-
+      
       Intent intentHome = new Intent(context, HomePanelsActivity.class);
       PendingIntent pendingIntentHome = PendingIntent.getActivity(context,
     		  intentHome.hashCode(), intentHome, 0);

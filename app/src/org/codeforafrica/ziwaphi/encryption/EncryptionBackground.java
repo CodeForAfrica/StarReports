@@ -1,13 +1,16 @@
 package org.codeforafrica.ziwaphi.encryption;
 
 
+
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.crypto.Cipher;
-
+import org.codeforafrica.ziwaphi.api.XMLRPCSyncService;
+import org.codeforafrica.ziwaphi.export.Export2SDService;
 import org.codeforafrica.ziwaphi.model.Media;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import android.app.ActivityManager;
 import android.app.Service;
@@ -15,16 +18,15 @@ import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 public class EncryptionBackground extends Service {
 	String message;
 	String file;
 	Media media;
+	
+	ArrayList<Media> unEncryptedMedia;
 	
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -46,70 +48,28 @@ public class EncryptionBackground extends Service {
         {
         	 new Thread(new Runnable() {
 				public void run() {
-					try {
+						//only execute if no file is being encrypted, and sync/export are not running
 						if(!isServiceRunning()){
-			        		String filepath = null;
-			        		//Find first file
-			                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-			                JSONArray jsonArray2 = null;
-			                JSONArray jsonArray3 = new JSONArray();
-			                try {
-			                    jsonArray2 = new JSONArray(prefs.getString("eQ", "[]"));
-				        		//Log.d("running", "not running"+jsonArray2.length());
-
-			                    if(jsonArray2.length()>0){
-			                    	//Get relevant media
-			                    	media = Media.get(getApplicationContext(), Integer.parseInt(jsonArray2.getString(0)));
-			 
-				                    filepath = media.getPath();
-				                    
-				                  //Remove from list
-				                    
-				                    for (int i = 0; i < jsonArray2.length(); i++) {
-				                        if(i!=0){
-				    					 	Log.d("encryption status:", "encryptionb4" + media.getEncrypted());
-
-				                        	jsonArray3.put(jsonArray2.getString(i));
-				                        	media.setEncrypted(1);
-				                        	media.save();
-				    					 
-				                        	Log.d("encryption status:", "encryptionafter" + media.getEncrypted());
-				                        }
-				                   }
-			                    }
-			                } catch (Exception e) {
-			                    e.printStackTrace();
-			                }
-			                
-			                /*
-			                
-			                */
-			                if(jsonArray2.length()>0){
-			                	
-			                	
-			                		Editor editor = prefs.edit();
-			                		editor.putString("eQ", jsonArray3.toString());
-					                editor.commit();
-		    					 	Log.d("encryption status:", "encryptionb4" + media.getEncrypted());
-
-					                media.setEncrypted(1);
-		                        	media.save();
-		                        	Log.d("encryption status:", "encryptionafter" + media.getEncrypted());
-
-			                	
-			                	Intent startMyService= new Intent(getApplicationContext(), EncryptionService.class);
-				                startMyService.putExtra("filepath", filepath);
-				                startMyService.putExtra("mode", Cipher.ENCRYPT_MODE);
-				                startService(startMyService);
-			                }
+							
+							//get all unecrypted media(not completed, started but failed)
+							unEncryptedMedia = Media.getUnEncrypted(getApplicationContext());
+							
+							//if they exist, pick first one
+							if(unEncryptedMedia.size()>0){
+								
+								media = unEncryptedMedia.get(0);
+								
+								if(media!=null){									
+									//pass to encryption service
+									Intent startMyService= new Intent(getApplicationContext(), EncryptionService.class);
+					                startMyService.putExtra("media_id", media.getId());
+					                startService(startMyService);					                
+								}else{									
+									//media.delete();									
+									//TODO:what are the consequences of delete?
+								}
+							}			                
 			        	}
-					} catch (NullPointerException ex) { 
-					    System.out.println("NPE encountered in body"); 
-					} catch (Throwable ex) {
-					    System.out.println("Regular Throwable: " + ex.getMessage());
-					} finally {
-					    //System.out.println("Final throwable");
-					}
 				}}).start();
         	
         }
@@ -121,6 +81,12 @@ public class EncryptionBackground extends Service {
             if (EncryptionService.class.getName().equals(service.service.getClassName())) {
                 return true;
             }
+            if (XMLRPCSyncService.class.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+            if (Export2SDService.class.getName().equals(service.service.getClassName())) {
+                return true;
+            }
         }
         return false;
     }
@@ -129,4 +95,5 @@ public class EncryptionBackground extends Service {
 		super.onDestroy();
 		//Toast.makeText(this, "Service destroyed ...", Toast.LENGTH_LONG).show();
 	}
+	
 }
